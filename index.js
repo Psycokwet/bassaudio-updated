@@ -7,6 +7,7 @@ function bass() {
     var ref = require('ref');
     this.ffi = require('ffi');
     this.ref = ref
+
     var bass = ref.types.void;
     var dword = ref.refType(bass);
     var hwnd = ref.refType(bass)
@@ -18,6 +19,18 @@ function bass() {
         'flags': 'long'
     })
 
+
+    this.BASS_CHANNELINFO = Struct({
+        freq: 'int',
+        chans: 'int',
+        flags: 'int',
+        ctype: 'int',
+        origres: 'int',
+        plugin: 'int',
+        sample: 'int',
+        filename: 'string'
+    })
+
     this.ID3V1Tag = Struct({
         id: 'string',
         title: 'string',
@@ -25,9 +38,61 @@ function bass() {
         album: 'string',
         year: 'string',
         comment: 'string',
-        genre: 'int'
+        genre: 'byte'
     })
 
+
+    this.BASS_ChannelGetTagtypes = {
+        BASS_TAG_ID3: 0,// ID3v1 tags : TAG_ID3 structure
+        BASS_TAG_ID3V2: 1,	// ID3v2 tags : variable length block
+        BASS_TAG_OGG: 2,	// OGG comments : series of null-terminated UTF-8 strings
+        BASS_TAG_HTTP: 3,	// HTTP headers : series of null-terminated ANSI strings
+        BASS_TAG_ICY: 4,	// ICY headers : series of null-terminated ANSI strings
+        BASS_TAG_META: 5,	// ICY metadata : ANSI string
+        BASS_TAG_APE: 6,	// APE tags : series of null-terminated UTF-8 strings
+        BASS_TAG_MP4: 7,	// MP4/iTunes metadata : series of null-terminated UTF-8 strings
+        BASS_TAG_WMA: 8,	// WMA tags : series of null-terminated UTF-8 strings
+        BASS_TAG_VENDOR: 9,	// OGG encoder : UTF-8 string
+        BASS_TAG_LYRICS3: 10,	// Lyric3v2 tag : ASCII string
+        BASS_TAG_CA_CODEC: 11,	// CoreAudio codec info : TAG_CA_CODEC structure
+        BASS_TAG_MF: 13,	// Media Foundation tags : series of null-terminated UTF-8 strings
+        BASS_TAG_WAVEFORMAT: 14,	// WAVE format : WAVEFORMATEEX structure
+        BASS_TAG_RIFF_INFO: 0x100, // RIFF "INFO" tags : series of null-terminated ANSI strings
+        BASS_TAG_RIFF_BEXT: 0x101, // RIFF/BWF "bext" tags : TAG_BEXT structure
+        BASS_TAG_RIFF_CART: 0x102, // RIFF/BWF "cart" tags : TAG_CART structure
+        BASS_TAG_RIFF_DISP: 0x103, // RIFF "DISP" text tag : ANSI string
+        BASS_TAG_APE_BINARY: 0x1000,	// + index #, binary APE tag : TAG_APE_BINARY structure
+        BASS_TAG_MUSIC_NAME: 0x10000,	// MOD music name : ANSI string
+        BASS_TAG_MUSIC_MESSAGE: 0x10001,	// MOD message : ANSI string
+        BASS_TAG_MUSIC_ORDERS: 0x10002,// MOD order list : BYTE array of pattern numbers
+        BASS_TAG_MUSIC_AUTH: 0x10003,	// MOD author : UTF-8 string
+        BASS_TAG_MUSIC_INST: 0x10100,	// + instrument #, MOD instrument name : ANSI string
+        BASS_TAG_MUSIC_SAMPLE: 0x10300	// + sample #, MOD sample name : ANSI string
+    }
+
+
+    this.BASS_CHANNELINFOtypes = {
+        BASS_CTYPE_NOTHING: 0,
+        BASS_CTYPE_SAMPLE: 1,
+        BASS_CTYPE_RECORD: 2,
+        BASS_CTYPE_STREAM: 0x10000,
+        BASS_CTYPE_STREAM_OGG: 0x10002,
+        BASS_CTYPE_STREAM_MP1: 0x10003,
+        BASS_CTYPE_STREAM_MP2: 0x10004,
+        BASS_CTYPE_STREAM_MP3: 0x10005,
+        BASS_CTYPE_STREAM_AIFF: 0x10006,
+        BASS_CTYPE_STREAM_CA: 0x10007,
+        BASS_CTYPE_STREAM_MF: 0x10008,
+        BASS_CTYPE_STREAM_WAV: 0x40000,// WAVE flag, LOWORD=codec
+        BASS_CTYPE_STREAM_WAV_PCM: 0x50001,
+        BASS_CTYPE_STREAM_WAV_FLOAT: 0x50003,
+        BASS_CTYPE_MUSIC_MOD: 0x20000,
+        BASS_CTYPE_MUSIC_MTM: 0x20001,
+        BASS_CTYPE_MUSIC_S3M: 0x20002,
+        BASS_CTYPE_MUSIC_XM: 0x20003,
+        BASS_CTYPE_MUSIC_IT: 0x20004,
+        BASS_CTYPE_MUSIC_MO3: 0x00100 // MO3 flag
+    }
     this.BASS_DEVICEINFOflags = {
         BASS_DEVICE_ENABLED: 1,
         BASS_DEVICE_DEFAULT: 2,
@@ -168,6 +233,8 @@ function bass() {
     })
 
     var deviceInfoPTR = ref.refType(this.BASS_DEVICEINFO)
+    var chanInfoPTR = ref.refType(this.BASS_CHANNELINFO)
+    this.idTagPTR = ref.refType(this.ID3V1Tag)
 
     var basslibName = ''
     if (process.platform == 'win32') {
@@ -182,7 +249,7 @@ function bass() {
 
 
     this.basslib = this.ffi.Library(basslibName, {
-        BASS_Init: ['bool', ['int', 'int', 'int','int','int']],
+        BASS_Init: ['bool', ['int', 'int', 'int', 'int', 'int']],
         BASS_GetVersion: ['int', []],
         BASS_StreamCreateFile: ['int', ['int', 'string', 'int', 'int', 'int']],
         BASS_StreamCreateURL: ['int', ['string', 'long', 'long', 'pointer', ref.types.void]],
@@ -216,7 +283,8 @@ function bass() {
         BASS_GetCPU: ['float', []],
         BASS_GetDevice: ['int', []],
         BASS_GetDeviceInfo: ['int', ['int', deviceInfoPTR]],
-        BASS_ChannelGetTags: ['string', ['int', 'pointer']]
+        BASS_ChannelGetTags: ['int', ['int', 'int']],
+        BASS_ChannelGetInfo: ['int', ['int', chanInfoPTR]]
 
 
     })
@@ -302,7 +370,7 @@ bass.prototype.getDevice = function (device) {
 
 
 bass.prototype.BASS_Init = function (device, freq, flags) {
-    return this.basslib.BASS_Init(device, freq, flags,0,null)
+    return this.basslib.BASS_Init(device, freq, flags, 0, null)
 }
 
 bass.prototype.BASS_StreamCreateFile = function (IsMemoryStream, file, offset, length, flags) {
@@ -435,6 +503,27 @@ bass.prototype.BASS_GetDevice = function () {
 
 bass.prototype.BASS_GetDeviceInfo = function (device, info) {
     return this.basslib.BASS_GetDeviceInfo(device, info);
+}
+
+bass.prototype.BASS_ChannelGetInfo = function (handle) {
+    var info = new this.BASS_CHANNELINFO();
+    this.basslib.BASS_ChannelGetInfo(handle, info.ref())
+    return info;
+}
+
+
+bass.prototype.BASS_ChannelGetTags = function (handle, tags) {
+
+    var t = this.basslib.BASS_ChannelGetTags(handle, tags);
+    if (tags == this.BASS_ChannelGetTagtypes.BASS_TAG_ID3 || tags == this.BASS_ChannelGetTagtypes.BASS_TAG_ID3V2) {
+
+        console.log(t)
+    } else {
+        t.type = this.ref.types.string
+
+    }
+    return t;
+
 }
 
 /*

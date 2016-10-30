@@ -109,6 +109,21 @@ var durationInBytes= basslib.BASS_ChannelGetLength(chan,0)
 var durationInSeconds=basslib.BASS_ChannelBytes2Seconds(chan,durationInBytes)
 ```
 
+**Get Duration Example2**
+```javascript
+//if stream is active (playing), then get position and duration..
+setInterval(function(){
+    if(basslib.BASS_ChannelIsActive(chan)==basslib.BASS_ChannelIsActiveAttribs.BASS_ACTIVE_PLAYING) {
+
+        var position = basslib.BASS_ChannelBytes2Seconds(chan, basslib.BASS_ChannelGetPosition(chan, 0));
+        var duration = basslib.BASS_ChannelBytes2Seconds(chan, basslib.BASS_ChannelGetLength(chan, 0))
+        console.log(position + ' / ' + duration)
+    }else{
+        console.log('stopped' )
+    }
+},500)
+```
+
 **Get Volume of channel**
 ```javascript
 //get the volume
@@ -191,7 +206,7 @@ if(basslib.BASS_ChannelIsActive(chan)==basslib.BASS_ChannelIsActiveAttribs.BASS_
   }
 ```  
 
-  **change sound card**
+**change sound card**
 ```javascript
   //first check if this sound card is initialized
   var soundCardIndex=1;
@@ -210,8 +225,16 @@ if(basslib.BASS_ChannelIsActive(chan)==basslib.BASS_ChannelIsActiveAttribs.BASS_
       console.log('error init sound card:' + basslib.BASS_ErrorGetCode())
    }
  ``` 
+ 
+**Info of a channel**
+```javascript
+var info=    basslib.BASS_ChannelGetInfo(chan);
+console.log('info.ctype:' + info.ctype)
+    console.log("is channel an mp3 stream?:" + (info.ctype ==basslib.BASS_CHANNELINFOtypes.BASS_CTYPE_STREAM_MP3))
+//other infos are: freq,chans,flags,ctype,origres,plugin,sample,filename
+```
    
- **Free the memory from bass**  
+**Free the memory from bass**  
 ```javascript
    basslib.BASS_Free();
 ```
