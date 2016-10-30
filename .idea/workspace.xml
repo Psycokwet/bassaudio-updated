@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fd1a5f2-df1a-46ff-8d0c-885ba232140a" name="Default" comment="mixer features added">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bassmix.dll" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="bassaudio.iws" />
@@ -47,7 +44,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider editor-type-id="MarkdownFxPreviewEditor">
             <state />
@@ -96,11 +93,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
-              <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
+              <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -128,10 +125,10 @@
       <list>
         <option value="$PROJECT_DIR$/fff" />
         <option value="$PROJECT_DIR$/d.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/test.js" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -298,7 +295,7 @@
       <workItem from="1477828384986" duration="75000" />
       <workItem from="1477828484701" duration="14541000" />
       <workItem from="1477851501940" duration="881000" />
-      <workItem from="1477855553590" duration="4343000" />
+      <workItem from="1477855553590" duration="4441000" />
     </task>
     <task id="LOCAL-00001" summary="just documentation fixed">
       <created>1477839501564</created>
@@ -321,11 +318,18 @@
       <option name="project" value="LOCAL" />
       <updated>1477856066622</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="new mixer features added, (mixerEnabled and EnableMixer)">
+      <created>1477859928724</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1477859928724</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19840000" />
+    <option name="totallyTimeSpent" value="19938000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -366,7 +370,8 @@
     <MESSAGE value="just documentation fixed" />
     <MESSAGE value="stop and pause functions bug fixed" />
     <MESSAGE value="channelinfo example added" />
-    <option name="LAST_COMMIT_MESSAGE" value="channelinfo example added" />
+    <MESSAGE value="new mixer features added, (mixerEnabled and EnableMixer)" />
+    <option name="LAST_COMMIT_MESSAGE" value="new mixer features added, (mixerEnabled and EnableMixer)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -562,14 +567,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fff" />
     <entry file="file://$PROJECT_DIR$/d.js" />
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -655,6 +652,14 @@
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
