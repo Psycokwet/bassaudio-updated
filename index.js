@@ -19,7 +19,29 @@ function bass() {
         'flags': 'long'
     })
 
+    this.BASSFlags = {
+        BASS_SAMPLE_DEFAULT: 0,
+        BASS_SAMPLE_8BITS: 1,	// 8 bit
+        BASS_SAMPLE_FLOAT: 256,	// 32 bit floating-point
+        BASS_SAMPLE_MONO: 2,	// mono
+        BASS_SAMPLE_LOOP: 4,	// looped
+        BASS_SAMPLE_3D: 8,	// 3D functionality
+        BASS_SAMPLE_SOFTWARE: 16,// not using hardware mixing
+        BASS_SAMPLE_MUTEMAX: 32,	// mute at max distance (3D only)
+        BASS_SAMPLE_VAM: 64,	// DX7 voice allocation & management
+        BASS_SAMPLE_FX: 128,	// old implementation of DX8 effects
+        BASS_SAMPLE_OVER_VOL: 0x10000,	// override lowest volume
+        BASS_SAMPLE_OVER_POS: 0x20000,	// override longest playing
+        BASS_SAMPLE_OVER_DIST: 0x30000, // override furthest from listener (3D only)
+        BASS_STREAM_PRESCAN: 0x20000, // enable pin-point seeking/length (MP3/MP2/MP1)
+        BASS_MP3_SETPOS: 0x20000,
+        BASS_STREAM_AUTOFREE: 0x40000,	// automatically free the stream when it stop/ends
+        BASS_STREAM_RESTRATE: 0x80000,// restrict the download rate of internet file streams
+        BASS_STREAM_BLOCK: 0x100000,// download/play internet file stream in small blocks
+        BASS_STREAM_DECODE: 0x200000,// don't play the stream, only decode (BASS_ChannelGetData)
+        BASS_STREAM_STATUS: 0x800000 // give server status info (HTTP/ICY tags) in DOWNLOADPROC
 
+    }
     this.BASS_CHANNELINFO = Struct({
         freq: 'int',
         chans: 'int',
@@ -70,7 +92,6 @@ function bass() {
         BASS_TAG_MUSIC_SAMPLE: 0x10300	// + sample #, MOD sample name : ANSI string
     }
 
-
     this.BASS_CHANNELINFOtypes = {
         BASS_CTYPE_NOTHING: 0,
         BASS_CTYPE_SAMPLE: 1,
@@ -93,6 +114,7 @@ function bass() {
         BASS_CTYPE_MUSIC_IT: 0x20004,
         BASS_CTYPE_MUSIC_MO3: 0x00100 // MO3 flag
     }
+
     this.BASS_DEVICEINFOflags = {
         BASS_DEVICE_ENABLED: 1,
         BASS_DEVICE_DEFAULT: 2,
@@ -132,6 +154,7 @@ function bass() {
         BASS_ACTIVE_STALLED: 2,
         BASS_ACTIVE_PAUSED: 3
     }
+
     this.BASS_ChannelSyncTypes = {
         BASS_SYNC_POS: 0,
         BASS_SYNC_END: 2,
@@ -148,6 +171,7 @@ function bass() {
         BASS_SYNC_MIXTIME: 0x40000000, // FLAG: sync at mixtime, else at playtime
         BASS_SYNC_ONETIME: 0x80000000  // FLAG: sync only once, else continuously
     }
+
     this.BASS_ChannelAttributes = {
         BASS_ATTRIB_FREQ: 1,
         BASS_ATTRIB_VOL: 2,
@@ -170,6 +194,7 @@ function bass() {
         BASS_ATTRIB_MUSIC_VOL_INST: 0x300 // + instrument #
 
     }
+
     this.BASS_Position_modes = {
         BASS_FILEPOS_CURRENT: 0,
         BASS_FILEPOS_DECODE: 0,
@@ -237,16 +262,22 @@ function bass() {
     this.idTagPTR = ref.refType(this.ID3V1Tag)
 
     var basslibName = ''
+    var bassmixlibName = '';
     if (process.platform == 'win32') {
         basslibName = 'bass.dll'
+        bassmixlibName = 'bassmix.dll'
     }
     else if (process.platform == 'darwin') {
         basslibName = 'libbass.dylib'
+        bassmixlibName = 'libbassmix.dylib';
     }
     else if (process.platform == 'linux') {
         basslibName = 'libbass.so'
+        bassmixlibName = 'libbassmix.so'
     }
+    this.bassmixlibName=bassmixlibName;
 
+    this.basslibmixer=null;
 
     this.basslib = this.ffi.Library(basslibName, {
         BASS_Init: ['bool', ['int', 'int', 'int', 'int', 'int']],
@@ -526,21 +557,64 @@ bass.prototype.BASS_ChannelGetTags = function (handle, tags) {
 
 }
 
-/*
+//region mixer features
+bass.prototype.BASS_Mixer_StreamCreate = function (freq, chans, flags) {
+    return this.basslibmixer.BASS_Mixer_StreamCreate(freq, chans, flags);
+}
+bass.prototype.BASS_Mixer_StreamAddChannel = function (handle, chans, flags) {
+    return this.basslibmixer.BASS_Mixer_StreamAddChannel(handle, chans, flags);
+}
+bass.prototype.BASS_Mixer_ChannelGetLevel = function (handle) {
+    return this.basslibmixer.BASS_Mixer_ChannelGetLevel(handle);
+}
 
- Private Function LoWord(ByVal lparam As Long) As Long
- LoWord = lparam And &HFFFF&
- End Function
+bass.prototype.BASS_Mixer_StreamAddChannel = function (handle, chans, flags) {
+    return this.basslibmixer.BASS_Mixer_StreamAddChannel(handle, chans, flags);
+}
+bass.prototype.BASS_Mixer_ChannelGetMixer = function (handle) {
+    return this.basslibmixer.BASS_Mixer_ChannelGetMixer(handle);
+}
+bass.prototype.BASS_Mixer_ChannelGetPosition = function (handle, mode) {
+    return this.basslibmixer.BASS_Mixer_ChannelGetPosition(handle, mode);
+}
+bass.prototype.BASS_Mixer_ChannelRemove = function (handle) {
+    return this.basslibmixer.BASS_Mixer_ChannelRemove(handle);
+}
 
- Private Function HiWord(ByVal lparam As Long) As Long
- If lparam < 0 Then
- HiWord = (lparam \ &H10000 - 1) And &HFFFF&
- Else
- HiWord = lparam \ &H10000
- End If
- End Function
- */
+bass.prototype.BASS_Mixer_ChannelRemoveSync = function (handle, synchandle) {
+    return this.basslibmixer.BASS_Mixer_ChannelRemoveSync(handle, synchandle);
+}
 
+bass.prototype.BASS_Mixer_ChannelSetPosition = function (handle, pos, mode) {
+    return this.basslibmixer.BASS_Mixer_ChannelSetPosition(handle, pos, mode);
+}
+bass.prototype.BASS_Mixer_ChannelSetSync = function (handle, type, param, callback) {
+    return this.basslib.BASS_Mixer_ChannelSetSync(handle, type, param, this.ffi.Callback('void', ['int', 'int', 'int', this.ref.types.void], callback), null)
+}
+
+bass.prototype.MixerEnabled=function(){
+    return this.basslibmixer==null?false:true
+}
+bass.prototype.EnableMixer=function (value) {
+    if(value){
+        this.basslibmixer = this.ffi.Library(this.bassmixlibName, {
+            BASS_Mixer_StreamCreate: ['int', ['int', 'int', 'int']],
+            BASS_Mixer_StreamAddChannel: ['bool', ['int', 'int', 'int']],
+            BASS_Mixer_ChannelGetLevel: ['int', ['int']],
+            BASS_Mixer_ChannelGetMixer: ['int', ['int']],
+            BASS_Mixer_ChannelGetPosition: ['int', ['int', 'int']],
+            BASS_Mixer_ChannelRemove: ['bool', ['int']],
+            BASS_Mixer_ChannelRemoveSync: ['bool', ['int', 'int']],
+            BASS_Mixer_ChannelSetPosition: ['bool', ['int', 'int', 'int']],
+            BASS_Mixer_ChannelSetSync: ['int', ['int', 'int', 'ulong', 'pointer', this.ref.types.void]]
+        })
+
+    }else{
+        this.basslibmixer =null;
+    }
+}
+
+//endregion
 
 bass.prototype.toFloat64 = function (level) {
     var hiWord = 0, loWord = 0;

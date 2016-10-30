@@ -239,10 +239,42 @@ console.log('info.ctype:' + info.ctype)
    basslib.BASS_Free();
 ```
 
+**MIXER FEATURES**
+
+**Enable Mixer**
+```javascript
+//before using mixer, first enable it. and put the required component to root folder.
+basslib.EnableMixer(true);
+```
+
+**Mixer is Enabled?**
+```javascript
+//before using mixer, first enable it. and put the required component to root folder.
+console.log(basslib.MixerEnabled());
+```
+
+
+**Create mixer stream**
+```javascript
+basslib.EnableMixer(true);
+var mixer=basslib.BASS_Mixer_StreamCreate(44100, 2,basslib.BASSFlags.BASS_SAMPLE_FLOAT);
+var chan1=basslib.BASS_StreamCreateFile(0,'d:\\mp3\\tes1.mp3',0,0,basslib.BASSFlags.BASS_STREAM_DECODE | basslib.BASSFlags.BASS_SAMPLE_FLOAT)
+var chan2=basslib.BASS_StreamCreateFile(0,'d:\\mp3\\test2.mp3',0,0,basslib.BASSFlags.BASS_STREAM_DECODE | basslib.BASSFlags.BASS_SAMPLE_FLOAT)
+var ok1 = basslib.BASS_Mixer_StreamAddChannel(mixer, chan1, basslib.BASSFlags.BASS_SAMPLE_DEFAULT);
+var ok2 = basslib.BASS_Mixer_StreamAddChannel(mixer, chan2, basslib.BASSFlags.BASS_SAMPLE_DEFAULT);
+basslib.BASS_ChannelPlay(mixer,0)
+```
+
+**Get current Position of mixer playback**
+```javascript
+var positionInBytes= basslib.BASS_Mixer_ChannelGetPosition(chan,0);
+//now convert it to seconds
+var position=basslib.BASS_ChannelBytes2Seconds(chan,positionInBytes);
+```
 
 
 **Whats Next?**
-- adding mixer addon
+- adding mixer addon extra features
 - adding encoder addon
 
 
