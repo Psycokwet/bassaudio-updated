@@ -1,10 +1,15 @@
 **Un4Seen Bass Audio Library Wrapper**
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc. 
 this wrapper wraps most of the "audio playback" features using [ffi](https://www.npmjs.com/package/ffi) , [ref](https://www.npmjs.com/package/ref) , [ref-struct](https://www.npmjs.com/package/ref-struct) .
+
 ffi enables to call c library methods, properties , callbacks etc. 
 
+**Compatible with?**
+tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see.. 
+related platform binaries can be downloaded from bass web page..
+
 **Warning** Please put the required bass audio library files to root
-folder (dll files for windows, so files for *nix, dylib files for macos)
+folder (`dll` files for windows, `so` files for *nix, `dylib` files for macos)
 
 Download the required dll files from
 [http://www.un4seen.com](http://www.un4seen.com). 

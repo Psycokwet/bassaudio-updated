@@ -1,6 +1,6 @@
 {
   "name": "bassaudio",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.6",
   "description": "un4seen Bass Audio Library based on ffi bindings",
   "main": "index.js",
   "scripts": {
