@@ -324,11 +324,11 @@ bass.prototype.BASS_ChannelPlay = function (handle, restart) {
 }
 
 bass.prototype.BASS_ChannelPause = function (handle) {
-    return this.BASS_ChannelPause(handle);
+    return this.basslib.BASS_ChannelPause(handle);
 }
 
 bass.prototype.BASS_ChannelStop = function (handle) {
-    return this.BASS_ChannelStop(handle);
+    return this.basslib.BASS_ChannelStop(handle);
 }
 
 bass.prototype.BASS_ChannelGetPosition = function (handle, mode) {
