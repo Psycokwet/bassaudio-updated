@@ -260,7 +260,7 @@ function bass() {
     var deviceInfoPTR = ref.refType(this.BASS_DEVICEINFO)
     var chanInfoPTR = ref.refType(this.BASS_CHANNELINFO)
     this.idTagPTR = ref.refType(this.ID3V1Tag)
-
+    var path=require('path')
     var basslibName = ''
     var bassmixlibName = '';
     if (process.platform == 'win32') {
@@ -275,6 +275,8 @@ function bass() {
         basslibName = 'libbass.so'
         bassmixlibName = 'libbassmix.so'
     }
+    basslibName=path.join(process.cwd(),basslibName);
+    bassmixlibName=path.join(process.cwd(),bassmixlibName);
     this.bassmixlibName=bassmixlibName;
 
     this.basslibmixer=null;
