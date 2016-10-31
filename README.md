@@ -279,4 +279,8 @@ var position=basslib.BASS_ChannelBytes2Seconds(chan,positionInBytes);
 
 
 **NOTICE**
-i only added methods, properties what i needed.. add yours to the code or send me mail.. 
+i only added methods, properties what i needed.. add yours to the code or send me mail..
+
+**fix-notice**
+- 1.0.0-rc.12
+   - [x] BASS_ChannelBytes2Seconds and BASS_ChannelSeconds2Bytes returns wrong on arm cpu. pos value type changed to int64. now works correctly
