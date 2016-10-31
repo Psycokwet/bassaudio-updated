@@ -1,14 +1,18 @@
 **Un4Seen Bass Audio Library Wrapper**
+
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc. 
 this wrapper wraps most of the "audio playback" features using [ffi](https://www.npmjs.com/package/ffi) , [ref](https://www.npmjs.com/package/ref) , [ref-struct](https://www.npmjs.com/package/ref-struct) .
 
 ffi enables to call c library methods, properties , callbacks etc. 
 
 **Compatible with?**
+
 tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see.. 
 related platform binaries can be downloaded from bass web page..
 
-**Warning** Please put the required bass audio library files to root
+**Warning** 
+
+Please put the required bass audio library files to root
 folder (`dll` files for windows, `so` files for *nix, `dylib` files for macos)
 
 Download the required dll files from
@@ -19,47 +23,119 @@ Read full documentation of bass from its original help.
 i Will only write same simple examples.
 
 **Features:**
+
 - BASS_Init
+
 - BASS_GetVersion
+
 - BASS_StreamCreateFile
+
 - BASS_StreamCreateURL
+
 - BASS_StreamFree
+
 - BASS_ChannelPlay
+
 - BASS_ChannelStop
+
 - BASS_ChannelPause
+
 - BASS_ChannelGetPosition
+
 - BASS_ChannelSetPosition
+
 - BASS_ChannelGetLength
+
 - BASS_ChannelBytes2Seconds
+
 - BASS_ChannelSeconds2Bytes
+
 - BASS_ChannelGetLevel
+
 - BASS_ChannelRemoveSync
+
 - BASS_ChannelIsActive
+
 - BASS_ChannelSetAttribute
+
 - BASS_ChannelGetAttribute
+
 - BASS_ChannelSetSync
+
 - BASS_ChannelSlideAttribute
+
 - BASS_ChannelIsSliding
+
 - BASS_ChannelGetDevice
+
 - BASS_ChannelSetDevice
+
 - BASS_StreamFree
+
 - BASS_SetDevice
+
 - BASS_SetVolume
+
 - BASS_Start
+
 - BASS_Stop
+
 - BASS_Pause
+
 - BASS_GetInfo
+
 - BASS_ErrorGetCode
+
 - BASS_Free
+
 - BASS_GetCPU
+
 - BASS_GetDevice
+
 - BASS_GetDeviceInfo
+
 - BASS_ChannelGetTags
 
+- BASS_Mixer_StreamCreate
+
+- BASS_Mixer_StreamAddChannel
+
+- BASS_Mixer_ChannelGetLevel
+
+- BASS_Mixer_ChannelGetMixer
+
+- BASS_Mixer_ChannelGetPosition
+
+- BASS_Mixer_ChannelRemove
+
+- BASS_Mixer_ChannelRemoveSync
+
+- BASS_Mixer_ChannelSetPosition
+
+- BASS_Mixer_ChannelSetSync
+       
+- BASS_Encode_Start
+
+- BASS_Encode_IsActive
+
+- BASS_Encode_SetNotify
+
+- BASS_Encode_SetPaused
+
+- BASS_Encode_Stop
+
+- BASS_Encode_CastInit
+
+- BASS_Encode_CastGetStats
+
+- BASS_Encode_CastSetTitle
+
 **Extra:** 
+
 SYNCPROC also implemented
 
 **Installation**
+
 Install with npm :
 `npm install bassaudio`
 
@@ -274,6 +350,7 @@ var position=basslib.BASS_ChannelBytes2Seconds(chan,positionInBytes);
 
 
 **ENCODER FEATURES**
+
 you can directly encode and send output to [shotcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
 
 use mixer as a trick, because if the channel freed or added new channel, the encoder stops itself. 
@@ -322,6 +399,7 @@ i only added methods, properties what i needed.. add yours to the code or send m
 
 
 **UPDATE LOG**
+
 **--------------------------------**
 
 - 1.0.0-rc.13
