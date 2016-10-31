@@ -361,7 +361,8 @@ add channels to mixer every time, and add mixer channel to encoder. so the encod
 ```javascript
 basslib.EnableMixer(true);
 var mixer=basslib.BASS_Mixer_StreamCreate(44100, 2,basslib.BASSFlags.BASS_SAMPLE_FLOAT);
-var chan1=basslib.BASS_StreamCreateFile(0,'d:\\mp3\\tes1.mp3',0,0,basslib.BASSFlags.BASS_STREAM_DECODE | basslib.BASSFlags.BASS_SAMPLE_FLOAT)
+var chan=basslib.BASS_StreamCreateFile(0,'d:\\mp3\\tes1.mp3',0,0,basslib.BASSFlags.BASS_STREAM_DECODE | basslib.BASSFlags.BASS_SAMPLE_FLOAT)
+var ok = basslib.BASS_Mixer_StreamAddChannel(mixer, chan, basslib.BASSFlags.BASS_SAMPLE_DEFAULT);
 
 bass.EnableEncoder(true);
 
@@ -401,6 +402,12 @@ i only added methods, properties what i needed.. add yours to the code or send m
 **UPDATE LOG**
 
 **--------------------------------**
+
+- 1.0.0-rc.15
+    - documentation fix
+
+- 1.0.0-rc.14
+    - documentation fix
 
 - 1.0.0-rc.13
 

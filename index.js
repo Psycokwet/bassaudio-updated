@@ -248,6 +248,7 @@ function bass() {
         BASS_ERROR_UNKNOWN: -1,    // some other mystery problem
     }
 
+
     this.EncoderNotifyStatus = {
         // Encoder notifications
         BASS_ENCODE_NOTIFY_ENCODER: 1,	// encoder died
