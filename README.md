@@ -273,14 +273,80 @@ var position=basslib.BASS_ChannelBytes2Seconds(chan,positionInBytes);
 ```
 
 
-**Whats Next?**
-- adding mixer addon extra features
-- adding encoder addon
+**ENCODER FEATURES**
+you can directly encode and send output to [shotcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
+
+use mixer as a trick, because if the channel freed or added new channel, the encoder stops itself. 
+
+add channels to mixer every time, and add mixer channel to encoder. so the encoder never stops.. 
+
+**Init encoder**
+```javascript
+basslib.EnableMixer(true);
+var mixer=basslib.BASS_Mixer_StreamCreate(44100, 2,basslib.BASSFlags.BASS_SAMPLE_FLOAT);
+var chan1=basslib.BASS_StreamCreateFile(0,'d:\\mp3\\tes1.mp3',0,0,basslib.BASSFlags.BASS_STREAM_DECODE | basslib.BASSFlags.BASS_SAMPLE_FLOAT)
+
+bass.EnableEncoder(true);
+
+//lets try icecast
+var enc_chan=basslib.BASS_Encode_Start(mixer,'lame -r -m s -s 22050 -b 56 -',bass.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD);
+var result=basslib.BASS_Encode_CastInit(enc_chan,
+                                     'http://server-ip:8000/test',
+                                     'password',
+                                     bass.BASS_Encode_CastInitcontentMIMEtypes.BASS_ENCODE_TYPE_MP3,
+                                     'test stream',
+                                     'http://your-server-ip',
+                                     'pop',
+                                     'this is my new icecast test',
+                                     'header1\r\nheader2\r\n',
+                                     44100,
+                                     true //public
+                                     );
+
+basslib.BASS_ChannelPlay(mixer,0);                                     
+```
+
+**get notification from encoder server**
+```javascript
+var result=basslib.BASS_Encode_SetNotify(enc_chan,function(handle,status,user){
+  if(status==basslib.EncoderNotifyStatus.BASS_ENCODE_NOTIFY_CAST){
+  console.log('server connection is dead');
+});
+```
 
 
-**NOTICE**
+
+**INFO**
 i only added methods, properties what i needed.. add yours to the code or send me mail..
 
-**fix-notice**
+
+
+**UPDATE LOG**
+**--------------------------------**
+
+- 1.0.0-rc.13
+
+     - new mixer features:
+        - BASS_Mixer_StreamCreate
+        - BASS_Mixer_StreamAddChannel
+        - BASS_Mixer_ChannelGetLevel
+        - BASS_Mixer_ChannelGetMixer
+        - BASS_Mixer_ChannelGetPosition
+        - BASS_Mixer_ChannelRemove
+        - BASS_Mixer_ChannelRemoveSync
+        - BASS_Mixer_ChannelSetPosition
+        - BASS_Mixer_ChannelSetSync
+        
+     - new encoder features:
+        - BASS_Encode_Start
+        - BASS_Encode_IsActive
+        - BASS_Encode_SetNotify
+        - BASS_Encode_SetPaused
+        - BASS_Encode_Stop
+        - BASS_Encode_CastInit
+        - BASS_Encode_CastGetStats
+        - BASS_Encode_CastSetTitle
+       
 - 1.0.0-rc.12
-   - [x] BASS_ChannelBytes2Seconds and BASS_ChannelSeconds2Bytes returns wrong on arm cpu. pos value type changed to int64. now works correctly
+    
+    - BASS_ChannelBytes2Seconds and BASS_ChannelSeconds2Bytes returns wrong on arm cpu. pos value type changed to int64. now works correctly

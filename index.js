@@ -248,6 +248,45 @@ function bass() {
         BASS_ERROR_UNKNOWN: -1,    // some other mystery problem
     }
 
+    this.EncoderNotifyStatus = {
+        // Encoder notifications
+        BASS_ENCODE_NOTIFY_ENCODER: 1,	// encoder died
+        BASS_ENCODE_NOTIFY_CAST: 2,	// cast server connection died
+        BASS_ENCODE_NOTIFY_CAST_TIMEOUT: 0x10000, // cast timeout
+        BASS_ENCODE_NOTIFY_QUEUE_FULL: 0x10001,	// queue is out of space
+        BASS_ENCODE_NOTIFY_FREE: 0x10002	// encoder has been freed
+    }
+
+    this.BASS_Encode_CastGetStatstypes = {
+        BASS_ENCODE_STATS_SHOUT: 0,	// Shoutcast stats
+        BASS_ENCODE_STATS_ICE: 1,	// Icecast mount-point stats
+        BASS_ENCODE_STATS_ICESERV: 2	// Icecast server stats
+    }
+    this.BASS_Encode_Startflags = {
+        BASS_ENCODE_NOHEAD: 1,		// don't send a WAV header to the encoder
+        BASS_ENCODE_FP_8BIT: 2,		// convert floating-point sample data to 8-bit integer
+        BASS_ENCODE_FP_16BIT: 4,	// convert floating-point sample data to 16-bit integer
+        BASS_ENCODE_FP_24BIT: 6,	// convert floating-point sample data to 24-bit integer
+        BASS_ENCODE_FP_32BIT: 8,	// convert floating-point sample data to 32-bit integer
+        BASS_ENCODE_FP_AUTO: 14,		// convert floating-point sample data back to channel's format
+        BASS_ENCODE_BIGEND: 16,// big-endian sample data
+        BASS_ENCODE_PAUSE: 32,	// start encording paused
+        BASS_ENCODE_PCM: 64,		// write PCM sample data (no encoder)
+        BASS_ENCODE_RF64: 128,	// send an RF64 header
+        BASS_ENCODE_MONO: 0x100,	// convert to mono (if not already)
+        BASS_ENCODE_QUEUE: 0x200,	// queue data to feed encoder asynchronously
+        BASS_ENCODE_WFEXT: 0x400,	// WAVEFORMATEXTENSIBLE "fmt" chunk
+        BASS_ENCODE_CAST_NOLIMIT: 0x1000,	// don't limit casting data rate
+        BASS_ENCODE_LIMIT: 0x2000,	// limit data rate to real-time
+        BASS_ENCODE_AIFF: 0x4000,	// send an AIFF header rather than WAV
+        BASS_ENCODE_DITHER: 0x8000,	// apply dither when converting floating-point sample data to integer
+        BASS_ENCODE_AUTOFREE: 0x40000 // free the encoder when the channel is freed
+    }
+    this.BASS_Encode_CastInitcontentMIMEtypes = {
+        BASS_ENCODE_TYPE_MP3: "audio/mpeg",
+        BASS_ENCODE_TYPE_OGG: "application/ogg",
+        BASS_ENCODE_TYPE_AAC: "audio/aacp"
+    }
     this.SYNCPROC = this.ffi.Callback('void', ['int', 'int', 'int', ref.types.void], function (handle, channel, data, user) {
         console.log('syncproc is called')
         bass.BASS_ChannelSlideAttribute(channel, BASS_ChannelAttributes.BASS_ATTRIB_VOL, 0, 3000)
@@ -260,26 +299,33 @@ function bass() {
     var deviceInfoPTR = ref.refType(this.BASS_DEVICEINFO)
     var chanInfoPTR = ref.refType(this.BASS_CHANNELINFO)
     this.idTagPTR = ref.refType(this.ID3V1Tag)
-    var path=require('path')
+    var path = require('path')
     var basslibName = ''
     var bassmixlibName = '';
+    var bassenclibName = '';
     if (process.platform == 'win32') {
         basslibName = 'bass.dll'
         bassmixlibName = 'bassmix.dll'
+        bassenclibName = 'bassenc.dll'
     }
     else if (process.platform == 'darwin') {
         basslibName = 'libbass.dylib'
         bassmixlibName = 'libbassmix.dylib';
+        bassenclibName = 'libbassenc.dylib';
     }
     else if (process.platform == 'linux') {
         basslibName = 'libbass.so'
         bassmixlibName = 'libbassmix.so'
+        bassenclibName = 'libbassenc.so'
     }
-    basslibName=path.join(process.cwd(),basslibName);
-    bassmixlibName=path.join(process.cwd(),bassmixlibName);
-    this.bassmixlibName=bassmixlibName;
+    basslibName = path.join(process.cwd(), basslibName);
+    bassmixlibName = path.join(process.cwd(), bassmixlibName);
+    bassenclibName = path.join(process.cwd(), bassenclibName);
+    this.bassenclibName = bassenclibName;
+    this.bassmixlibName = bassmixlibName;
 
-    this.basslibmixer=null;
+    this.basslibmixer = null;
+    this.basslibencoder = null;
 
     this.basslib = this.ffi.Library(basslibName, {
         BASS_Init: ['bool', ['int', 'int', 'int', 'int', 'int']],
@@ -292,7 +338,7 @@ function bass() {
         BASS_ChannelGetPosition: ['int', ['int', 'int']],
         BASS_ChannelSetPosition: ['bool', ['int', 'long', 'int']],
         BASS_ChannelGetLength: ['int', ['int', 'int']],
-        BASS_ChannelBytes2Seconds: [ref.types.double, [ref.types.int,ref.types.int64]],
+        BASS_ChannelBytes2Seconds: [ref.types.double, [ref.types.int, ref.types.int64]],
         BASS_ChannelSeconds2Bytes: [ref.types.double, [ref.types.int, ref.types.int64]],
         BASS_ChannelGetLevel: ['ulong', ['int']],
         BASS_ChannelRemoveSync: ['bool', ['long', 'long']],
@@ -594,11 +640,11 @@ bass.prototype.BASS_Mixer_ChannelSetSync = function (handle, type, param, callba
     return this.basslib.BASS_Mixer_ChannelSetSync(handle, type, param, this.ffi.Callback('void', ['int', 'int', 'int', this.ref.types.void], callback), null)
 }
 
-bass.prototype.MixerEnabled=function(){
-    return this.basslibmixer==null?false:true
+bass.prototype.MixerEnabled = function () {
+    return this.basslibmixer == null ? false : true
 }
-bass.prototype.EnableMixer=function (value) {
-    if(value){
+bass.prototype.EnableMixer = function (value) {
+    if (value) {
         this.basslibmixer = this.ffi.Library(this.bassmixlibName, {
             BASS_Mixer_StreamCreate: ['int', ['int', 'int', 'int']],
             BASS_Mixer_StreamAddChannel: ['bool', ['int', 'int', 'int']],
@@ -611,12 +657,69 @@ bass.prototype.EnableMixer=function (value) {
             BASS_Mixer_ChannelSetSync: ['int', ['int', 'int', 'ulong', 'pointer', this.ref.types.void]]
         })
 
-    }else{
-        this.basslibmixer =null;
+    } else {
+        this.basslibmixer = null;
     }
 }
 
 //endregion
+
+//region encoder
+bass.prototype.EncoderEnabled = function () {
+    return this.basslibencoder == null ? false : true
+}
+bass.prototype.EnableEncoder = function (value) {
+    if (value) {
+        this.basslibencoder = this.ffi.Library(this.bassenclibName, {
+            BASS_Encode_Start: ['int', ['int', 'string', 'int', 'pointer', this.ref.types.void]],
+            BASS_Encode_IsActive: ['int', ['int']],
+            BASS_Encode_SetNotify: ['bool', ['int', 'pointer', this.ref.types.void]],
+            BASS_Encode_SetPaused: ['bool', ['int', 'bool']],
+            BASS_Encode_Stop: ['bool', ['int']],
+            BASS_Encode_CastInit: ['bool', ['int', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'int', 'bool']],
+            BASS_Encode_CastGetStats: ['string', ['int', 'int', 'string']],
+            BASS_Encode_CastSetTitle: ['bool', ['int', 'string', 'string']]
+
+        })
+
+    } else {
+        this.basslibencoder = null;
+    }
+}
+
+bass.prototype.BASS_Encode_SetNotify = function (handle, callback) {
+    return this.basslibencoder.BASS_Encode_SetNotify(handle, this.ffi.Callback('void', ['int', 'int', this.ref.types.void], callback), null)
+}
+
+bass.prototype.BASS_Encode_Start = function (handle, cmdline, flags) {
+    return this.basslibencoder.BASS_Encode_Start(handle, cmdline, flags, null, this.ref.types.void)
+}
+
+bass.prototype.BASS_Encode_IsActive = function (handle) {
+    return this.basslibencoder.BASS_ChannelIsActive(handle);
+}
+
+bass.prototype.BASS_Encode_SetPaused = function (handle, paused) {
+    return this.basslibencoder.BASS_Encode_SetPaused(handle, paused);
+}
+
+bass.prototype.BASS_Encode_Stop = function (handle) {
+    return this.basslibencoder.BASS_Encode_Stop(handle);
+}
+
+bass.prototype.BASS_Encode_CastInit = function (handle, server, pass, content, name, url, genre, desc, headers, bitrate, pub) {
+    return this.basslibencoder.BASS_Encode_CastInit(handle, server, pass, content, name, url, genre, desc, headers, bitrate, pub);
+}
+
+bass.prototype.BASS_Encode_CastGetStats = function (handle, type, pass) {
+    return this.basslibencoder.BASS_Encode_CastGetStats(handle, type, pass);
+}
+
+bass.prototype.BASS_Encode_CastSetTitle = function (handle, title, url) {
+    return this.basslibencoder.BASS_Encode_CastSetTitle(handle, title, url);
+}
+//endregion
+
 
 bass.prototype.toFloat64 = function (level) {
     var hiWord = 0, loWord = 0;
