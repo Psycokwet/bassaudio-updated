@@ -2,7 +2,7 @@
   "name": "bassaudio",
   "version": "1.0.0-rc.15",
   "description": "un4seen Bass Audio Library based on ffi bindings",
-  "main": "index.js",
+  "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,13 +11,19 @@
     "audio",
     "un4seen",
     "mp3",
-    "icecast","shoutcast","stream","encoder","audio encoder","audio mixer","mixer"
+    "icecast",
+    "shoutcast",
+    "stream",
+    "encoder",
+    "audio encoder",
+    "audio mixer",
+    "mixer"
   ],
   "author": "Serkan Polat",
   "license": "MIT",
   "dependencies": {
-    "ffi": "^2.2.0",
-    "ref": "^1.3.2",
-    "ref-struct": "^1.1.0"
+    "ffi-napi": "^3.0.1",
+    "ref-napi": "^3.0.1",
+    "ref-struct-napi": "^1.1.1"
   }
 }
