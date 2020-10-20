@@ -515,7 +515,6 @@ function Bass(options) {
   // mixer_streamCreate, mixer_streamADdChannel,
   //bass_encode_start, bass_Encode_castinit, encode_stop, isActive,CastSetTitle
 
-  console.log("testin");
   EventEmitter.call(this);
 }
 ////////////////////////
