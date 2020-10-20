@@ -1,6 +1,6 @@
 {
-  "name": "bassaudio",
-  "version": "1.0.0-rc.15",
+  "name": "bassaudio-updated",
+  "version": "1.0.8-1.0.0",
   "description": "un4seen Bass Audio Library based on ffi bindings",
   "main": "test.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "audio mixer",
     "mixer"
   ],
-  "author": "Serkan Polat",
+  "author": "Sophie Carboni",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
