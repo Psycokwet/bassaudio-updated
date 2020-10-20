@@ -149,14 +149,14 @@ SYNCPROC also implemented
 **Installation**
 
 Install with npm :
-`npm install bassaudio`
+`npm install bassaudio-updated`
 
 **Examples**
 
 **basic load and play file**
 
 ```javascript
-var bass = require("bassaudio");
+var bass = require("bassaudio-updated");
 var basslib = new bass();
 
 //get all sound cards
@@ -544,7 +544,7 @@ var result=basslib.BASS_Encode_SetNotify(enc_chan,function(handle,status,user){
 //lets say if you have 5.1 speaker and want to use each output stereo or mono
 //basically with 5.1 output you can use 6 different output channels.
 //this example shows how to do it
-var bass = require("bassaudio");
+var bass = require("bassaudio-updated");
 var basslib = new bass();
 
 //set init to speakers
@@ -657,6 +657,12 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
+- 1.0.8-1.0.2
+  news:
+  - addin repo link int package.json
+- 1.0.8-1.0.1
+  news:
+  - Forgot to fully update package references in readme, and correcting package.json too.
 - 1.0.8-1.0.0
   news:
   - Made compatible with Node.js v12.19.0 and npm@6.14.8. All functionality have been kept from 1.0.8 from past authors. Special thanks to RiccardoBiemmi who has made a previous attemps at this that have been really useful to mine, and especially to Serkanp who have been very personnaly helpful in this project.
