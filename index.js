@@ -1020,7 +1020,7 @@ Bass.prototype.BASS_Encode_Start = function (handle, cmdline, flags) {
 };
 
 Bass.prototype.BASS_Encode_IsActive = function (handle) {
-  return this.basslibencoder.BASS_ChannelIsActive(handle);
+  return this.basslibencoder.BASS_Encode_IsActive(handle);
 };
 
 Bass.prototype.BASS_Encode_SetPaused = function (handle, paused) {

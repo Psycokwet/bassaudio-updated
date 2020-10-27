@@ -1,3 +1,10 @@
+**Announcement**
+In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
+
+The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32bits and Windows 64bits. If you encounter any issues while using it on windows, please let me know.
+
+As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out !
+
 **Un4Seen Bass Audio Library Wrapper**
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
@@ -7,7 +14,7 @@ ffi enables to call c library methods, properties , callbacks etc.
 
 **Compatible with?**
 
-tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see..
+Originally tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see..
 related platform binaries can be downloaded from bass web page..
 
 **Warning**
@@ -657,9 +664,13 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
+- 1.0.8-1.1
+  news:
+  - adding dll for macos/win32/win64 and licence information
+  - Correcting call to BASS_Encode_IsActive
 - 1.0.8-1.0.2
   news:
-  - addin repo link int package.json
+  - adding repo link into package.json
 - 1.0.8-1.0.1
   news:
   - Forgot to fully update package references in readme, and correcting package.json too.
