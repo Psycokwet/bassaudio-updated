@@ -16,11 +16,37 @@ const path = require("path");
 const Struct = require("ref-struct-napi");
 const ref = require("ref-napi");
 const ffi = require("ffi-napi");
+const os = require("os");
 
-function Bass(options) {
-  options = options || {};
-  // basePath must be a valid *absolute* path
-  options.basePath = options.basePath || process.cwd();
+function getPlatformDependencies() {
+  let pl = os.platform();
+  let arch = os.arch();
+
+  switch (os.platform()) {
+    case "win32":
+      if (os.arch() == "x64") {
+        return "win64";
+      } else if (os.arch() == "x86") {
+        return "win32";
+      } else {
+        return null;
+      }
+    case "darwin":
+      return "macOs";
+    case "linux":
+      if (os.arch() == "x64") {
+        return "linux64";
+      } else if (os.arch() == "x86") {
+        return "linux32";
+      } else {
+        return null;
+      }
+  }
+  return null;
+}
+
+function Bass() {
+  const basePath = path.join(__dirname, "lib", getPlatformDependencies());
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -447,9 +473,9 @@ function Bass(options) {
     bassmixlibName = "libbassmix.so";
     bassenclibName = "libbassenc.so";
   }
-  basslibName = path.join(options.basePath, basslibName);
-  bassmixlibName = path.join(options.basePath, bassmixlibName);
-  bassenclibName = path.join(options.basePath, bassenclibName);
+  basslibName = path.join(basePath, basslibName);
+  bassmixlibName = path.join(basePath, bassmixlibName);
+  bassenclibName = path.join(basePath, bassenclibName);
   this.bassenclibName = bassenclibName;
   this.bassmixlibName = bassmixlibName;
 

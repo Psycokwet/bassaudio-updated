@@ -30,6 +30,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "ffi-napi": "^3.0.1",
+    "os": "^0.1.1",
     "ref-array-napi": "^1.2.1",
     "ref-napi": "^3.0.1",
     "ref-struct-napi": "^1.1.1",
