@@ -1,4 +1,5 @@
 **Announcement**
+
 In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
 
 The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32/64bits, and linux 32/64 bits. If you encounter any issues while using it, please let me know.
