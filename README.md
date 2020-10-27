@@ -1,33 +1,36 @@
 **Announcement**
 In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
 
-The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32bits and Windows 64bits. If you encounter any issues while using it on windows, please let me know.
+The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32/64bits, and linux 32/64 bits. If you encounter any issues while using it, please let me know.
 
 As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out !
 
 **Un4Seen Bass Audio Library Wrapper**
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
-this wrapper wraps most of the "audio playback" features using [ffi](https://www.npmjs.com/package/ffi) , [ref](https://www.npmjs.com/package/ref) , [ref-struct](https://www.npmjs.com/package/ref-struct) .
+this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi) , [ref-napi](https://www.npmjs.com/package/ref-napi) , [ref-struct-napi](https://www.npmjs.com/package/ref-struct-napi) .
+It uses [os](https://www.npmjs.com/package/os?__cf_chl_captcha_tk__=67c9f6364701b58600e038d22e1fa48672ead713-1603791991-0-AfLNDbJT2iyF_mgXwzcS29LN9LDdCZE08xZO4WdC05mPpIMAQjzIAsxvnLHnOqFdxN_VB9o-aME7niZF-4tpS3ypUHNSiTUeeIaKA-pDpB8vu4Von47tK8v2cMCgqI7Saf1MLimc-KV9hENkVp9SJDPed34YsnacA3w1P78FtCeMoCbY6gyrzFy_NolwSC12bDN7XF77-8gbrpQH1Xlu0dbta_Oy_WzyW3WXO2D9gqEMuGSNVMcz0-xXFnLmHwPNzAifrWgTrSwqHYzzdvCoon-2CJuksgLjxVqh_c-MKv1e4-1QQqGPdMnbmFm7Iy-MW6WcPfqHL4nQZbAu1CtZOCvE-WGs9yAsxOFFRix4bIFeuanEVbZuY29egNZ-lUthDGlOu2-F9I4BKr9GvrHfqLcPN42YEeyEwQvVrqjIXETVFTk8zzdFfMok-pPZcJ_BpIbvldXqt_Cj0mI-plRjJ1rqdiNW8sxTqVL2hOGhSuZaW92H73AVy4eAueZkdNsCmDOKRd7mUwyhjDTJ9_3YMhcudDgchUqQfR4s1es3QD05) to determines which dynamic library are needed.
 
-ffi enables to call c library methods, properties , callbacks etc.
+ffi-napi enables to call c library methods, properties , callbacks etc.
 
 **Compatible with?**
 
 Originally tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see..
 related platform binaries can be downloaded from bass web page..
 
-**Warning**
+**Documentation**
 
-Please put the required bass audio library files to root
-folder (`dll` files for windows, `so` files for \*nix, `dylib` files for macos)
+Bass documentation is available here :
+http://www.un4seen.com/doc/
+You can also see this version :
+http://bass.radio42.com/help/
 
-Download the required dll files from
+Let me now if there is other useful documentation that I can share here. :)
+
+Original library files, bass community, licensing, other apis and more is available here :
 [http://www.un4seen.com](http://www.un4seen.com).
-i did not include the required files in this module..
 
-Read full documentation of bass from its original help.
-i Will only write same simple examples.
+You can see more code examples from the wrapper original creator, [Serkanp](https://bitbucket.org/serkanp/bassaudio/src/master/), in its git repositories linked here.
 
 **Features:**
 
