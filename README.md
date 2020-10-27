@@ -5,6 +5,8 @@ The necessaries dll a part from the eventuals encoder ones are included in this 
 
 As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out !
 
+If you want a lighter version without superfluous binaries library included, please, check out [bassaudio-updated-light](https://www.npmjs.com/package/bassaudio-updated-light)
+
 **Un4Seen Bass Audio Library Wrapper**
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
@@ -15,8 +17,7 @@ ffi-napi enables to call c library methods, properties , callbacks etc.
 
 **Compatible with?**
 
-Originally tested on MacosX El capitan, windows 32 and 64 bits, ubuntu 14+, raspberrypi 2-3 (armv7), not tested on armv6 but its easy to test, just install and see..
-related platform binaries can be downloaded from bass web page..
+Included binaries library files for Windows 64/32bits, Linux 64/32bits, and macOs. Not fully tested yet, so report any encountered issues please.
 
 **Documentation**
 
@@ -667,7 +668,7 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
-- 1.0.8-1.1
+- 1.0.8-1.1.0
   news:
   - adding dll for macos/win32/win64 and licence information
   - Correcting call to BASS_Encode_IsActive
