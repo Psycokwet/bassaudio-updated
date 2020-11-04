@@ -194,7 +194,7 @@ Install with npm :
 **basic capture and play microphone**
 
 ```javascript
-var bass = require("bassaudio-updated-light");
+var bass = require("bassaudio-updated");
 var basslib = new bass();
 
 var init = basslib.BASS_Init(
