@@ -1,6 +1,6 @@
 **Disclaimer**
 
-This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with you traces. I'm still working on it.
+This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.
 
 **Announcement**
 
