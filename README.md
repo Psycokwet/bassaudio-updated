@@ -1,3 +1,7 @@
+**Disclaimer**
+
+This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with you traces. I'm still working on it.
+
 **Announcement**
 
 In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
@@ -39,6 +43,8 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 - BASS_Init
 
 - BASS_GetVersion
+
+- BASS_StreamCreate
 
 - BASS_StreamCreateFile
 
@@ -154,6 +160,26 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 
 - BASS_Split_StreamResetEx
 
+- BASS_RecordFree
+
+- BASS_RecordGetDevice
+
+- BASS_RecordGetDeviceInfo
+
+- BASS_RecordGetInfo
+
+- BASS_RecordGetInput
+
+- BASS_RecordGetInputName
+
+- BASS_RecordInit
+
+- BASS_RecordSetDevice
+
+- BASS_RecordSetInput
+
+- BASS_RecordStart
+
 **Extra:**
 
 SYNCPROC also implemented
@@ -164,6 +190,70 @@ Install with npm :
 `npm install bassaudio-updated`
 
 **Examples**
+
+**basic capture and play microphone**
+
+```javascript
+var bass = require("bassaudio-updated-light");
+var basslib = new bass();
+
+var init = basslib.BASS_Init(
+  -1,
+  44100,
+  basslib.BASS_Initflags.BASS_DEVICE_STEREO
+);
+if (init === false) {
+  console.log("error at BASS_Init: " + basslib.BASS_ErrorGetCode());
+  process.exit();
+} else {
+  console.log("Bass initialized");
+}
+
+basslib.EnableMixer(true);
+var sampleRate = 44100;
+var stereoChannel = 2;
+var mixer = basslib.BASS_Mixer_StreamCreate(
+  sampleRate,
+  stereoChannel,
+  basslib.BASSFlags.BASS_SAMPLE_FLOAT
+);
+
+if (mixer === 0) {
+  console.log("error at Mixer_StreamCreate: " + basslib.BASS_ErrorGetCode());
+  //   process.exit();
+} else {
+  console.log("Mixer channel: " + mixer);
+}
+
+var init = basslib.BASS_RecordInit(-1); //initialise default microphone
+if (!init) {
+  console.log("error at BASS_RecordInit: " + basslib.BASS_ErrorGetCode());
+  process.exit();
+}
+var micChan = basslib.BASS_RecordStart(44100, 2, 0, null); // create a recording channel with 10ms period
+if (!micChan) {
+  console.log("error at BASS_RecordStart: " + basslib.BASS_ErrorGetCode());
+  process.exit();
+}
+
+var isAdded = basslib.BASS_Mixer_StreamAddChannel(
+  mixer,
+  micChan,
+  basslib.BASSFlags.BASS_STREAM_AUTOFREE | basslib.BASSFlags.BASS_MIXER_LIMIT
+);
+if (!isAdded) {
+  console.log(
+    "error adding microphone into mixer: " + basslib.BASS_ErrorGetCode()
+  );
+  process.exit();
+}
+// BASS_ChannelPlay
+var success = basslib.BASS_ChannelPlay(mixer, true);
+if (!success) {
+  console.log("error at ChannelPlay: " + basslib.BASS_ErrorGetCode());
+  process.exit();
+}
+```
 
 **basic load and play file**
 
@@ -669,7 +759,27 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
-- 1.0.8-1.1.0
+- 1.0.8-1.2.0
+
+  new features added:
+
+  - BASS_StreamCreate
+  - BASS_RecordFree
+  - BASS_RecordGetDevice
+  - BASS_RecordGetDeviceInfo
+  - BASS_RecordGetInfo
+  - BASS_RecordGetInput
+  - BASS_RecordGetInputName
+  - BASS_RecordInit
+  - BASS_RecordSetDevice
+  - BASS_RecordSetInput
+  - BASS_RecordStart
+
+  features corrected:
+
+  - BASS_Mixer_ChannelSetSync
+
+- 1.0.8-1.1.1
   news:
   - adding dll for macos/win32/win64 and licence information
   - Correcting call to BASS_Encode_IsActive

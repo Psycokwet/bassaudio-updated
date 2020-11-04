@@ -1,5 +1,17 @@
 /**
  * Created by serkan on 30.10.2016.
+ * Updated by scarboni since 20.10.2020
+ */
+
+/**
+ *  hsync : int
+ *  dword : int
+ *  HWND : int used 0 ?
+ *  GUID : int used Null?
+ *  int : int
+ *  bool : bool
+ *  float : float
+ *  void : void
  */
 
 const chalk = require("chalk");
@@ -52,12 +64,34 @@ function Bass() {
   var dword = ref.refType(Bass);
   var hwnd = ref.refType(Bass);
 
+  // typedef struct {
+  //   char *name;
+  //   char *driver;
+  //   DWORD flags;
+  // } BASS_DEVICEINFO;
+
   this.BASS_DEVICEINFO = Struct({
     name: "string",
     driver: "string",
     flags: "int",
   });
 
+  //   typedef struct {
+  //     DWORD flags;
+  //     DWORD hwsize;
+  //     DWORD hwfree;
+  //     DWORD freesam;
+  //     DWORD free3d;
+  //     DWORD minrate;
+  //     DWORD maxrate;
+  //     BOOL eax;
+  //     DWORD minbuf;
+  //     DWORD dsver;
+  //     DWORD latency;
+  //     DWORD initflags;
+  //     DWORD speakers;
+  //     DWORD freq;
+  // } BASS_INFO;
   this.BASS_INFO = Struct({
     flags: "int",
     hwsize: "int",
@@ -72,6 +106,19 @@ function Bass() {
     latency: "int",
     initflags: "int",
     speakers: "int",
+    freq: "int",
+  });
+
+  //   DWORD flags;
+  //   DWORD formats;
+  //   DWORD inputs;
+  //   BOOL singlein;
+  //   DWORD freq;
+  this.BASS_RECORDINFO = Struct({
+    flags: "int",
+    formats: "int",
+    inputs: "int",
+    singlein: "bool",
     freq: "int",
   });
 
@@ -128,11 +175,10 @@ function Bass() {
     BASS_POS_DECODETO: 0x20000000, // flag: decode to the position instead of seeking
     BASS_POS_SCAN: 0x40000000, // flag: scan to the position
   };
-
+  //see http://www.bass.radio42.com/help/html/fdf43f28-d1cd-2951-c126-3ce35edaa7f5.htm for info
   this.BASSFlags = {
     BASS_SAMPLE_DEFAULT: 0,
     BASS_SAMPLE_8BITS: 1, // 8 bit
-    BASS_SAMPLE_FLOAT: 256, // 32 bit floating-point
     BASS_SAMPLE_MONO: 2, // mono
     BASS_SAMPLE_LOOP: 4, // looped
     BASS_SAMPLE_3D: 8, // 3D functionality
@@ -140,6 +186,11 @@ function Bass() {
     BASS_SAMPLE_MUTEMAX: 32, // mute at max distance (3D only)
     BASS_SAMPLE_VAM: 64, // DX7 voice allocation & management
     BASS_SAMPLE_FX: 128, // old implementation of DX8 effects
+    BASS_SAMPLE_FLOAT: 256, // 32 bit floating-point
+    BASS_RECORD_PAUSE: 32768, // Recording: Start the recording paused. Use BASS_ChannelPlay(Int32, Boolean) to start it.
+    BASS_RECORD_ECHOCANCEL: 8192, //Recording: enable echo cancellation (only available on certain devices, like iOS).
+    BASS_RECORD_AGC: 16384, // Recording: enabled automatic gain control (only available on certain devices, like iOS).
+    BASS_SAMPLE_FLOAT: 256, // 32 bit floating-point
     BASS_SAMPLE_OVER_VOL: 0x10000, // override lowest volume
     BASS_SAMPLE_OVER_POS: 0x20000, // override longest playing
     BASS_SAMPLE_OVER_DIST: 0x30000, // override furthest from listener (3D only)
@@ -443,11 +494,19 @@ function Bass() {
     }
   );
 
-  var DOWNLOADPROC = ffi.Callback(
+  var DownloadProc = ffi.Callback(
     "void",
     ["long", "long", ref.types.void],
     function (buffer, length, user) {
       console.log(buffer);
+    }
+  );
+  var StreamProc = ffi.Callback(
+    "void",
+    ["int", ref.types.void, "int", ref.types.void],
+    function (handle, buffer, length, user) {
+      console.log("StreamProc");
+      //console.log(buffer);
     }
   );
 
@@ -456,6 +515,7 @@ function Bass() {
   this.idTagPTR = ref.refType(this.ID3V1Tag);
   var floatPTR = ref.refType(ref.types.float);
   var infoPTR = ref.refType(this.BASS_INFO);
+  var recinfoPTR = ref.refType(this.BASS_RECORDINFO);
 
   var basslibName = "";
   var bassmixlibName = "";
@@ -473,9 +533,9 @@ function Bass() {
     bassmixlibName = "libbassmix.so";
     bassenclibName = "libbassenc.so";
   }
-  basslibName = path.join(basePath, basslibName);
-  bassmixlibName = path.join(basePath, bassmixlibName);
-  bassenclibName = path.join(basePath, bassenclibName);
+  basslibName = path.join(this.basePath, basslibName);
+  bassmixlibName = path.join(this.basePath, bassmixlibName);
+  bassenclibName = path.join(this.basePath, bassenclibName);
   this.bassenclibName = bassenclibName;
   this.bassmixlibName = bassmixlibName;
 
@@ -487,6 +547,10 @@ function Bass() {
   this.basslib = ffi.Library(basslibName, {
     BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
     BASS_GetVersion: ["int", []],
+    BASS_StreamCreate: [
+      "int",
+      ["int", "int", "int", "pointer", ref.types.int64],
+    ],
     BASS_StreamCreateFile: [
       "int",
       ["bool", "string", ref.types.int64, ref.types.int64, "int"],
@@ -536,6 +600,19 @@ function Bass() {
     BASS_GetConfig: ["int", ["int"]],
     BASS_Update: ["bool", ["int"]],
     BASS_ChannelUpdate: ["bool", ["int", "int"]],
+    BASS_RecordFree: ["bool", []],
+    BASS_RecordGetDevice: ["int", []],
+    BASS_RecordGetDeviceInfo: ["bool", ["int", recinfoPTR]],
+    BASS_RecordGetInfo: ["bool", [recinfoPTR]],
+    BASS_RecordGetInput: ["int", ["int", "float"]],
+    BASS_RecordGetInputName: ["string", ["int"]],
+    BASS_RecordInit: ["bool", ["int"]],
+    BASS_RecordSetDevice: ["bool", ["int"]],
+    BASS_RecordSetInput: ["bool", ["int", "int", "float"]],
+    BASS_RecordStart: [
+      "int",
+      ["int", "int", "long", "pointer", ref.types.void],
+    ],
   });
 
   // mixer_streamCreate, mixer_streamADdChannel,
@@ -544,7 +621,6 @@ function Bass() {
   EventEmitter.call(this);
 }
 ////////////////////////
-
 var util = require("util");
 util.inherits(Bass, EventEmitter);
 
@@ -705,6 +781,16 @@ Bass.prototype.BASS_Init = function (device, freq, flags) {
 
 Bass.prototype.BASS_GetVersion = function () {
   return this.basslib.BASS_GetVersion(); //.toString(16)
+};
+
+Bass.prototype.BASS_StreamCreate = function (
+  freq,
+  chans,
+  flags,
+  callback,
+  user
+) {
+  return this.basslib.BASS_StreamCreate(freq, chans, flags, null, 0);
 };
 
 Bass.prototype.BASS_StreamCreateFile = function (
@@ -946,7 +1032,7 @@ Bass.prototype.BASS_Mixer_ChannelSetSync = function (
   param,
   callback
 ) {
-  return this.basslib.BASS_Mixer_ChannelSetSync(
+  return this.basslibmixer.BASS_Mixer_ChannelSetSync(
     handle,
     type,
     param,
@@ -1183,6 +1269,230 @@ Bass.prototype.toFloat64 = function (level) {
   loWord = level & 0xffff;
 
   return [hiWord, loWord];
+};
+
+//recording
+
+Bass.prototype.BASS_RecordFree = function () {
+  return this.basslib.BASS_RecordFree();
+};
+
+Bass.prototype.BASS_RecordGetDevice = function () {
+  return this.basslib.BASS_RecordGetDevice();
+};
+
+Bass.prototype.BASS_RecordGetDeviceInfo = function (device, refinfo) {
+  return this.basslib.BASS_RecordGetDeviceInfo(device, refinfo);
+};
+
+Bass.prototype.BASS_RecordGetInfo = function (refinfo) {
+  return this.basslib.BASS_RecordGetInfo(refinfo);
+};
+
+Bass.prototype.BASS_RecordGetInput = function (input, volume) {
+  return this.basslib.BASS_RecordGetInput(input, volume);
+};
+
+Bass.prototype.BASS_RecordGetInputName = function (input) {
+  return this.basslib.BASS_RecordGetInputName(input);
+};
+
+Bass.prototype.BASS_RecordInit = function (device) {
+  return this.basslib.BASS_RecordInit(device);
+};
+
+Bass.prototype.BASS_RecordSetDevice = function (device) {
+  return this.basslib.BASS_RecordSetDevice(device);
+};
+
+Bass.prototype.BASS_RecordSetInput = function (input, flags, volume) {
+  return this.basslib.BASS_RecordSetInput(input, flags, volume);
+};
+
+Bass.prototype.BASS_RecordStart = function (freq, chans, flags, callback) {
+  if (callback) {
+    return this.basslib.BASS_RecordStart(
+      freq,
+      chans,
+      flags,
+      ffi.Callback(
+        "bool",
+        ["int", ref.types.void, "int", ref.types.void],
+        callback
+      ),
+      null
+    );
+  }
+  return this.basslib.BASS_RecordStart(freq, chans, flags, null, null);
+};
+
+//DWORD BASS_RecordGetDevice();
+
+// BOOL BASS_RecordGetInfo(
+//   BASS_RECORDINFO *info
+// );
+// Parameters
+// info	Pointer to a structure to receive the information.
+// Return value
+// If successful, TRUE is returned, else FALSE is returned. Use BASS_ErrorGetCode to get the error code.
+// Error codes
+// BASS_ERROR_INIT	BASS_RecordInit has not been successfully called.
+// Example
+// Check if the current device can have multiple inputs enabled.
+
+Bass.prototype.getRecordInfo = function () {
+  var refinfo = ref.alloc(this.BASS_RECORDINFO);
+  this.basslib.BASS_RecordGetInfo(refinfo);
+  var d = ref.deref(refinfo);
+  var o = new Object();
+
+  o.flags = d.flags;
+  o.formats = d.formats;
+  o.inputs = d.inputs;
+  o.singlein = d.singlein;
+  o.freq = d.freq;
+
+  return o;
+};
+
+Bass.prototype.getRecordDevices = function () {
+  var arr = [];
+  var info = new this.BASS_DEVICEINFO();
+  // var micdev = -1;
+
+  var i = 0;
+  while (this.basslib.BASS_RecordGetDeviceInfo(i, info.ref())) {
+    if (
+      info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_ENABLED &&
+      (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MASK) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MICROPHONE
+    ) {
+      // micdev = i;
+      var o = new Object();
+
+      o.deviceNumber = i;
+      o.name = info.name;
+      o.driver = info.driver;
+      o.flags = info.flags;
+      o.enabled =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_ENABLED) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_ENABLED;
+      o.IsDefault =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_DEFAULT) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_DEFAULT;
+      o.IsInitialized =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_INIT) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_INIT;
+      o.typeDigital =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DIGITAL) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DIGITAL;
+      o.typeDisplayPort =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DISPLAYPORT) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DISPLAYPORT;
+      o.typeHandset =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HANDSET) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HANDSET;
+      o.typeHdmi =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HDMI) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HDMI;
+      o.typeHeadPhones =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADPHONES) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADPHONES;
+      o.typeHeadSet =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADSET) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADSET;
+      o.typeLine =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_LINE) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_LINE;
+      o.typeMask =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MASK) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MASK;
+      o.typeMicrophone =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MICROPHONE) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MICROPHONE;
+      o.typeNetwork =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_NETWORK) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_NETWORK;
+      o.typeSPDIF =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPDIF) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPDIF;
+      o.typeSpeakers =
+        (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPEAKERS) ==
+        this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPEAKERS;
+
+      arr.push(o);
+      // break;
+    }
+
+    i++;
+  }
+  return arr;
+};
+
+Bass.prototype.getRecordDevice = function (device) {
+  if (device == -1) {
+    var devs = this.getRecordDevices();
+    for (i = 0; i < devs.length; i++) {
+      if (devs[i].IsDefault) {
+        return devs[i];
+      }
+    }
+  }
+  var info = new this.BASS_DEVICEINFO();
+
+  this.basslib.BASS_RecordGetDeviceInfo(device, info.ref());
+  var o = new Object();
+
+  o.name = info.name;
+  o.driver = info.driver;
+  o.flags = info.flags;
+  o.enabled =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_ENABLED) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_ENABLED;
+  o.IsDefault =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_DEFAULT) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_DEFAULT;
+  o.IsInitialized =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_INIT) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_INIT;
+  o.typeDigital =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DIGITAL) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DIGITAL;
+  o.typeDisplayPort =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DISPLAYPORT) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_DISPLAYPORT;
+  o.typeHandset =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HANDSET) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HANDSET;
+  o.typeHdmi =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HDMI) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HDMI;
+  o.typeHeadPhones =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADPHONES) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADPHONES;
+  o.typeHeadSet =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADSET) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_HEADSET;
+  o.typeLine =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_LINE) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_LINE;
+  o.typeMask =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MASK) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MASK;
+  o.typeMicrophone =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MICROPHONE) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_MICROPHONE;
+  o.typeNetwork =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_NETWORK) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_NETWORK;
+  o.typeSPDIF =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPDIF) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPDIF;
+  o.typeSpeakers =
+    (info.flags & this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPEAKERS) ==
+    this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPEAKERS;
+
+  return o;
 };
 
 exports = module.exports = Bass;
