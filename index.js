@@ -480,6 +480,32 @@ function Bass() {
     BASS_ENCODE_TYPE_OGG: "application/ogg",
     BASS_ENCODE_TYPE_AAC: "audio/aacp",
   };
+
+  this.BASS_TAGS_FORMAT_STRINGS = {
+    SONG_TITLE: "%TITL",
+    SONG_ARTIST: "%ARTI",
+    ALBUM_NAME: "%ALBM",
+    SONG_GENRE: "%GNRE",
+    SONG_ALBUM_YEAR: "%YEAR",
+    COMMENT: "%CMNT",
+    TRACK_NUMBER: "%TRCK", //(may include total track count "track/total");
+    COMPOSER: "%COMP",
+    COPYRIGHT: "%COPY",
+    SUBTITLE: "%SUBT",
+    ALBUM_ARTIST: "%AART",
+    DISC_NUMBER: "%DISC", //(may include total disc count "disc/total");
+    PUBLISHER: "%PUBL",
+  };
+  this.BASS_TAGS_FORMAT_CONDITION = {
+    IF_NO_X_THEN_A: (x, a) => "%IFV1(" + x + "," + a + ")", //if x is not empty, then this evaluates to a, or to an empty string otherwise;
+    IF_X_THEN_A_IF_NOT_THEN_B: (x, a, b) =>
+      "%IFV2(" + x + "," + a + "," + b + ")", //if x is not empty, then this evaluates to a, else to b;
+    UPPERCASE: (x) => "%IUPC(" + x + ")", //brings x to uppercase
+    LOWERCASE: (x) => "%ILWC(" + x + ")", //brings x to lowercase
+    CAPITALIZE: (x) => "%ICAP(" + x + ")", //capitalizes first letter in each word of x
+    REMOVE_SPACES: (x) => "%ITRM(" + x + ")", //removes beginning and trailing spaces from x;
+  };
+
   this.SYNCPROC = ffi.Callback(
     "void",
     ["int", "int", "int", ref.types.void],
@@ -520,24 +546,30 @@ function Bass() {
   var basslibName = "";
   var bassmixlibName = "";
   var bassenclibName = "";
+  var basstagslibName = "";
   if (process.platform == "win32") {
     basslibName = "bass.dll";
     bassmixlibName = "bassmix.dll";
     bassenclibName = "bassenc.dll";
+    basstagslibName = "tags.dll";
   } else if (process.platform == "darwin") {
     basslibName = "libbass.dylib";
     bassmixlibName = "libbassmix.dylib";
     bassenclibName = "libbassenc.dylib";
+    basstagslibName = "libtags.dylib";
   } else if (process.platform == "linux") {
     basslibName = "libbass.so";
     bassmixlibName = "libbassmix.so";
     bassenclibName = "libbassenc.so";
+    basstagslibName = "libtags.so";
   }
   basslibName = path.join(this.basePath, basslibName);
   bassmixlibName = path.join(this.basePath, bassmixlibName);
   bassenclibName = path.join(this.basePath, bassenclibName);
+  basstagslibName = path.join(this.basePath, basstagslibName);
   this.bassenclibName = bassenclibName;
   this.bassmixlibName = bassmixlibName;
+  this.basstagslibName = basstagslibName;
 
   this.basslibmixer = null;
   this.basslibencoder = null;
@@ -1493,6 +1525,41 @@ Bass.prototype.getRecordDevice = function (device) {
     this.BASS_DEVICEINFOflags.BASS_DEVICE_TYPE_SPEAKERS;
 
   return o;
+};
+
+///////////////////////TAGS lib/////////////////////////////
+Bass.prototype.TagsEnabled = function () {
+  return this.basslibtags == null ? false : true;
+};
+
+Bass.prototype.EnableTags = function (value) {
+  if (value) {
+    this.basslibtags = ffi.Library(this.basstagslibName, {
+      TAGS_GetVersion: ["int", []],
+      TAGS_Read: ["string", ["int", "string"]],
+      TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
+      TAGS_SetUTF8: ["bool", ["bool"]],
+      TAGS_GetLastErrorDesc: ["string", []],
+    });
+  } else {
+    this.basslibtags = null;
+  }
+};
+
+Bass.prototype.TAGS_GetVersion = function () {
+  return this.basslibtags.TAGS_GetVersion();
+};
+Bass.prototype.TAGS_Read = function (handle, fmt) {
+  return this.basslibtags.TAGS_Read(handle, fmt);
+};
+Bass.prototype.TAGS_ReadEx = function (handle, fmt, tagtype, codepage) {
+  return this.basslibtags.TAGS_ReadEx(handle, fmt, tagtype, codepage);
+};
+Bass.prototype.TAGS_SetUTF8 = function (enable) {
+  return this.basslibtags.TAGS_SetUTF8(enable);
+};
+Bass.prototype.TAGS_GetLastErrorDesc = function () {
+  return this.basslibtags.TAGS_GetLastErrorDesc();
 };
 
 exports = module.exports = Bass;

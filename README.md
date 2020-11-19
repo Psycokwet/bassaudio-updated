@@ -2,13 +2,15 @@
 
 This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.
 
+Also, I'm not in anyway linked to the bass library. I just like their lib and want it to be accessible to the world of node.
+
 **Announcement**
 
 In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
 
 The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32/64bits, and linux 32/64 bits. If you encounter any issues while using it, please let me know.
 
-As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out !
+As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out ! There is also some documentation, that I did not include here, that you can get directly with the original dynamic library files
 
 If you want a lighter version without superfluous binaries library included, please, check out [bassaudio-updated-light](https://www.npmjs.com/package/bassaudio-updated-light)
 
@@ -16,7 +18,7 @@ If you want a lighter version without superfluous binaries library included, ple
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
 this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi) , [ref-napi](https://www.npmjs.com/package/ref-napi) , [ref-struct-napi](https://www.npmjs.com/package/ref-struct-napi) .
-It uses [os](https://www.npmjs.com/package/os?__cf_chl_captcha_tk__=67c9f6364701b58600e038d22e1fa48672ead713-1603791991-0-AfLNDbJT2iyF_mgXwzcS29LN9LDdCZE08xZO4WdC05mPpIMAQjzIAsxvnLHnOqFdxN_VB9o-aME7niZF-4tpS3ypUHNSiTUeeIaKA-pDpB8vu4Von47tK8v2cMCgqI7Saf1MLimc-KV9hENkVp9SJDPed34YsnacA3w1P78FtCeMoCbY6gyrzFy_NolwSC12bDN7XF77-8gbrpQH1Xlu0dbta_Oy_WzyW3WXO2D9gqEMuGSNVMcz0-xXFnLmHwPNzAifrWgTrSwqHYzzdvCoon-2CJuksgLjxVqh_c-MKv1e4-1QQqGPdMnbmFm7Iy-MW6WcPfqHL4nQZbAu1CtZOCvE-WGs9yAsxOFFRix4bIFeuanEVbZuY29egNZ-lUthDGlOu2-F9I4BKr9GvrHfqLcPN42YEeyEwQvVrqjIXETVFTk8zzdFfMok-pPZcJ_BpIbvldXqt_Cj0mI-plRjJ1rqdiNW8sxTqVL2hOGhSuZaW92H73AVy4eAueZkdNsCmDOKRd7mUwyhjDTJ9_3YMhcudDgchUqQfR4s1es3QD05) to determines which dynamic library are needed.
+It uses [os](https://www.npmjs.com/package/os) to determines which dynamic library are needed.
 
 ffi-napi enables to call c library methods, properties , callbacks etc.
 
@@ -30,6 +32,8 @@ Bass documentation is available here :
 http://www.un4seen.com/doc/
 You can also see this version :
 http://bass.radio42.com/help/
+
+There is also some documentation directly in the README files accompanying the library files on the un4seen website.
 
 Let me now if there is other useful documentation that I can share here. :)
 
@@ -180,6 +184,18 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 
 - BASS_RecordStart
 
+From Tags add-ons :
+
+- TAGS_GetVersion
+
+- TAGS_Read
+
+- TAGS_ReadEx
+
+- TAGS_SetUTF8
+
+- TAGS_GetLastErrorDesc
+
 **Extra:**
 
 SYNCPROC also implemented
@@ -304,6 +320,32 @@ var success = basslib.BASS_ChannelPlay(chan, -1);
 if (!success) {
   console.log("error playing file:" + basslib.BASS_ErrorGetCode());
 }
+```
+
+**Get Artist**
+
+```javascript
+// get artist or other meta data thanks to the Tags add-on
+// This example return the artist name or "No artist" if the artist is not set. But you can doo much more with tags.
+
+basslib.EnableTags(true);
+
+var tagsEnabled = basslib.TagsEnabled();
+if (tagsEnabled) {
+  console.log("Tags enabled");
+} else {
+  console.log("Tags disabled");
+  process.exit();
+}
+
+var artist = basslib.TAGS_Read(
+  chan,
+  basslib.BASS_TAGS_FORMAT_CONDITION.IF_X_THEN_A_IF_NOT_THEN_B(
+    basslib.BASS_TAGS_FORMAT_STRINGS.SONG_ARTIST,
+    basslib.BASS_TAGS_FORMAT_STRINGS.SONG_ARTIST,
+    "No artist"
+  )
+);
 ```
 
 **Get Duration**
@@ -758,6 +800,19 @@ var dl = new DynamicLibrary(
 **UPDATE LOG**
 
 **--------------------------------**
+
+- 1.0.8-1.3.0
+
+  Adding tags library files
+  Getting rid of unused yet library files
+
+  new features added:
+
+  - TAGS_GetVersion
+  - TAGS_Read
+  - TAGS_ReadEx
+  - TAGS_SetUTF8
+  - TAGS_GetLastErrorDesc
 
 - 1.0.8-1.2.0
 
