@@ -620,7 +620,7 @@ var position = basslib.BASS_ChannelBytes2Seconds(chan, positionInBytes);
 
 **ENCODER FEATURES**
 
-you can directly encode and send output to [shotcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
+you can directly encode and send output to [shoutcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
 
 use mixer as a trick, because if the channel freed or added new channel, the encoder stops itself.
 
