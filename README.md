@@ -856,6 +856,9 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
+- 1.0.8-1.3.1
+  Important fix in variable name
+
 - 1.0.8
 
   new features added:
