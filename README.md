@@ -856,6 +856,10 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
+- 1.0.8-1.3.3
+
+  Fixing ffi version until code correction
+
 - 1.0.8-1.3.2
 
   Important fix (linux) in shim
