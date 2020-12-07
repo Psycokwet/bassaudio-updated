@@ -801,6 +801,10 @@ var dl = new DynamicLibrary(
 
 **--------------------------------**
 
+- 1.0.8-1.3.5
+
+  Updating BASS_ChannelAttributes to add missing values
+
 - 1.0.8-1.3.4
 
   ffi code correction done
