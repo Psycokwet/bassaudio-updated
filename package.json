@@ -3,7 +3,9 @@
   "version": "1.0.8-1.3.5",
   "description": "un4seen Bass Audio Library based on ffi bindings",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "gitacp": "node g.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Psycokwet/bassaudio-updated"
