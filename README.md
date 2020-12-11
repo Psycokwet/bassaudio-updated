@@ -1,3 +1,8 @@
+[![npm version](https://img.shields.io/badge/npm-npm%406.14.8-green)](https://www.npmjs.com/package/bassaudio-updated-light)
+[![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated-light)
+[![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated-light)
+[![npm downloads](https://img.shields.io/npm/dt/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated-light)
+
 **Disclaimer**
 
 This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.
