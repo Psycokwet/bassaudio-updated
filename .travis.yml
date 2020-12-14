@@ -4,10 +4,12 @@ os:
   - osx
   # - windows
 node_js:
-  - 10
-  - 12
-  - 14
+  # - 10
+  # - 12
+  # - 14
   - "stable"
+before_install:
+  - npm update
 install: npm install
 email:
   on_failure: change
