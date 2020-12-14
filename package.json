@@ -4,7 +4,9 @@
   "description": "un4seen Bass Audio Library based on ffi bindings",
   "main": "index.js",
   "scripts": {
-    "gitacp": "node g.js"
+    "gitacp": "node g.js",
+    "test": "jest",
+    "coverage": "npm run test && jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -37,5 +39,9 @@
     "ref-napi": "^3.0.1",
     "ref-struct-napi": "^1.1.1",
     "replace-in-file": "^6.1.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.1.0",
+    "jest": "^26.6.3"
   }
 }

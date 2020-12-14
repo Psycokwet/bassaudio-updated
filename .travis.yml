@@ -4,4 +4,13 @@ os:
   - osx
   - windows
 node_js:
+  - 10
+  - 12
   - 14
+  - "stable"
+install: npm install
+email:
+  on_failure: change
+  on_success: never
+script: npm test
+after_success: npm run coverage
