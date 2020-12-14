@@ -1,11 +1,4 @@
-sudo: false
-branches:
-  only:
-    - master
-cache:
-  directories:
-    - node_modules
-  language: node_js
+language: node_js
 os:
   - linux
   - osx
@@ -15,13 +8,9 @@ node_js:
   - 12
   - 14
   - "stable"
-before_install:
-  - npm update
 install: npm install
-script:
-  - npm test
-  - npm run coveralls
 email:
   on_failure: change
   on_success: never
+script: npm test
 after_success: npm run coverage
