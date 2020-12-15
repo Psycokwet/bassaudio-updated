@@ -5,6 +5,8 @@
 [![travis build status](https://api.travis-ci.com/Psycokwet/bassaudio-updated.svg)](https://travis-ci.com/github/Psycokwet/bassaudio-updated "Build status")
 [![Coverage Status](https://coveralls.io/repos/github/Psycokwet/bassaudio-updated/badge.svg?branch=master)](https://coveralls.io/github/Psycokwet/bassaudio-updated?branch=master)
 
+[![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/Node.js%20CI/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
+
 **Disclaimer**
 
 This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.
