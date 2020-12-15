@@ -2,10 +2,8 @@
 [![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated-light)
 [![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated-light "Monthly downloads")
 [![npm downloads](https://img.shields.io/npm/dt/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated-light "All time downloads")
-[![travis build status](https://api.travis-ci.com/Psycokwet/bassaudio-updated.svg)](https://travis-ci.com/github/Psycokwet/bassaudio-updated "Build status")
+[![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 [![Coverage Status](https://coveralls.io/repos/github/Psycokwet/bassaudio-updated/badge.svg?branch=master)](https://coveralls.io/github/Psycokwet/bassaudio-updated?branch=master)
-
-[![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/Node.js%20CI/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 
 **Disclaimer**
 
