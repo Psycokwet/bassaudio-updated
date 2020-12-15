@@ -10,6 +10,5 @@
 config.gypi
 CVS
 npm-debug.log
-node_modules
-package-lock.json
+node_module/
 yarn.lock
