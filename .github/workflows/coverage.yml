@@ -1,4 +1,5 @@
-name: Create Awesome Badge
+name: coverage
+on: push
 uses: schneegans/dynamic-badges-action@v1.0.0
 with:
   auth: ${{ secrets.COVERAGE_TOKEN }}
