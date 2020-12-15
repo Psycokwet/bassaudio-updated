@@ -1,6 +1,7 @@
 name: coverage
 on: push
 uses: schneegans/dynamic-badges-action@v1.0.0
+jobs:
 with:
   auth: ${{ secrets.COVERAGE_TOKEN }}
   gistID: 277c7acb9222d5762a31958b394afb2f
