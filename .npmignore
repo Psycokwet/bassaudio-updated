@@ -19,3 +19,4 @@ g.js
 .travis.yml
 tests/*
 tests
+.gitattributes
