@@ -32,3 +32,7 @@ jobs:
           label: Hello
           message: World
           color: orange
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.REPOTOKEN }}
