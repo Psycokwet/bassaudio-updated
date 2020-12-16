@@ -35,15 +35,15 @@ jobs:
           else
             COLOR=orange
           fi
-          echo "COLOR=$COLOR"
           echo "COLOR=$COLOR" >> $GITHUB_ENV
           echo "VALUE=$VALUE" >> $GITHUB_ENV
+          echo ${{ github.event.repository.name }}
       - name: set coverage badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
           auth: ${{ secrets.COVERAGE_TOKEN }}
           gistID: 277c7acb9222d5762a31958b394afb2f
-          filename: bassaudio-updated-coverage.json
+          filename: ${{ github.event.repository.name }}-coverage.json
           label: coverage
           message: ${{ env.VALUE }}
           color: ${{ env.COLOR }}
