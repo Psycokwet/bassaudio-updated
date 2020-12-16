@@ -26,7 +26,7 @@ jobs:
       - name: Get the coverage
         run: |
           set -x
-          total=10
+          total=60
 
           if (( $(echo "$total <= 50" | bc -l) )); then
             COLOR=red
@@ -35,7 +35,8 @@ jobs:
           else
             COLOR=orange
           fi
-          echo `COLOR=$COLOR` >> $GITHUB_ENV
+          echo `"COLOR=$COLOR"`
+          echo `"COLOR=$COLOR"` >> $GITHUB_ENV
       - name: set coverage badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
