@@ -26,6 +26,8 @@ jobs:
       - name: Get the coverage
         run: |
           set -x
+
+          cat report.txt
           VALUE=90
 
           if (( $(echo "$VALUE <= 50" | bc -l) )); then
