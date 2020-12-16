@@ -4,9 +4,9 @@ Tested on
 [![ubuntu-latest](https://img.shields.io/static/v1?label=ubuntu&message=latest&color=blueviolet)]("ubuntu-latest")
 
 with
-[![npm version](https://img.shields.io/static/v1?label=npm&message=10&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=npm&message=12&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=npm&message=14&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
 
 [![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated-light)
 [![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated-light "Monthly downloads")
