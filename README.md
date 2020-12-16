@@ -5,6 +5,8 @@
 [![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 [![Coverage Status](https://coveralls.io/repos/github/Psycokwet/bassaudio-updated/badge.svg?branch=master)](https://coveralls.io/github/Psycokwet/bassaudio-updated?branch=master)
 
+![badge](https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)
+
 **Disclaimer**
 
 This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.

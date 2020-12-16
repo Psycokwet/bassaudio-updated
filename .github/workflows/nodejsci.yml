@@ -28,11 +28,7 @@ jobs:
         with:
           auth: ${{ secrets.COVERAGE_TOKEN }}
           gistID: 277c7acb9222d5762a31958b394afb2f
-          filename: test.json
-          label: Hello
+          filename: bassaudio-updated-coverage.json
+          label: coverage
           message: World
           color: orange
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.REPOTOKEN }}
