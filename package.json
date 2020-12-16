@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "gitacp": "node g.js",
-    "test": "jest",
+    "test": "jest --coverage > report.txt",
     "coverage": "npm run test && jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {

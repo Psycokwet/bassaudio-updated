@@ -17,7 +17,8 @@ npm-debug.log
 .gitignore
 g.js
 .travis.yml
-tests/*
 tests
+coverage
 .github
 .gitattributes
+report.txt
