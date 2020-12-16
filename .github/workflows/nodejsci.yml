@@ -23,3 +23,12 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+      - name: coverage
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.COVERAGE_TOKEN }}
+          gistID: 277c7acb9222d5762a31958b394afb2f
+          filename: test.json
+          label: Hello
+          message: World
+          color: orange
