@@ -1,19 +1,9 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: build
+name: Node.js CI
 
 on: push
-
-uses: schneegans/dynamic-badges-action@v1.0.0
-jobs:
-with:
-  auth: ${{ secrets.COVERAGE_TOKEN }}
-  gistID: 277c7acb9222d5762a31958b394afb2f
-  filename: test.json
-  label: Hello
-  message: World
-  color: orange
 
 jobs:
   build:
