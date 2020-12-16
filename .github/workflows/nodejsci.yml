@@ -23,12 +23,24 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-      - name: coverage
+      - name: Get the coverage
+        set -x
+        total=10
+        if (( $(echo "$total <= 50" | bc -l) )); then
+          COLOR=red
+        elif (( $(echo "$total > 80" | bc -l) )); then
+          COLOR=green
+        else
+          COLOR=orange
+        fi
+        run: echo `COLOR=$COLOR` >> $GITHUB_ENV
+      - name: set coverage badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
           auth: ${{ secrets.COVERAGE_TOKEN }}
           gistID: 277c7acb9222d5762a31958b394afb2f
           filename: bassaudio-updated-coverage.json
           label: coverage
-          message: World
+          message: ${{ env.COLOR }}
           color: orange
+
