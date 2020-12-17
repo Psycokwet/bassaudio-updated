@@ -1,3 +1,10 @@
+<div align="center">
+  <h1>Bassaudio-updated</h1>
+  A all in one bass library wrapper, maintained and tested.
+</div>
+
+<hr />
+
 Tested on
 
 [![macos-latest](https://img.shields.io/static/v1?label=macos&message=latest&color=ff69b4)]("macos-latest")
@@ -15,11 +22,17 @@ Tests results :
 [![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 ![Coverage Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)
 
+Documentation :
+
+[![Examples](https://img.shields.io/static/v1?label=info&message=examples&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
+[![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
+
 Others :
 
 [![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated)
 [![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated "Monthly downloads")
 [![npm downloads](https://img.shields.io/npm/dt/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated "All time downloads")
+[![MIT License](https://img.shields.io/static/v1?label=licence&message=MIT&color=green)](https://github.com//Psycokwet/bassaudio-updated/tree/master/LICENSE "Licence")
 
 **Disclaimer**
 
