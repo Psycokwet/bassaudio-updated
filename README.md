@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Bassaudio-updated</h1>
   A all in one bass library wrapper, maintained and tested.
-  This package come with its bass libraries files dependencies, and use the right one if your are on linux 32/64 or Windows 32/64 or macOS. However, you must check the licensing on [un4seen](http://www.un4seen.com).
+  This package come with its bass libraries files dependencies, and use the right one if your are on linux 32/64 or Windows 32/64 or macOS. However, you must check the licensing on <a title="un4seen" href="http://www.un4seen.com">un4seen</a>.
   For a lighter version of this package, without the bass files, checkout 
   <a title="bassaudio-updated-light" href="https://www.npmjs.com/package/bassaudio-updated-light">bassaudio-updated-light</a>
 </div>
