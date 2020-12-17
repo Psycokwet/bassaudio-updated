@@ -26,6 +26,7 @@ const EventEmitter = require("events").EventEmitter;
 
 const path = require("path");
 const Struct = require("ref-struct-napi");
+const ArrayType = require("ref-array-napi");
 const ref = require("ref-napi");
 const ffi = require("ffi-napi");
 const os = require("os");
@@ -62,10 +63,10 @@ class libFile {
 }
 
 function getPlatformDependencies() {
-  let pl = os.platform();
+  let platform = os.platform();
   let arch = os.arch();
 
-  switch (os.platform()) {
+  switch (platform) {
     case "win32":
       const winLibFiles = {
         bass: new libFile("bass", "bass.dll"),
@@ -73,9 +74,9 @@ function getPlatformDependencies() {
         enc: new libFile("enc", "bassenc.dll"),
         tags: new libFile("tags", "tags.dll"),
       };
-      if (os.arch() == "x64") {
+      if (arch == "x64") {
         return { path: "win64", libFiles: winLibFiles };
-      } else if (os.arch() == "x86") {
+      } else if (arch == "x86") {
         return { path: "win32", libFiles: winLibFiles };
       } else {
         return null;
@@ -95,9 +96,9 @@ function getPlatformDependencies() {
         enc: new libFile("enc", "libbassenc.so"),
         tags: new libFile("tags", "libtags.so"),
       };
-      if (os.arch() == "x64") {
+      if (arch == "x64") {
         return { path: "linux64", libFiles: linuxLibFiles };
-      } else if (os.arch() == "x86") {
+      } else if (arch == "x86") {
         return { path: "linux32", libFiles: linuxLibFiles };
       } else {
         return null;
@@ -105,17 +106,6 @@ function getPlatformDependencies() {
   }
   return null;
 }
-
-// basslibName = path.join(basePath, basslibName);
-// bassmixlibName = path.join(basePath, bassmixlibName);
-// bassenclibName = path.join(basePath, bassenclibName);
-// basstagslibName = path.join(basePath, basstagslibName);
-// this.bassenclibName = bassenclibName;
-// this.bassmixlibName = bassmixlibName;
-// this.basstagslibName = basstagslibName;
-
-// this.basslibmixer = null;
-// this.basslibencoder = null;
 
 function Bass() {
   const platformDependencies = getPlatformDependencies();
@@ -130,11 +120,10 @@ function Bass() {
   var dword = ref.refType(Bass);
   var hwnd = ref.refType(Bass);
 
-  // typedef struct {
+  // Originals types
   //   char *name;
   //   char *driver;
   //   DWORD flags;
-  // } BASS_DEVICEINFO;
 
   this.BASS_DEVICEINFO = Struct({
     name: "string",
@@ -142,7 +131,7 @@ function Bass() {
     flags: "int",
   });
 
-  //   typedef struct {
+  // Originals types
   //     DWORD flags;
   //     DWORD hwsize;
   //     DWORD hwfree;
@@ -157,7 +146,7 @@ function Bass() {
   //     DWORD initflags;
   //     DWORD speakers;
   //     DWORD freq;
-  // } BASS_INFO;
+
   this.BASS_INFO = Struct({
     flags: "int",
     hwsize: "int",
@@ -175,11 +164,13 @@ function Bass() {
     freq: "int",
   });
 
+  // Originals types
   //   DWORD flags;
   //   DWORD formats;
   //   DWORD inputs;
   //   BOOL singlein;
   //   DWORD freq;
+
   this.BASS_RECORDINFO = Struct({
     flags: "int",
     formats: "int",
@@ -289,7 +280,7 @@ function Bass() {
     genre: "byte",
   });
 
-  var BASS_SPEAKER_FRONT = 0x1000000, // front speakers
+  const BASS_SPEAKER_FRONT = 0x1000000, // front speakers
     BASS_SPEAKER_REAR = 0x2000000, // rear/side speakers
     BASS_SPEAKER_CENLFE = 0x3000000, // center & LFE speakers (5.1)
     BASS_SPEAKER_REAR2 = 0x4000000, // rear center speakers (7.1)
@@ -600,151 +591,122 @@ function Bass() {
     REMOVE_SPACES: (x) => "%ITRM(" + x + ")", //removes beginning and trailing spaces from x;
   };
 
-  this.SYNCPROC = ffi.Callback(
-    "void",
-    ["int", "int", "int", ref.types.void],
-    function (handle, channel, data, user) {
-      console.log("syncproc is called");
-      Bass.BASS_ChannelSlideAttribute(
-        channel,
-        BASS_ChannelAttributes.BASS_ATTRIB_VOL,
-        0,
-        3000
-      );
-    }
-  );
+  // unused yet, but must see later if better
+  //
+  // this.SYNCPROC = ffi.Callback(
+  //   "void",
+  //   ["int", "int", "int", ref.types.void],
+  //   function (handle, channel, data, user) {
+  //     console.log("syncproc is called");
+  //     Bass.BASS_ChannelSlideAttribute(
+  //       channel,
+  //       BASS_ChannelAttributes.BASS_ATTRIB_VOL,
+  //       0,
+  //       3000
+  //     );
+  //   }
+  // );
 
-  var DownloadProc = ffi.Callback(
-    "void",
-    ["long", "long", ref.types.void],
-    function (buffer, length, user) {
-      console.log(buffer);
-    }
-  );
-  var StreamProc = ffi.Callback(
-    "void",
-    ["int", ref.types.void, "int", ref.types.void],
-    function (handle, buffer, length, user) {
-      console.log("StreamProc");
-      //console.log(buffer);
-    }
-  );
+  // this.DownloadProc = ffi.Callback(
+  //   "void",
+  //   ["long", "long", ref.types.void],
+  //   function (buffer, length, user) {
+  //     console.log(buffer);
+  //   }
+  // );
+  // this.StreamProc = ffi.Callback(
+  //   "void",
+  //   ["int", ref.types.void, "int", ref.types.void],
+  //   function (handle, buffer, length, user) {
+  //     console.log("StreamProc");
+  //     //console.log(buffer);
+  //   }
+  // );
 
-  var deviceInfoPTR = ref.refType(this.BASS_DEVICEINFO);
-  var chanInfoPTR = ref.refType(this.BASS_CHANNELINFO);
-  this.idTagPTR = ref.refType(this.ID3V1Tag);
-  var floatPTR = ref.refType(ref.types.float);
-  var infoPTR = ref.refType(this.BASS_INFO);
-  var recinfoPTR = ref.refType(this.BASS_RECORDINFO);
+  const deviceInfoPTR = ref.refType(this.BASS_DEVICEINFO);
+  const chanInfoPTR = ref.refType(this.BASS_CHANNELINFO);
+  const idTagPTR = ref.refType(this.ID3V1Tag);
+  const floatPTR = ref.refType(ref.types.float);
+  const infoPTR = ref.refType(this.BASS_INFO);
+  const recinfoPTR = ref.refType(this.BASS_RECORDINFO);
 
-  var basslibName = "";
-  var bassmixlibName = "";
-  var bassenclibName = "";
-  var basstagslibName = "";
-  if (process.platform == "win32") {
-    basslibName = "bass.dll";
-    bassmixlibName = "bassmix.dll";
-    bassenclibName = "bassenc.dll";
-    basstagslibName = "tags.dll";
-  } else if (process.platform == "darwin") {
-    basslibName = "libbass.dylib";
-    bassmixlibName = "libbassmix.dylib";
-    bassenclibName = "libbassenc.dylib";
-    basstagslibName = "libtags.dylib";
-  } else if (process.platform == "linux") {
-    basslibName = "libbass.so";
-    bassmixlibName = "libbassmix.so";
-    bassenclibName = "libbassenc.so";
-    basstagslibName = "libtags.so";
-  }
-  basslibName = path.join(basePath, basslibName);
-  bassmixlibName = path.join(basePath, bassmixlibName);
-  bassenclibName = path.join(basePath, bassenclibName);
-  basstagslibName = path.join(basePath, basstagslibName);
-  this.bassenclibName = bassenclibName;
-  this.bassmixlibName = bassmixlibName;
-  this.basstagslibName = basstagslibName;
+  this.libFiles["bass"].enable(
+    ffi.Library(
+      new ffi.DynamicLibrary(
+        this.libFiles["bass"].path,
+        ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
+      ),
+      {
+        BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
+        BASS_GetVersion: ["int", []],
+        BASS_StreamCreate: [
+          "int",
+          ["int", "int", "int", "pointer", ref.types.int64],
+        ],
+        BASS_StreamCreateFile: [
+          "int",
+          ["bool", "string", ref.types.int64, ref.types.int64, "int"],
+        ],
+        BASS_StreamCreateURL: [
+          "int",
+          ["string", "int", "int", "pointer", ref.types.void],
+        ],
+        BASS_ChannelPlay: ["bool", ["int", "bool"]],
+        BASS_ChannelStop: ["bool", ["int"]],
+        BASS_ChannelPause: ["bool", ["int"]],
+        BASS_ChannelGetPosition: [ref.types.int64, ["int", "int"]],
+        BASS_ChannelSetPosition: ["bool", ["int", ref.types.int64, "int"]],
+        BASS_ChannelGetLength: [ref.types.int64, ["int", "int"]],
 
-  this.basslibmixer = null;
-  this.basslibencoder = null;
+        BASS_ChannelBytes2Seconds: [ref.types.double, ["int", ref.types.int64]],
+        BASS_ChannelSeconds2Bytes: [ref.types.int64, ["int", ref.types.double]],
+        BASS_ChannelGetLevel: ["int", ["int"]],
+        BASS_ChannelRemoveSync: ["bool", ["int", "int"]],
+        BASS_ChannelIsActive: ["int", ["int"]],
+        BASS_ChannelSetAttribute: ["bool", ["int", "int", "float"]],
+        BASS_ChannelGetAttribute: ["bool", ["int", "int", floatPTR]],
+        BASS_ChannelSetSync: [
+          "int",
+          ["int", "int", ref.types.int64, "pointer", ref.types.void],
+        ],
 
-  this.ArrayType = require("ref-array-napi");
-
-  this.basslib = ffi.Library(
-    new ffi.DynamicLibrary(
-      basslibName,
-      ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
-    ),
-    {
-      BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
-      BASS_GetVersion: ["int", []],
-      BASS_StreamCreate: [
-        "int",
-        ["int", "int", "int", "pointer", ref.types.int64],
-      ],
-      BASS_StreamCreateFile: [
-        "int",
-        ["bool", "string", ref.types.int64, ref.types.int64, "int"],
-      ],
-      BASS_StreamCreateURL: [
-        "int",
-        ["string", "int", "int", "pointer", ref.types.void],
-      ],
-      BASS_ChannelPlay: ["bool", ["int", "bool"]],
-      BASS_ChannelStop: ["bool", ["int"]],
-      BASS_ChannelPause: ["bool", ["int"]],
-      BASS_ChannelGetPosition: [ref.types.int64, ["int", "int"]],
-      BASS_ChannelSetPosition: ["bool", ["int", ref.types.int64, "int"]],
-      BASS_ChannelGetLength: [ref.types.int64, ["int", "int"]],
-
-      BASS_ChannelBytes2Seconds: [ref.types.double, ["int", ref.types.int64]],
-      BASS_ChannelSeconds2Bytes: [ref.types.int64, ["int", ref.types.double]],
-      BASS_ChannelGetLevel: ["int", ["int"]],
-      BASS_ChannelRemoveSync: ["bool", ["int", "int"]],
-      BASS_ChannelIsActive: ["int", ["int"]],
-      BASS_ChannelSetAttribute: ["bool", ["int", "int", "float"]],
-      BASS_ChannelGetAttribute: ["bool", ["int", "int", floatPTR]],
-      BASS_ChannelSetSync: [
-        "int",
-        ["int", "int", ref.types.int64, "pointer", ref.types.void],
-      ],
-
-      BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
-      BASS_ChannelIsSliding: ["bool", ["long", "long"]],
-      BASS_ChannelGetDevice: ["int", ["int"]],
-      BASS_ChannelSetDevice: ["bool", ["long", "long"]],
-      BASS_StreamFree: ["bool", ["int"]],
-      BASS_SetDevice: ["bool", ["int"]],
-      BASS_SetVolume: ["bool", ["float"]],
-      BASS_Start: ["bool", []],
-      BASS_Stop: ["bool", []],
-      BASS_Pause: ["bool", []],
-      BASS_GetInfo: ["bool", [infoPTR]],
-      BASS_ErrorGetCode: ["int", []],
-      BASS_Free: ["bool", []],
-      BASS_GetCPU: ["float", []],
-      BASS_GetDevice: ["int", []],
-      BASS_GetDeviceInfo: ["bool", ["int", deviceInfoPTR]],
-      BASS_ChannelGetTags: ["string", ["int", "int"]],
-      BASS_ChannelGetInfo: ["bool", ["int", chanInfoPTR]],
-      BASS_SetConfig: ["bool", ["int", "int"]],
-      BASS_GetConfig: ["int", ["int"]],
-      BASS_Update: ["bool", ["int"]],
-      BASS_ChannelUpdate: ["bool", ["int", "int"]],
-      BASS_RecordFree: ["bool", []],
-      BASS_RecordGetDevice: ["int", []],
-      BASS_RecordGetDeviceInfo: ["bool", ["int", recinfoPTR]],
-      BASS_RecordGetInfo: ["bool", [recinfoPTR]],
-      BASS_RecordGetInput: ["int", ["int", "float"]],
-      BASS_RecordGetInputName: ["string", ["int"]],
-      BASS_RecordInit: ["bool", ["int"]],
-      BASS_RecordSetDevice: ["bool", ["int"]],
-      BASS_RecordSetInput: ["bool", ["int", "int", "float"]],
-      BASS_RecordStart: [
-        "int",
-        ["int", "int", "long", "pointer", ref.types.void],
-      ],
-    }
+        BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
+        BASS_ChannelIsSliding: ["bool", ["long", "long"]],
+        BASS_ChannelGetDevice: ["int", ["int"]],
+        BASS_ChannelSetDevice: ["bool", ["long", "long"]],
+        BASS_StreamFree: ["bool", ["int"]],
+        BASS_SetDevice: ["bool", ["int"]],
+        BASS_SetVolume: ["bool", ["float"]],
+        BASS_Start: ["bool", []],
+        BASS_Stop: ["bool", []],
+        BASS_Pause: ["bool", []],
+        BASS_GetInfo: ["bool", [infoPTR]],
+        BASS_ErrorGetCode: ["int", []],
+        BASS_Free: ["bool", []],
+        BASS_GetCPU: ["float", []],
+        BASS_GetDevice: ["int", []],
+        BASS_GetDeviceInfo: ["bool", ["int", deviceInfoPTR]],
+        BASS_ChannelGetTags: ["string", ["int", "int"]],
+        BASS_ChannelGetInfo: ["bool", ["int", chanInfoPTR]],
+        BASS_SetConfig: ["bool", ["int", "int"]],
+        BASS_GetConfig: ["int", ["int"]],
+        BASS_Update: ["bool", ["int"]],
+        BASS_ChannelUpdate: ["bool", ["int", "int"]],
+        BASS_RecordFree: ["bool", []],
+        BASS_RecordGetDevice: ["int", []],
+        BASS_RecordGetDeviceInfo: ["bool", ["int", recinfoPTR]],
+        BASS_RecordGetInfo: ["bool", [recinfoPTR]],
+        BASS_RecordGetInput: ["int", ["int", "float"]],
+        BASS_RecordGetInputName: ["string", ["int"]],
+        BASS_RecordInit: ["bool", ["int"]],
+        BASS_RecordSetDevice: ["bool", ["int"]],
+        BASS_RecordSetInput: ["bool", ["int", "int", "float"]],
+        BASS_RecordStart: [
+          "int",
+          ["int", "int", "long", "pointer", ref.types.void],
+        ],
+      }
+    )
   );
 
   // mixer_streamCreate, mixer_streamADdChannel,
@@ -912,7 +874,7 @@ Bass.prototype.BASS_Init = function (device, freq, flags) {
 };
 
 Bass.prototype.BASS_GetVersion = function () {
-  return this.basslib.BASS_GetVersion(); //.toString(16)
+  return this.libFiles["bass"].tryFunc("BASS_GetVersion"); //.toString(16)
 };
 
 Bass.prototype.BASS_StreamCreate = function (
@@ -1095,7 +1057,7 @@ Bass.prototype.BASS_ChannelGetTags = function (handle, tags) {
 
 //----------------------- Split Functions -----------------------------
 Bass.prototype.BASS_Split_StreamCreate = function (handle, flags) {
-  var myArr = this.ArrayType(ref.types.int);
+  var myArr = ArrayType(ref.types.int);
   var arr = new myArr(3);
   arr[0] = 1;
   arr[1] = 0;
@@ -1111,7 +1073,7 @@ Bass.prototype.BASS_Split_StreamGetSource = function (handle) {
   return this.basslibmixer.BASS_Split_StreamGetSource(handle);
 };
 Bass.prototype.BASS_Split_StreamGetSplits = function (handle, count) {
-  var myArr = this.ArrayType(ref.types.int);
+  var myArr = ArrayType(ref.types.int);
   var buff = new Buffer(myArr);
   var q = this.basslibmixer.BASS_Split_StreamGetSplits(handle, buff, count);
   var arr = Array.prototype.slice.call(buff, 0);
@@ -1635,7 +1597,7 @@ Bass.prototype.TagsEnabled = function () {
 Bass.prototype.EnableTags = function (value) {
   if (value) {
     this.libFiles["tags"].enable(
-      ffi.Library(this.basstagslibName, {
+      ffi.Library(this.libFiles["tags"].path, {
         TAGS_GetVersion: ["int", []],
         TAGS_Read: ["string", ["int", "string"]],
         TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
