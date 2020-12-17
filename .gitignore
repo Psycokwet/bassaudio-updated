@@ -12,4 +12,5 @@ CVS
 npm-debug.log
 yarn.lock
 node_modules
+coverage.txt
 report.txt

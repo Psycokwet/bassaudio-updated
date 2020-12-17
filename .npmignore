@@ -15,10 +15,10 @@ npm-debug.log
 
 # add ignored files below
 .gitignore
-g.js
-.travis.yml
-tests
 coverage
+tests
+tools
 .github
 .gitattributes
+coverage.txt
 report.txt
