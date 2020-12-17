@@ -36,7 +36,7 @@ jobs:
             COLOR=orange
           fi
           echo "COLOR=$COLOR" >> $GITHUB_ENV
-          echo "VALUE=$VALUE" >> $GITHUB_ENV
+          echo "VALUE=$VALUE%" >> $GITHUB_ENV
       - name: set coverage badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
