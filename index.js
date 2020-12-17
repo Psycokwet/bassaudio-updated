@@ -30,26 +30,75 @@ const ref = require("ref-napi");
 const ffi = require("ffi-napi");
 const os = require("os");
 
+const wrapper_errors = {
+  libNotEnabled: (lib) => `You must enable ${lib} before using this function`,
+};
+
+class libFile {
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+    this.dl = null;
+    return this;
+  }
+  setPath(basePath) {
+    this.path = path.join(basePath, this.name);
+  }
+  enable(dl) {
+    if (!dl) return false;
+    this.dl = dl;
+    return true;
+  }
+  isEnabled() {
+    return this.dl == null ? false : true;
+  }
+  disable() {
+    this.dl = null;
+  }
+  tryFunc(fun, ...args) {
+    if (this.isEnabled()) return this.dl[fun](...args);
+    throw new Error(wrapper_errors.libNotEnabled(this.id));
+  }
+}
+
 function getPlatformDependencies() {
   let pl = os.platform();
   let arch = os.arch();
 
   switch (os.platform()) {
     case "win32":
+      const winLibFiles = {
+        bass: new libFile("bass", "bass.dll"),
+        mix: new libFile("mix", "bassmix.dll"),
+        enc: new libFile("enc", "bassenc.dll"),
+        tags: new libFile("tags", "tags.dll"),
+      };
       if (os.arch() == "x64") {
-        return "win64";
+        return { path: "win64", libFiles: winLibFiles };
       } else if (os.arch() == "x86") {
-        return "win32";
+        return { path: "win32", libFiles: winLibFiles };
       } else {
         return null;
       }
     case "darwin":
-      return "macOs";
+      const macosLibFiles = {
+        bass: new libFile("bass", "libbass.dylib"),
+        mix: new libFile("mix", "libbassmix.dylib"),
+        enc: new libFile("enc", "libbassenc.dylib"),
+        tags: new libFile("tags", "libtags.dylib"),
+      };
+      return { path: "macOs", libFiles: macosLibFiles };
     case "linux":
+      const linuxLibFiles = {
+        bass: new libFile("bass", "libbass.so"),
+        mix: new libFile("mix", "libbassmix.so"),
+        enc: new libFile("enc", "libbassenc.so"),
+        tags: new libFile("tags", "libtags.so"),
+      };
       if (os.arch() == "x64") {
-        return "linux64";
+        return { path: "linux64", libFiles: linuxLibFiles };
       } else if (os.arch() == "x86") {
-        return "linux32";
+        return { path: "linux32", libFiles: linuxLibFiles };
       } else {
         return null;
       }
@@ -57,8 +106,25 @@ function getPlatformDependencies() {
   return null;
 }
 
+// basslibName = path.join(basePath, basslibName);
+// bassmixlibName = path.join(basePath, bassmixlibName);
+// bassenclibName = path.join(basePath, bassenclibName);
+// basstagslibName = path.join(basePath, basstagslibName);
+// this.bassenclibName = bassenclibName;
+// this.bassmixlibName = bassmixlibName;
+// this.basstagslibName = basstagslibName;
+
+// this.basslibmixer = null;
+// this.basslibencoder = null;
+
 function Bass() {
-  const basePath = path.join(__dirname, "lib", getPlatformDependencies());
+  const platformDependencies = getPlatformDependencies();
+  this.libFiles = platformDependencies.libFiles;
+  const basePath = path.join(__dirname, "lib", platformDependencies.path);
+
+  for (var prop in this.libFiles) {
+    this.libFiles[prop].setPath(basePath);
+  }
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -1563,37 +1629,45 @@ Bass.prototype.getRecordDevice = function (device) {
 
 ///////////////////////TAGS lib/////////////////////////////
 Bass.prototype.TagsEnabled = function () {
-  return this.basslibtags == null ? false : true;
+  return this.libFiles["tags"].isEnabled();
 };
 
 Bass.prototype.EnableTags = function (value) {
   if (value) {
-    this.basslibtags = ffi.Library(this.basstagslibName, {
-      TAGS_GetVersion: ["int", []],
-      TAGS_Read: ["string", ["int", "string"]],
-      TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
-      TAGS_SetUTF8: ["bool", ["bool"]],
-      TAGS_GetLastErrorDesc: ["string", []],
-    });
+    this.libFiles["tags"].enable(
+      ffi.Library(this.basstagslibName, {
+        TAGS_GetVersion: ["int", []],
+        TAGS_Read: ["string", ["int", "string"]],
+        TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
+        TAGS_SetUTF8: ["bool", ["bool"]],
+        TAGS_GetLastErrorDesc: ["string", []],
+      })
+    );
   } else {
-    this.basslibtags = null;
+    this.libFiles["tags"].disable();
   }
 };
 
 Bass.prototype.TAGS_GetVersion = function () {
-  return this.basslibtags.TAGS_GetVersion();
+  return this.libFiles["tags"].tryFunc("TAGS_GetVersion");
 };
 Bass.prototype.TAGS_Read = function (handle, fmt) {
-  return this.basslibtags.TAGS_Read(handle, fmt);
+  return this.libFiles["tags"].tryFunc("TAGS_Read", handle, fmt);
 };
 Bass.prototype.TAGS_ReadEx = function (handle, fmt, tagtype, codepage) {
-  return this.basslibtags.TAGS_ReadEx(handle, fmt, tagtype, codepage);
+  return this.libFiles["tags"].tryFunc(
+    "TAGS_ReadEx",
+    handle,
+    fmt,
+    tagtype,
+    codepage
+  );
 };
 Bass.prototype.TAGS_SetUTF8 = function (enable) {
-  return this.basslibtags.TAGS_SetUTF8(enable);
+  return this.libFiles["tags"].tryFunc("TAGS_SetUTF8", enable);
 };
 Bass.prototype.TAGS_GetLastErrorDesc = function () {
-  return this.basslibtags.TAGS_GetLastErrorDesc();
+  return this.libFiles["tags"].tryFunc("TAGS_GetLastErrorDesc");
 };
 
 exports = module.exports = Bass;
