@@ -26,11 +26,7 @@ jobs:
       - name: Get the coverage
         run: |
           set -x
-          cat coverage.txt
-          cat coverage.txt > TEST
-
-          echo $TEST
-          VALUE=90
+          VALUE=$(cat coverage.txt)
           echo "TEST=$TEST"
           if (( $(echo "$VALUE <= 50" | bc -l) )); then
             COLOR=red
