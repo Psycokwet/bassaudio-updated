@@ -1747,14 +1747,19 @@ Bass.prototype.EnableTags = function (value) {
         TAGS_GetLastErrorDesc: ["string", []],
       })
     );
+    // Bass.prototype.TAGS_GetVersion = (...args) =>
+    //   this.libFiles["tags"].tryFunc(...args);
+    Bass.prototype["TAGS_GetVersion"] = function (...args) {
+      return this.libFiles["tags"].tryFunc("TAGS_GetVersion", ...args);
+    };
   } else {
     this.libFiles["tags"].disable();
   }
 };
 
-Bass.prototype.TAGS_GetVersion = function () {
-  return this.libFiles["tags"].tryFunc("TAGS_GetVersion");
-};
+// Bass.prototype.TAGS_GetVersion = function () {
+//   return this.libFiles["tags"].tryFunc("TAGS_GetVersion");
+// };
 Bass.prototype.TAGS_Read = function (handle, fmt) {
   return this.libFiles["tags"].tryFunc("TAGS_Read", handle, fmt);
 };

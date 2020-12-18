@@ -8,6 +8,11 @@ test("BASS_GetVersion", () => {
 });
 
 /////////////////////////TAGS//////////////////////////////////
+test("TAGS_GetVersion", () => {
+  expect(() => {
+    basslib.TAGS_GetVersion();
+  }).toThrowError();
+});
 
 test("TagsEnabled", () => {
   basslib.EnableTags(true);
