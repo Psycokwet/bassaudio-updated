@@ -1738,20 +1738,21 @@ Bass.prototype.TagsEnabled = function () {
 
 Bass.prototype.EnableTags = function (value) {
   if (value) {
-    this.libFiles["tags"].enable(
-      ffi.Library(this.libFiles["tags"].path, {
-        TAGS_GetVersion: ["int", []],
-        TAGS_Read: ["string", ["int", "string"]],
-        TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
-        TAGS_SetUTF8: ["bool", ["bool"]],
-        TAGS_GetLastErrorDesc: ["string", []],
-      })
-    );
-    // Bass.prototype.TAGS_GetVersion = (...args) =>
-    //   this.libFiles["tags"].tryFunc(...args);
-    Bass.prototype["TAGS_GetVersion"] = function (...args) {
-      return this.libFiles["tags"].tryFunc("TAGS_GetVersion", ...args);
+    const ffiFunDeclaration = {
+      TAGS_GetVersion: ["int", []],
+      TAGS_Read: ["string", ["int", "string"]],
+      TAGS_ReadEx: ["string", ["int", "string", "int", "int"]],
+      TAGS_SetUTF8: ["bool", ["bool"]],
+      TAGS_GetLastErrorDesc: ["string", []],
     };
+    this.libFiles["tags"].enable(
+      ffi.Library(this.libFiles["tags"].path, ffiFunDeclaration)
+    );
+
+    for (let fun in ffiFunDeclaration) {
+      Bass.prototype[fun] = (...args) =>
+        this.libFiles["tags"].tryFunc(fun, ...args);
+    }
   } else {
     this.libFiles["tags"].disable();
   }
@@ -1760,23 +1761,23 @@ Bass.prototype.EnableTags = function (value) {
 // Bass.prototype.TAGS_GetVersion = function () {
 //   return this.libFiles["tags"].tryFunc("TAGS_GetVersion");
 // };
-Bass.prototype.TAGS_Read = function (handle, fmt) {
-  return this.libFiles["tags"].tryFunc("TAGS_Read", handle, fmt);
-};
-Bass.prototype.TAGS_ReadEx = function (handle, fmt, tagtype, codepage) {
-  return this.libFiles["tags"].tryFunc(
-    "TAGS_ReadEx",
-    handle,
-    fmt,
-    tagtype,
-    codepage
-  );
-};
-Bass.prototype.TAGS_SetUTF8 = function (enable) {
-  return this.libFiles["tags"].tryFunc("TAGS_SetUTF8", enable);
-};
-Bass.prototype.TAGS_GetLastErrorDesc = function () {
-  return this.libFiles["tags"].tryFunc("TAGS_GetLastErrorDesc");
-};
+// Bass.prototype.TAGS_Read = function (handle, fmt) {
+//   return this.libFiles["tags"].tryFunc("TAGS_Read", handle, fmt);
+// };
+// Bass.prototype.TAGS_ReadEx = function (handle, fmt, tagtype, codepage) {
+//   return this.libFiles["tags"].tryFunc(
+//     "TAGS_ReadEx",
+//     handle,
+//     fmt,
+//     tagtype,
+//     codepage
+//   );
+// };
+// Bass.prototype.TAGS_SetUTF8 = function (enable) {
+//   return this.libFiles["tags"].tryFunc("TAGS_SetUTF8", enable);
+// };
+// Bass.prototype.TAGS_GetLastErrorDesc = function () {
+//   return this.libFiles["tags"].tryFunc("TAGS_GetLastErrorDesc");
+// };
 
 exports = module.exports = Bass;
