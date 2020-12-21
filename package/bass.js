@@ -107,8 +107,8 @@ function Bass() {
     this.libFiles[prop].setPath(basePath);
   }
 
-  const sm = new structMaster();
-  console.log(sm.BASS_DEVICEINFO.getRefType());
+  this.sm = new structMaster();
+  console.log(this.sm.BASS_DEVICEINFO.getRefType());
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -147,11 +147,11 @@ function Bass() {
   //     //console.log(buffer);
   //   }
   // );
-  const deviceInfoPTR = ref.refType(sm.BASS_DEVICEINFO.getRefType());
-  const chanInfoPTR = ref.refType(sm.BASS_CHANNELINFO.getRefType());
-  const idTagPTR = ref.refType(sm.ID3V1Tag.getRefType());
-  const infoPTR = ref.refType(sm.BASS_INFO.getRefType());
-  const recinfoPTR = ref.refType(sm.BASS_RECORDINFO.getRefType());
+  const BASS_DEVICEINFO = this.sm.BASS_DEVICEINFO;
+  const BASS_CHANNELINFO = this.sm.BASS_CHANNELINFO;
+  const ID3V1Tag = this.sm.ID3V1Tag;
+  const BASS_INFO = this.sm.BASS_INFO;
+  const BASS_RECORDINFO = this.sm.BASS_RECORDINFO;
   const ffiFunDeclaration = {
     BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
     BASS_GetVersion: ["int", []],
@@ -190,22 +190,38 @@ function Bass() {
     BASS_Start: ["bool", []],
     BASS_Stop: ["bool", []],
     BASS_Pause: ["bool", []],
-    BASS_GetInfo: ["bool", [infoPTR]],
+    BASS_GetInfo: ["bool", [BASS_INFO.getRefType()], [BASS_INFO.id]],
     BASS_ErrorGetCode: ["int", []],
     BASS_Free: ["bool", []],
     BASS_GetCPU: ["float", []],
     BASS_GetDevice: ["int", []],
-    BASS_GetDeviceInfo: ["bool", ["int", deviceInfoPTR]],
+    BASS_GetDeviceInfo: [
+      "bool",
+      ["int", BASS_DEVICEINFO.getRefType()],
+      ["int", BASS_DEVICEINFO.id],
+    ],
     BASS_ChannelGetTags: ["string", ["int", "int"]],
-    BASS_ChannelGetInfo: ["bool", ["int", chanInfoPTR]],
+    BASS_ChannelGetInfo: [
+      "bool",
+      ["int", BASS_CHANNELINFO.getRefType()],
+      ["int", BASS_CHANNELINFO.id],
+    ],
     BASS_SetConfig: ["bool", ["int", "int"]],
     BASS_GetConfig: ["int", ["int"]],
     BASS_Update: ["bool", ["int"]],
     BASS_ChannelUpdate: ["bool", ["int", "int"]],
     BASS_RecordFree: ["bool", []],
     BASS_RecordGetDevice: ["int", []],
-    BASS_RecordGetDeviceInfo: ["bool", ["int", recinfoPTR]],
-    BASS_RecordGetInfo: ["bool", [recinfoPTR]],
+    BASS_RecordGetDeviceInfo: [
+      "bool",
+      ["int", BASS_RECORDINFO.getRefType()],
+      ["int", BASS_RECORDINFO.id],
+    ],
+    BASS_RecordGetInfo: [
+      "bool",
+      [BASS_RECORDINFO.getRefType()],
+      [BASS_RECORDINFO.id],
+    ],
     BASS_RecordGetInput: ["int", ["int", "float"]],
     BASS_RecordGetInputName: ["string", ["int"]],
     BASS_RecordInit: ["bool", ["int"]],
@@ -715,358 +731,6 @@ Bass.prototype.getRecordDevice = function (device) {
 
 // /////////////////////NATIVES FUNCTIONS/////////////////////////
 
-// Bass.prototype.BASS_SetConfig = function (option, value) {
-//   return this.libFiles["bass"].tryFunc("BASS_SetConfig", option, value);
-// };
-// Bass.prototype.BASS_GetConfig = function (option) {
-//   return this.libFiles["bass"].tryFunc("BASS_GetConfig", option);
-// };
-// Bass.prototype.BASS_ChannelUpdate = function (handle, length) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelUpdate", handle, length);
-// };
-// Bass.prototype.BASS_Update = function (length) {
-//   return this.libFiles["bass"].tryFunc("BASS_Update", length);
-// };
-
-// Bass.prototype.BASS_Init = function (device, freq, flags) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_Init",
-//     device,
-//     freq,
-//     flags,
-//     0,
-//     null
-//   );
-// };
-
-// Bass.prototype.BASS_GetVersion = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_GetVersion"); //.toString(16)
-// };
-
-// Bass.prototype.BASS_StreamCreate = function (
-//   freq,
-//   chans,
-//   flags,
-//   callback,
-//   user
-// ) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_StreamCreate",
-//     freq,
-//     chans,
-//     flags,
-//     null,
-//     0
-//   );
-// };
-
-// Bass.prototype.BASS_StreamCreateFile = function (
-//   IsMemoryStream,
-//   file,
-//   offset,
-//   length,
-//   flags
-// ) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_StreamCreateFile",
-//     IsMemoryStream,
-//     file,
-//     offset,
-//     length,
-//     flags
-//   );
-// };
-
-// Bass.prototype.BASS_StreamCreateURL = function (url, offset, flags, callback) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_StreamCreateURL",
-//     url,
-//     offset,
-//     flags,
-//     null,
-//     0
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelPlay = function (handle, restart) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelPlay", handle, restart);
-// };
-
-// Bass.prototype.BASS_ChannelPause = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelPause", handle);
-// };
-
-// Bass.prototype.BASS_ChannelStop = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelStop", handle);
-// };
-
-// Bass.prototype.BASS_ChannelGetPosition = function (handle, mode) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetPosition", handle, mode);
-// };
-
-// Bass.prototype.BASS_ChannelSetPosition = function (handle, pos, mode) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelSetPosition",
-//     handle,
-//     pos,
-//     mode
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelGetLength = function (handle, mode) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetLength", handle, mode);
-// };
-
-// Bass.prototype.BASS_ChannelSeconds2Bytes = function (handle, pos) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelSeconds2Bytes",
-//     handle,
-//     pos
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelBytes2Seconds = function (handle, pos) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelBytes2Seconds",
-//     handle,
-//     pos
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelGetLevel = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetLevel", handle);
-// };
-
-// Bass.prototype.BASS_ChannelRemoveSync = function (handle, synchandle) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelRemoveSync",
-//     handle,
-//     synchandle
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelIsActive = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelIsActive", handle);
-// };
-
-// Bass.prototype.BASS_ChannelSetAttribute = function (handle, attrib, value) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelSetAttribute",
-//     handle,
-//     attrib,
-//     value
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelGetAttribute = function (handle, attrib, value) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelGetAttribute",
-//     handle,
-//     attrib,
-//     value
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelSetSync = function (handle, type, param, callback) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelSetSync",
-//     handle,
-//     type,
-//     param,
-//     callback,
-//     null
-//   );
-// };
-
-// Bass.prototype.BASS_ErrorGetCode = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_ErrorGetCode");
-// };
-
-// Bass.prototype.BASS_ChannelSlideAttribute = function (
-//   handle,
-//   attrib,
-//   value,
-//   time
-// ) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_ChannelSlideAttribute",
-//     handle,
-//     attrib,
-//     value,
-//     time
-//   );
-// };
-
-// Bass.prototype.BASS_ChannelIsSliding = function (handle, attrib) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelIsSliding", handle, attrib);
-// };
-
-// Bass.prototype.BASS_ChannelGetDevice = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetDevice", handle);
-// };
-
-// Bass.prototype.BASS_ChannelSetDevice = function (handle, device) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelSetDevice", handle, device);
-// };
-
-// Bass.prototype.BASS_StreamFree = function (handle) {
-//   return this.libFiles["bass"].tryFunc("BASS_StreamFree", handle);
-// };
-
-// Bass.prototype.BASS_SetDevice = function (device) {
-//   return this.libFiles["bass"].tryFunc("BASS_SetDevice", device);
-// };
-
-// Bass.prototype.BASS_SetVolume = function (volume) {
-//   return this.libFiles["bass"].tryFunc("BASS_SetVolume", volume);
-// };
-
-// Bass.prototype.BASS_Start = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_Start");
-// };
-
-// Bass.prototype.BASS_Stop = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_Stop");
-// };
-
-// Bass.prototype.BASS_Pause = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_Pause");
-// };
-
-// Bass.prototype.BASS_Free = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_Free");
-// };
-
-// Bass.prototype.BASS_GetCPU = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_GetCPU");
-// };
-
-// Bass.prototype.BASS_GetDevice = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_GetDevice");
-// };
-
-// Bass.prototype.BASS_GetDeviceInfo = function (device, info) {
-//   return this.libFiles["bass"].tryFunc("BASS_GetDeviceInfo", device, info);
-// };
-
-// Bass.prototype.BASS_ChannelGetInfo = function (handle, inforef) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetInfo", handle, inforef);
-// };
-
-// Bass.prototype.BASS_ChannelGetTags = function (handle, tags) {
-//   return this.libFiles["bass"].tryFunc("BASS_ChannelGetTags", handle, tags);
-// };
-
-// //----------------------- Split Functions -----------------------------
-// Bass.prototype.BASS_Split_StreamCreate = function (handle, flags, chanmap) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Split_StreamCreate",
-//     handle,
-//     flags,
-//     chanmap
-//   );
-// };
-
-// Bass.prototype.BASS_Split_StreamGetAvailable = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Split_StreamGetAvailable", handle);
-// };
-
-// Bass.prototype.BASS_Split_StreamGetSource = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Split_StreamGetSource", handle);
-// };
-
-// Bass.prototype.BASS_Split_StreamGetSplits = function (handle, splits, count) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Split_StreamGetSplits",
-//     handle,
-//     splits,
-//     count
-//   );
-// };
-// Bass.prototype.BASS_Split_StreamReset = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Split_StreamReset", handle);
-// };
-// Bass.prototype.BASS_Split_StreamResetEx = function (handle, offset) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Split_StreamResetEx",
-//     handle,
-//     offset
-//   );
-// };
-// //----------------------- /Split Functions -----------------------------
-
-// //region mixer features
-// Bass.prototype.BASS_Mixer_StreamCreate = function (freq, chans, flags) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_StreamCreate",
-//     freq,
-//     chans,
-//     flags
-//   );
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelGetLevel = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Mixer_ChannelGetLevel", handle);
-// };
-
-// Bass.prototype.BASS_Mixer_StreamAddChannel = function (handle, chans, flags) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_StreamAddChannel",
-//     handle,
-//     chans,
-//     flags
-//   );
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelGetMixer = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Mixer_ChannelGetMixer", handle);
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelGetPosition = function (handle, mode) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_ChannelGetPosition",
-//     handle,
-//     mode
-//   );
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelRemove = function (handle) {
-//   return this.libFiles["mix"].tryFunc("BASS_Mixer_ChannelRemove", handle);
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelRemoveSync = function (handle, synchandle) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_ChannelRemoveSync",
-//     handle,
-//     synchandle
-//   );
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelSetPosition = function (handle, pos, mode) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_ChannelSetPosition",
-//     handle,
-//     pos,
-//     mode
-//   );
-// };
-
-// Bass.prototype.BASS_Mixer_ChannelSetSync = function (
-//   handle,
-//   type,
-//   param,
-//   callback
-// ) {
-//   return this.libFiles["mix"].tryFunc(
-//     "BASS_Mixer_ChannelSetSync",
-//     handle,
-//     type,
-//     param,
-//     callback,
-//     null
-//   );
-// };
-
 Bass.prototype.MixerEnabled = function () {
   return this.libFiles["mix"].isEnabled();
 };
@@ -1168,163 +832,6 @@ Bass.prototype.EnableEncoder = function (value) {
   }
 };
 
-// Bass.prototype.BASS_Encode_SetNotify = function (handle, callback) {
-//   return this.libFiles["enc"].tryFunc(
-//     "BASS_Encode_SetNotify",
-//     handle,
-//     callback,
-//     null
-//   );
-// };
-
-// Bass.prototype.BASS_Encode_Start = function (handle, cmdline, flags) {
-//   return this.libFiles["enc"].tryFunc(
-//     "BASS_Encode_Start",
-//     handle,
-//     cmdline,
-//     flags,
-//     null,
-//     ref.types.void
-//   );
-// };
-
-// Bass.prototype.BASS_Encode_IsActive = function (handle) {
-//   return this.libFiles["enc"].tryFunc("BASS_Encode_IsActive", handle);
-// };
-
-// Bass.prototype.BASS_Encode_SetPaused = function (handle, paused) {
-//   return this.libFiles["enc"].tryFunc("BASS_Encode_SetPaused", handle, paused);
-// };
-
-// Bass.prototype.BASS_Encode_Stop = function (handle) {
-//   return this.libFiles["enc"].tryFunc("BASS_Encode_Stop", handle);
-// };
-
-// Bass.prototype.BASS_Encode_CastInit = function (
-//   handle,
-//   server,
-//   pass,
-//   content,
-//   name,
-//   url,
-//   genre,
-//   desc,
-//   headers,
-//   bitrate,
-//   pub
-// ) {
-//   return this.libFiles["enc"].tryFunc(
-//     "BASS_Encode_CastInit",
-//     handle,
-//     server,
-//     pass,
-//     content,
-//     name,
-//     url,
-//     genre,
-//     desc,
-//     headers,
-//     bitrate,
-//     pub
-//   );
-// };
-
-// Bass.prototype.BASS_Encode_CastGetStats = function (handle, type, pass) {
-//   return this.libFiles["enc"].tryFunc(
-//     "BASS_Encode_CastGetStats",
-//     handle,
-//     type,
-//     pass
-//   );
-// };
-
-// Bass.prototype.BASS_Encode_CastSetTitle = function (handle, title, url) {
-//   return this.libFiles["enc"].tryFunc(
-//     "BASS_Encode_CastSetTitle",
-//     handle,
-//     title,
-//     url
-//   );
-// };
-
-// //endregion
-
-// Bass.prototype.BASS_GetInfo = function (refinfo) {
-//   return this.libFiles["bass"].tryFunc("BASS_GetInfo", refinfo);
-// };
-
-// //recording
-
-// Bass.prototype.BASS_RecordFree = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordFree");
-// };
-
-// Bass.prototype.BASS_RecordGetDevice = function () {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordGetDevice");
-// };
-
-// Bass.prototype.BASS_RecordGetDeviceInfo = function (device, refinfo) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_RecordGetDeviceInfo",
-//     device,
-//     refinfo
-//   );
-// };
-
-// Bass.prototype.BASS_RecordGetInfo = function (refinfo) {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordGetInfo", refinfo);
-// };
-
-// Bass.prototype.BASS_RecordGetInput = function (input, volume) {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordGetInput", input, volume);
-// };
-
-// Bass.prototype.BASS_RecordGetInputName = function (input) {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordGetInputName", input);
-// };
-
-// Bass.prototype.BASS_RecordInit = function (device) {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordInit", device);
-// };
-
-// Bass.prototype.BASS_RecordSetDevice = function (device) {
-//   return this.libFiles["bass"].tryFunc("BASS_RecordSetDevice", device);
-// };
-
-// Bass.prototype.BASS_RecordSetInput = function (input, flags, volume) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_RecordSetInput",
-//     input,
-//     flags,
-//     volume
-//   );
-// };
-
-// Bass.prototype.BASS_RecordStart = function (freq, chans, flags, callback) {
-//   return this.libFiles["bass"].tryFunc(
-//     "BASS_RecordStart",
-//     freq,
-//     chans,
-//     flags,
-//     callback,
-//     null
-//   );
-// };
-
-//DWORD BASS_RecordGetDevice();
-
-// BOOL BASS_RecordGetInfo(
-//   BASS_RECORDINFO *info
-// );
-// Parameters
-// info	Pointer to a structure to receive the information.
-// Return value
-// If successful, TRUE is returned, else FALSE is returned. Use BASS_ErrorGetCode to get the error code.
-// Error codes
-// BASS_ERROR_INIT	BASS_RecordInit has not been successfully called.
-// Example
-// Check if the current device can have multiple inputs enabled.
-
 ///////////////////////TAGS lib/////////////////////////////
 Bass.prototype.TagsEnabled = function () {
   return this.libFiles["tags"].isEnabled();
@@ -1372,27 +879,5 @@ function enableLib(libFile, pathOrDl, ffiFunDeclaration, bass) {
     ffiFunDeclaration: ffiFunDeclaration,
   });
 }
-
-// Bass.prototype.TAGS_GetVersion = function () {
-//   return this.libFiles["tags"].tryFunc("TAGS_GetVersion");
-// };
-// Bass.prototype.TAGS_Read = function (handle, fmt) {
-//   return this.libFiles["tags"].tryFunc("TAGS_Read", handle, fmt);
-// };
-// Bass.prototype.TAGS_ReadEx = function (handle, fmt, tagtype, codepage) {
-//   return this.libFiles["tags"].tryFunc(
-//     "TAGS_ReadEx",
-//     handle,
-//     fmt,
-//     tagtype,
-//     codepage
-//   );
-// };
-// Bass.prototype.TAGS_SetUTF8 = function (enable) {
-//   return this.libFiles["tags"].tryFunc("TAGS_SetUTF8", enable);
-// };
-// Bass.prototype.TAGS_GetLastErrorDesc = function () {
-//   return this.libFiles["tags"].tryFunc("TAGS_GetLastErrorDesc");
-// };
 
 exports = module.exports = Bass;

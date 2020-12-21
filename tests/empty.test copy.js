@@ -12,6 +12,10 @@ const argTypeValuesDefault = {
   bool: false,
 };
 
+for (let prop in basslib.sm) {
+  argTypeValuesDefault[prop] = basslib.sm[prop].generateNewRefObject().ref();
+}
+
 const generateTestInputFor = (libname) => {
   var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libname);
 
@@ -20,12 +24,17 @@ const generateTestInputFor = (libname) => {
     let values = ffiFunDeclaration[fun];
     let returnType = values[0];
     let argTypes = values[1];
+    if (values[2]) {
+      console.log("Has struct " + fun + ":" + values[2]);
+      console.log();
+      argTypes = values[2];
+    }
 
     let generatedArgValues = [];
     for (let i in argTypes) {
       if (argTypeValuesDefault[argTypes[i]] !== undefined)
         generatedArgValues.push(argTypeValuesDefault[argTypes[i]]);
-      else generatedArgValues.push(0);
+      else generatedArgValues.push(null);
     }
     testGeneratedInputs[fun] = [returnType, generatedArgValues];
   }
@@ -50,8 +59,8 @@ for (let generatedTestValues in testGeneratedInputs) {
   );
 }
 
-console.log("testGeneratedInputs");
-console.log(testGeneratedInputs);
+// console.log("testGeneratedInputs");
+// console.log(testGeneratedInputs);
 
 // console.log(ffiFunDeclaration);
 // for (let fun in basslib) {
