@@ -29,153 +29,17 @@ util.inherits(Bass, EventEmitter);
 
 const ref = require("ref-napi");
 const path = require("path");
-const Struct = require("ref-struct-di")(ref);
 const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 const os = require("os");
 
-// Originals types
-//   char *name;
-//   char *driver;
-//   DWORD flags;
-
-const BASS_DEVICEINFO = Struct({
-  name: "string",
-  driver: "string",
-  flags: "int",
-});
-
-// Originals types
-//     DWORD flags;
-//     DWORD hwsize;
-//     DWORD hwfree;
-//     DWORD freesam;
-//     DWORD free3d;
-//     DWORD minrate;
-//     DWORD maxrate;
-//     BOOL eax;
-//     DWORD minbuf;
-//     DWORD dsver;
-//     DWORD latency;
-//     DWORD initflags;
-//     DWORD speakers;
-//     DWORD freq;
-
-const BASS_INFO = Struct({
-  flags: "int",
-  hwsize: "int",
-  hwfree: "int",
-  freesam: "int",
-  free3d: "int",
-  minrate: "int",
-  maxrate: "int",
-  eax: "bool",
-  minbuf: "int",
-  dsver: "int",
-  latency: "int",
-  initflags: "int",
-  speakers: "int",
-  freq: "int",
-});
-
-// Originals types
-//   DWORD flags;
-//   DWORD formats;
-//   DWORD inputs;
-//   BOOL singlein;
-//   DWORD freq;
-
-const BASS_RECORDINFO = Struct({
-  flags: "int",
-  formats: "int",
-  inputs: "int",
-  singlein: "bool",
-  freq: "int",
-});
-
-const BASS_CHANNELINFO = Struct({
-  freq: "int",
-  chans: "int",
-  flags: "int",
-  ctype: "int",
-  origres: "int",
-  plugin: "int",
-  sample: "int",
-  filename: "string",
-});
-
-const ID3V1Tag = Struct({
-  id: "string",
-  title: "string",
-  artist: "string",
-  album: "string",
-  year: "string",
-  comment: "string",
-  genre: "byte",
-});
-
-const BASS_STRUCTS = [
-  BASS_DEVICEINFO,
-  BASS_INFO,
-  BASS_RECORDINFO,
-  BASS_CHANNELINFO,
-  ID3V1Tag,
-];
-
-class refBuilder {
-  constructor(id, content) {
-    this.id = id;
-    this.content = content;
-    this.struct = content;
-    this.refType = ref.refType(content);
-    return this;
-  }
-  getRefType() {
-    return this.refType;
-  }
-  generateNewRefObject(args) {
-    var test = new this.struct(args);
-    return test.ref().deref();
-  }
-}
+const structMaster = require("./structMaster");
+const libFile = require("./libFile");
+console.log(libFile);
 
 const wrapper_errors = {
   libNotEnabled: (lib) => `You must enable ${lib} before using this function`,
 };
-
-class libFile {
-  constructor(id, name) {
-    this.id = id;
-    this.name = name;
-    this.dl = null;
-    return this;
-  }
-  setPath(basePath) {
-    this.path = path.join(basePath, this.name);
-  }
-  enable(dl) {
-    if (!dl) return false;
-    this.dl = dl;
-    return true;
-  }
-  isEnabled() {
-    return this.dl == null ? false : true;
-  }
-  disable() {
-    this.dl = null;
-  }
-  tryFunc(fun, ...args) {
-    console.log("try " + fun + ":" + args);
-    if (this.isEnabled()) return this.dl[fun](...args);
-    throw new Error(wrapper_errors.libNotEnabled(this.id));
-  }
-  setDebugData({ ffiFunDeclaration }) {
-    this.ffiFunDeclaration = ffiFunDeclaration;
-  }
-  getDebugData() {
-    return { ffiFunDeclaration: this.ffiFunDeclaration };
-  }
-}
 
 Bass.prototype.WRAP_DEBUG_getDebugData = function (libName) {
   return this.libFiles[libName].getDebugData();
@@ -239,12 +103,12 @@ function Bass() {
   this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);
 
-  for (var prop in this.libFiles) {
+  for (let prop in this.libFiles) {
     this.libFiles[prop].setPath(basePath);
   }
 
-  const test = new refBuilder("BASS_DEVICEINFO", BASS_DEVICEINFO);
-  test.generateNewRefObject({ driver: "ccbis", flags: 42 });
+  const sm = new structMaster();
+  console.log(sm.BASS_DEVICEINFO.getRefType());
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -672,12 +536,11 @@ function Bass() {
   //     //console.log(buffer);
   //   }
   // );
-
-  const deviceInfoPTR = ref.refType(BASS_DEVICEINFO);
-  const chanInfoPTR = ref.refType(BASS_CHANNELINFO);
-  const idTagPTR = ref.refType(ID3V1Tag);
-  const infoPTR = ref.refType(BASS_INFO);
-  const recinfoPTR = ref.refType(BASS_RECORDINFO);
+  const deviceInfoPTR = ref.refType(sm.BASS_DEVICEINFO.getRefType());
+  const chanInfoPTR = ref.refType(sm.BASS_CHANNELINFO.getRefType());
+  const idTagPTR = ref.refType(sm.ID3V1Tag.getRefType());
+  const infoPTR = ref.refType(sm.BASS_INFO.getRefType());
+  const recinfoPTR = ref.refType(sm.BASS_RECORDINFO.getRefType());
   const ffiFunDeclaration = {
     BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
     BASS_GetVersion: ["int", []],

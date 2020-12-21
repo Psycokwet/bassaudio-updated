@@ -9,15 +9,30 @@ const path = require("path");
 const Struct = require("ref-struct-di")(ref);
 const ArrayType = require("ref-array-di")(ref);
 
-function StructMaster() {
-  this.structs = {};
+class refBuilder {
+  constructor(id, content) {
+    this.id = id;
+    this.content = content;
+    this.struct = content;
+    this.refType = ref.refType(content);
+    return this;
+  }
+  getRefType() {
+    return this.refType;
+  }
+  generateNewRefObject(args) {
+    var test = new this.struct(args);
+    return test.ref().deref();
+  }
+}
 
+function structMaster() {
   // Originals types
   //   char *name;
   //   char *driver;
   //   DWORD flags;
 
-  this.structs.BASS_DEVICEINFO = Struct({
+  this.BASS_DEVICEINFO = Struct({
     name: "string",
     driver: "string",
     flags: "int",
@@ -39,7 +54,7 @@ function StructMaster() {
   //     DWORD speakers;
   //     DWORD freq;
 
-  this.structs.BASS_INFO = Struct({
+  this.BASS_INFO = Struct({
     flags: "int",
     hwsize: "int",
     hwfree: "int",
@@ -63,7 +78,7 @@ function StructMaster() {
   //   BOOL singlein;
   //   DWORD freq;
 
-  this.structs.BASS_RECORDINFO = Struct({
+  this.BASS_RECORDINFO = Struct({
     flags: "int",
     formats: "int",
     inputs: "int",
@@ -71,7 +86,7 @@ function StructMaster() {
     freq: "int",
   });
 
-  this.structs.BASS_CHANNELINFO = Struct({
+  this.BASS_CHANNELINFO = Struct({
     freq: "int",
     chans: "int",
     flags: "int",
@@ -82,7 +97,7 @@ function StructMaster() {
     filename: "string",
   });
 
-  this.structs.ID3V1Tag = Struct({
+  this.ID3V1Tag = Struct({
     id: "string",
     title: "string",
     artist: "string",
@@ -91,6 +106,9 @@ function StructMaster() {
     comment: "string",
     genre: "byte",
   });
+  for (let prop in this) {
+    this[prop] = new refBuilder(prop, this[prop]);
+  }
 }
 
-exports = module.exports = StructMaster;
+exports = module.exports = structMaster;
