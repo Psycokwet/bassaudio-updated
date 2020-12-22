@@ -8,11 +8,11 @@ const ref = require("ref-napi");
 const setStructs = require("./setStructs");
 const setCallbacks = require("./setCallbacks");
 const argTypeValuesDefault = {
-  int: ref.alloc("int", 0).ref(),
+  int: 0,
   int64: "0",
   string: "0",
-  float: ref.alloc("float", 0).ref(),
-  bool: ref.alloc("bool", false).ref(),
+  float: 0.0,
+  bool: false,
 };
 
 var structs = {};

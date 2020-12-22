@@ -117,37 +117,6 @@ function Bass() {
 
   setFlags(this);
 
-  // unused yet, but must see later if better
-  //
-  // this.SYNCPROC = ffi.Callback(
-  //   "void",
-  //   ["int", "int", "int", ref.types.void],
-  //   function (handle, channel, data, user) {
-  //     console.log("syncproc is called");
-  //     Bass.BASS_ChannelSlideAttribute(
-  //       channel,
-  //       BASS_ChannelAttributes.BASS_ATTRIB_VOL,
-  //       0,
-  //       3000
-  //     );
-  //   }
-  // );
-
-  // this.DownloadProc = ffi.Callback(
-  //   "void",
-  //   ["long", "long", ref.types.void],
-  //   function (buffer, length, user) {
-  //     console.log(buffer);
-  //   }
-  // );
-  // this.StreamProc = ffi.Callback(
-  //   "void",
-  //   ["int", ref.types.void, "int", ref.types.void],
-  //   function (handle, buffer, length, user) {
-  //     console.log("StreamProc");
-  //     //console.log(buffer);
-  //   }
-  // );
   const BASS_DEVICEINFO = this.BASS_DEVICEINFO;
   const BASS_CHANNELINFO = this.BASS_CHANNELINFO;
   const ID3V1Tag = this.ID3V1Tag;
@@ -180,7 +149,7 @@ function Bass() {
     BASS_ChannelRemoveSync: ["bool", ["int", "int"]],
     BASS_ChannelIsActive: ["int", ["int"]],
     BASS_ChannelSetAttribute: ["bool", ["int", "int", "float"]],
-    BASS_ChannelGetAttribute: ["bool", ["int", "int", "float"]],
+    BASS_ChannelGetAttribute: ["bool", ["int", "int", "pointer"]],
     BASS_ChannelSetSync: [
       "int",
       ["int", "int", "int64", "pointer", ref.types.void],
@@ -500,14 +469,14 @@ Bass.prototype.getVolume = function (channel) {
     return 0;
   }
   try {
-    var volume = this.ref.alloc("float");
-    this.basslib.BASS_ChannelGetAttribute(
+    var volume = ref.alloc("float");
+    this.BASS_ChannelGetAttribute(
       channel,
       this.BASS_ChannelAttributes.BASS_ATTRIB_VOL,
       volume
     );
 
-    return this.ref.deref(volume).toFixed(4) * 100;
+    return ref.deref(volume).toFixed(4) * 100;
   } catch (ex) {
     console.log("get volume error:" + ex);
     return 0;
