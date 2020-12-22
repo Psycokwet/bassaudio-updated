@@ -4,13 +4,14 @@
 
 const path = require("path");
 
+const ref = require("ref-napi");
 const setStructs = require("./setStructs");
 const argTypeValuesDefault = {
-  int: 0,
+  int: ref.alloc("int", 0).ref(),
   int64: "0",
   string: "0",
-  pointer: null,
-  bool: false,
+  float: ref.alloc("float", 0).ref(),
+  bool: ref.alloc("bool", false).ref(),
 };
 
 var structs = {};

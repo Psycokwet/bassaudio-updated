@@ -1,20 +1,24 @@
-var bass = require("../index");
+var bass = require("../");
 var basslib = new bass();
 
 /////////////////////////PRETEST//////////////////////////////////
 
 basslib.EnableTags(true);
-// basslib.EnableEncoder(true);
-// basslib.EnableMixer(true);
+basslib.EnableEncoder(true);
+basslib.EnableMixer(true);
 
-test("everyFun", () => {
-  for (let fun in basslib) {
-    if (typeof basslib[fun] === "function") {
-      console.log(fun);
-      basslib[fun](1);
-    } else {
-      console.log("reject" + fun);
+test("test linking", () => {
+  var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
+  var linked = 0;
+  var awaited = 0;
+  for (let i in libNames) {
+    var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
+    awaited += Object.keys(ffiFunDeclaration).length;
+    for (let fun in ffiFunDeclaration) {
+      // console.log(fun + " return " + basslib[fun]());
+      basslib[fun]();
+      linked++;
     }
   }
-  expect(basslib.BASS_GetVersion()).toBe(33820416);
+  expect(awaited).toBe(linked);
 });

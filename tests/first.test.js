@@ -1,4 +1,4 @@
-var bass = require("../index");
+var bass = require("../");
 var basslib = new bass();
 
 /////////////////////////PRETEST//////////////////////////////////

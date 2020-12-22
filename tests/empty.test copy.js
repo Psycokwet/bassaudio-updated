@@ -3,86 +3,99 @@ var basslib = new Bass();
 
 /////////////////////////PRETEST//////////////////////////////////
 
-basslib.EnableTags(true);
-basslib.EnableEncoder(true);
-basslib.EnableMixer(true);
+// const path = require("path");
 
-var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
-for (let i in libNames) {
-  var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
-  for (let fun in ffiFunDeclaration) {
-    console.log(fun + " return " + basslib[fun]());
-  }
+// basslib.EnableTags(true);
+// basslib.EnableEncoder(true);
+// basslib.EnableMixer(true);
+
+// var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
+// for (let i in libNames) {
+//   var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
+//   for (let fun in ffiFunDeclaration) {
+//     console.log(fun + " return " + basslib[fun]());
+//   }
+// }
+
+////////////////////////////////////////////////////////////////////
+
+const chalk = require("chalk");
+// getDevices
+var cards = basslib.getDevices();
+console.log(chalk.blue.bold("total found sound cards:"), cards.length);
+var card = cards[1];
+console.log(
+  card.name +
+    " card is enabled:" +
+    card.enabled +
+    " | IsDefault: " +
+    card.IsDefault +
+    " | IsInitialized: " +
+    card.IsInitialized +
+    " | typeSpeakers: " +
+    card.typeSpeakers
+);
+
+// BASS_GetVersion
+var v = basslib.BASS_GetVersion();
+console.log(chalk.blue.bold("result of BASS_GetVersion: "), v);
+
+// BASS_Init
+var result = basslib.BASS_Init(
+  -1,
+  44100,
+  basslib.BASS_Initflags.BASS_DEVICE_STEREO
+);
+if (!result) {
+  console.log(
+    chalk.red.bold("error init sound card:"),
+    basslib.BASS_ErrorGetCode()
+  );
+}
+console.log("first card is init?:" + basslib.getDevice(1).IsInitialized);
+
+// BASS_StreamCreateFile
+
+var filename =
+  "C:\\Users\\Socar\\Music\\The legend of zelda 25th Anniversary special orchestra CD (FLAC)\\testttt.mp3";
+var chan = basslib.BASS_StreamCreateFile(
+  false,
+  filename,
+  0,
+  0,
+  basslib.BASS_Initflags.BASS_DEVICE_STEREO
+);
+if (basslib.BASS_ErrorGetCode() !== basslib.BASS_ErrorCode.BASS_OK) {
+  console.log(
+    chalk.red.bold("error opening file:"),
+    basslib.BASS_ErrorGetCode()
+  );
+  process.exit();
 }
 
-// // getDevices
-// var cards = basslib.getDevices();
-// console.log("total found sound cards:" + cards.length);
-// var card = cards[1];
-// console.log(
-//   card.name +
-//     " card is enabled:" +
-//     card.enabled +
-//     " | IsDefault: " +
-//     card.IsDefault +
-//     " | IsInitialized: " +
-//     card.IsInitialized +
-//     " | typeSpeakers: " +
-//     card.typeSpeakers
-// );
+// BASS_StreamCreateURL
+/*
+var streamURL = "http://ice1.somafm.com/groovesalad-256-mp3";
+// TODO DOWNLOADPROC example
+var chan = basslib.BASS_StreamCreateURL(streamURL, 0, basslib.BASSFlags.BASS_STREAM_AUTOFREE, null, null);
+if (basslib.BASS_ErrorGetCode() != basslib.BASS_ErrorCode.BASS_OK) {
+  console.log("error streaming:" + basslib.BASS_ErrorGetCode());
+}
+*/
 
-// // BASS_GetVersion
-// var v = basslib.BASS_GetVersion();
-// console.log("result of BASS_GetVersion: " + v);
-
-// // BASS_Init
-// var result = basslib.BASS_Init(
-//   -1,
-//   44100,
-//   basslib.BASS_Initflags.BASS_DEVICE_STEREO,
-//   null,
-//   null
-// );
-// if (!result) {
-//   console.log("error init sound card:" + basslib.BASS_ErrorGetCode());
-// }
-// console.log("first card is init?:" + basslib.getDevice(1).IsInitialized);
-
-// // BASS_StreamCreateFile
-
-// var filename = path.join(__dirname, "deadmau5-Charlie_cant_dance.mp3");
-// var chan = basslib.BASS_StreamCreateFile(
-//   false,
-//   filename,
-//   0,
-//   0,
-//   basslib.BASS_Initflags.BASS_DEVICE_STEREO
-// );
-// if (basslib.BASS_ErrorGetCode() !== basslib.BASS_ErrorCode.BASS_OK) {
-//   console.log("error opening file:" + basslib.BASS_ErrorGetCode());
-//   process.exit();
-// }
-
-// // BASS_StreamCreateURL
-// /*
-// var streamURL = "http://ice1.somafm.com/groovesalad-256-mp3";
-// // TODO DOWNLOADPROC example
-// var chan = basslib.BASS_StreamCreateURL(streamURL, 0, basslib.BASSFlags.BASS_STREAM_AUTOFREE, null, null);
-// if (basslib.BASS_ErrorGetCode() != basslib.BASS_ErrorCode.BASS_OK) {
-//   console.log("error streaming:" + basslib.BASS_ErrorGetCode());
-// }
-// */
-
-// // BASS_ChannelPlay
-// var success = basslib.BASS_ChannelPlay(chan, true);
-// if (!success) {
-//   console.log("error playing file:" + basslib.BASS_ErrorGetCode());
-// }
+// BASS_ChannelPlay
+var success = basslib.BASS_ChannelPlay(chan, true);
+if (!success) {
+  console.log(
+    chalk.red.bold("error playing file:"),
+    basslib.BASS_ErrorGetCode()
+  );
+}
 
 // // BASS_ChannelGetInfo, getInfo
 // var info = basslib.BASS_ChannelGetInfo(chan);
 // // var info = basslib.getInfo()
-// console.log("result of BASS_ChannelGetInfo: " + info);
+// console.log(chalk.blue.bold("result of BASS_ChannelGetInfo: "), info);
 
 // // BASS_ChannelSetSync to position
 // var Pos20SecondsBytePos = basslib.BASS_ChannelSeconds2Bytes(chan, 15);
@@ -93,7 +106,7 @@ for (let i in libNames) {
 //   function (handle, channel, data, user) {
 //     // BASS_ChannelStop
 //     if (handle === proc20SecondsID) {
-//       console.log("--> position reached to the 15 seconds..");
+//       console.log(chalk.green.bold("--> position reached to the 15 seconds.."));
 //       // var result = basslib.BASS_ChannelStop(chan);
 //       // console.log("result of BASS_ChannelStop: ", result);
 //     }
@@ -107,7 +120,7 @@ for (let i in libNames) {
 //   0,
 //   function (handle, channel, data, user) {
 //     if (handle === procTOENDID) {
-//       console.log("--> playback finished..");
+//       console.log(chalk.green.bold("--> playback finished.."));
 //     }
 //   }
 // );
@@ -145,7 +158,11 @@ for (let i in libNames) {
 //     );
 //     // console.log(basslib.BASS_ChannelSeconds2Bytes(chan, durationInSeconds) === durationInBytes);
 
-//     console.log("position :" + positionInSeconds / durationInSeconds);
+//     console.log(
+//       `${chalk.bgBlue.white.bold(
+//         "position :"
+//       )} ${positionInSeconds} / ${durationInSeconds}`
+//     );
 //     // console.log(positionInSeconds + " / " + durationInSeconds);
 //     // console.log(basslib.getPosition(chan) + " / " + basslib.getDuration(chan));
 //   } else {
@@ -160,7 +177,11 @@ for (let i in libNames) {
 //   var levels = basslib.BASS_ChannelGetLevel(chan);
 //   var rightlevel = basslib.toFloat64(levels)[0];
 //   var leftlevel = basslib.toFloat64(levels)[1];
-//   console.log("vumeter :" + "left: " + leftlevel / +" right: " + "rightlevel");
+//   console.log(
+//     `${chalk.bgBlue.white.bold(
+//       "vumeter :"
+//     )} left: ${leftlevel} / right: ${rightlevel}`
+//   );
 // }
 
 // // BASS_GetCPU, BASS_GetDevice
@@ -176,10 +197,10 @@ for (let i in libNames) {
 // var vumeterID = setInterval(vumeter, 500);
 
 // // BASS_ChannelSetPosition, getVolume, setVolume
-// console.log("volume: " + basslib.getVolume(chan));
+// console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
 // setTimeout(() => {
 //   basslib.setVolume(chan, 20);
-//   console.log("volume: " + basslib.getVolume(chan));
+//   console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
 
 //   var myPosition = basslib.BASS_ChannelSeconds2Bytes(chan, 8);
 //   basslib.BASS_ChannelSetPosition(
@@ -189,10 +210,4 @@ for (let i in libNames) {
 //   );
 // }, 2000);
 
-// setInterval(() => {
-//   var levels = basslib.BASS_ChannelGetLevel(micChan);
-//   //its a 64 bit value, lets get lo and hiwords
-//   var rightlevel = basslib.toFloat64(levels)[0];
-//   var leftlevel = basslib.toFloat64(levels)[1];
-//   console.log("cc" + rightlevel + ";" + leftlevel);
-// }, 500);
+setInterval(() => console.log("alive"), 500);

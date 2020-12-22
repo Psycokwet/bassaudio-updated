@@ -339,7 +339,7 @@ Bass.prototype.getDevice = function (device) {
       }
     }
   }
-  var info = new this.BASS_DEVICEINFO();
+  var info = this.BASS_DEVICEINFO.generateNewRefObject();
 
   this.BASS_GetDeviceInfo(device, info.ref());
   var o = new Object();
@@ -397,7 +397,7 @@ Bass.prototype.getDevice = function (device) {
 };
 
 Bass.prototype.WRAP_ChannelGetInfo = function (handle) {
-  var info = new this.BASS_CHANNELINFO();
+  var info = this.BASS_CHANNELINFO.generateNewRefObject();
   this.BASS_ChannelGetInfo(handle, info.ref());
 
   return info;
@@ -500,14 +500,14 @@ Bass.prototype.getVolume = function (channel) {
     return 0;
   }
   try {
-    var volume = ref.alloc("float");
-    this.BASS_ChannelGetAttribute(
+    var volume = this.ref.alloc("float");
+    this.basslib.BASS_ChannelGetAttribute(
       channel,
       this.BASS_ChannelAttributes.BASS_ATTRIB_VOL,
       volume
     );
 
-    return ref.deref(volume).toFixed(4) * 100;
+    return this.ref.deref(volume).toFixed(4) * 100;
   } catch (ex) {
     console.log("get volume error:" + ex);
     return 0;
@@ -590,7 +590,7 @@ Bass.prototype.getRecordInfo = function () {
 
 Bass.prototype.getRecordDevices = function () {
   var arr = [];
-  var info = new this.BASS_DEVICEINFO();
+  var info = this.BASS_DEVICEINFO.generateNewRefObject();
   // var micdev = -1;
 
   var i = 0;
@@ -671,7 +671,7 @@ Bass.prototype.getRecordDevice = function (device) {
       }
     }
   }
-  var info = new this.BASS_DEVICEINFO();
+  var info = this.BASS_DEVICEINFO.generateNewRefObject();
 
   this.BASS_RecordGetDeviceInfo(device, info.ref());
   var o = new Object();
