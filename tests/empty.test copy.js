@@ -53,9 +53,10 @@ for (let i in libNames) {
     console.log(
       generatedTestValues +
         " return " +
-        basslib[generatedTestValues](
-          ...testGeneratedInputs[generatedTestValues][1]
-        )
+        basslib
+          [generatedTestValues]
+          // ...testGeneratedInputs[generatedTestValues][1],
+          ()
     );
   }
 }
