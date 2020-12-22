@@ -21,18 +21,18 @@ class refBuilder {
     return this.refType;
   }
   generateNewRefObject(args) {
-    var test = new this.struct(args);
-    return test.ref().deref();
+    return new this.struct(args);
   }
 }
 
-function structMaster() {
+function setStructs(bass) {
   // Originals types
   //   char *name;
   //   char *driver;
   //   DWORD flags;
 
-  this.BASS_DEVICEINFO = Struct({
+  var structs = {};
+  structs.BASS_DEVICEINFO = Struct({
     name: "string",
     driver: "string",
     flags: "int",
@@ -54,7 +54,7 @@ function structMaster() {
   //     DWORD speakers;
   //     DWORD freq;
 
-  this.BASS_INFO = Struct({
+  structs.BASS_INFO = Struct({
     flags: "int",
     hwsize: "int",
     hwfree: "int",
@@ -78,7 +78,7 @@ function structMaster() {
   //   BOOL singlein;
   //   DWORD freq;
 
-  this.BASS_RECORDINFO = Struct({
+  structs.BASS_RECORDINFO = Struct({
     flags: "int",
     formats: "int",
     inputs: "int",
@@ -86,7 +86,7 @@ function structMaster() {
     freq: "int",
   });
 
-  this.BASS_CHANNELINFO = Struct({
+  structs.BASS_CHANNELINFO = Struct({
     freq: "int",
     chans: "int",
     flags: "int",
@@ -97,7 +97,7 @@ function structMaster() {
     filename: "string",
   });
 
-  this.ID3V1Tag = Struct({
+  structs.ID3V1Tag = Struct({
     id: "string",
     title: "string",
     artist: "string",
@@ -106,9 +106,9 @@ function structMaster() {
     comment: "string",
     genre: "byte",
   });
-  for (let prop in this) {
-    this[prop] = new refBuilder(prop, this[prop]);
+  for (let prop in structs) {
+    bass[prop] = new refBuilder(prop, structs[prop]);
   }
 }
 
-exports = module.exports = structMaster;
+exports = module.exports = setStructs;

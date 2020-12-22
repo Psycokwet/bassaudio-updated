@@ -33,7 +33,7 @@ const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 const os = require("os");
 
-const structMaster = require("./structMaster");
+const setStructs = require("./setStructs");
 const libFile = require("./libFile");
 const setFlags = require("./flags");
 
@@ -107,8 +107,7 @@ function Bass() {
     this.libFiles[prop].setPath(basePath);
   }
 
-  this.sm = new structMaster();
-  console.log(this.sm.BASS_DEVICEINFO.getRefType());
+  setStructs(this);
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -147,11 +146,11 @@ function Bass() {
   //     //console.log(buffer);
   //   }
   // );
-  const BASS_DEVICEINFO = this.sm.BASS_DEVICEINFO;
-  const BASS_CHANNELINFO = this.sm.BASS_CHANNELINFO;
-  const ID3V1Tag = this.sm.ID3V1Tag;
-  const BASS_INFO = this.sm.BASS_INFO;
-  const BASS_RECORDINFO = this.sm.BASS_RECORDINFO;
+  const BASS_DEVICEINFO = this.BASS_DEVICEINFO;
+  const BASS_CHANNELINFO = this.BASS_CHANNELINFO;
+  const ID3V1Tag = this.ID3V1Tag;
+  const BASS_INFO = this.BASS_INFO;
+  const BASS_RECORDINFO = this.BASS_RECORDINFO;
   const ffiFunDeclaration = {
     BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
     BASS_GetVersion: ["int", []],
@@ -260,7 +259,7 @@ function Bass() {
 ////////////WRAPPER ADD ON////////////
 
 Bass.prototype.getDeviceCount = function () {
-  var info = new this.BASS_DEVICEINFO();
+  var info = this.BASS_DEVICEINFO.generateNewRefObject();
 
   var i = 0;
   while (this.BASS_GetDeviceInfo(i, info.ref())) {
@@ -271,7 +270,7 @@ Bass.prototype.getDeviceCount = function () {
 
 Bass.prototype.getDevices = function () {
   var arr = [];
-  var info = new this.BASS_DEVICEINFO();
+  var info = this.BASS_DEVICEINFO.generateNewRefObject();
 
   var i = 0;
   while (this.BASS_GetDeviceInfo(i, info.ref())) {

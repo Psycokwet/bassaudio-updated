@@ -26,7 +26,6 @@ class libFile {
     this.dl = null;
   }
   tryFunc(fun, ...args) {
-    console.log("try " + fun + ":" + args);
     if (this.isEnabled()) return this.dl[fun](...args);
     throw new Error(wrapper_errors.libNotEnabled(this.id));
   }
