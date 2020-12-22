@@ -76,122 +76,120 @@ if (!success) {
   );
 }
 
-// // BASS_ChannelGetInfo, getInfo
-// var info = basslib.BASS_ChannelGetInfo(chan);
-// // var info = basslib.getInfo()
-// console.log(chalk.blue.bold("result of BASS_ChannelGetInfo: "), info);
+// BASS_ChannelGetInfo, getInfo
+var info = basslib.BASS_ChannelGetInfo(chan);
+// var info = basslib.getInfo()
+console.log(chalk.blue.bold("result of BASS_ChannelGetInfo: "), info);
 
-// // BASS_ChannelSetSync to position
-// var Pos20SecondsBytePos = basslib.BASS_ChannelSeconds2Bytes(chan, 15);
-// var proc20SecondsID = basslib.BASS_ChannelSetSync(
-//   chan,
-//   basslib.BASS_ChannelSyncTypes.BASS_SYNC_POS,
-//   Pos20SecondsBytePos,
-//   function (handle, channel, data, user) {
-//     // BASS_ChannelStop
-//     if (handle === proc20SecondsID) {
-//       console.log(chalk.green.bold("--> position reached to the 15 seconds.."));
-//       // var result = basslib.BASS_ChannelStop(chan);
-//       // console.log("result of BASS_ChannelStop: ", result);
-//     }
-//   }
-// );
+// BASS_ChannelSetSync to position
+var Pos20SecondsBytePos = basslib.BASS_ChannelSeconds2Bytes(chan, 15);
+var proc20SecondsID = basslib.BASS_ChannelSetSync(
+  chan,
+  basslib.BASS_ChannelSyncTypes.BASS_SYNC_POS,
+  Pos20SecondsBytePos,
+  function (handle, channel, data, user) {
+    // BASS_ChannelStop
+    if (handle === proc20SecondsID) {
+      console.log(chalk.green.bold("--> position reached to the 15 seconds.."));
+      // var result = basslib.BASS_ChannelStop(chan);
+      // console.log("result of BASS_ChannelStop: ", result);
+    }
+  }
+);
 
-// // BASS_ChannelSetSync to END
-// var procTOENDID = basslib.BASS_ChannelSetSync(
-//   chan,
-//   basslib.BASS_ChannelSyncTypes.BASS_SYNC_END,
-//   0,
-//   function (handle, channel, data, user) {
-//     if (handle === procTOENDID) {
-//       console.log(chalk.green.bold("--> playback finished.."));
-//     }
-//   }
-// );
+// BASS_ChannelSetSync to END
+var procTOENDID = basslib.BASS_ChannelSetSync(
+  chan,
+  basslib.BASS_ChannelSyncTypes.BASS_SYNC_END,
+  0,
+  function (handle, channel, data, user) {
+    if (handle === procTOENDID) {
+      console.log(chalk.green.bold("--> playback finished.."));
+    }
+  }
+);
 
-// // BASS_ChannelRemoveSync
-// /*
-// basslib.BASS_ChannelRemoveSync(chan, procTOENDID);
-// */
+// BASS_ChannelRemoveSync
+/*
+basslib.BASS_ChannelRemoveSync(chan, procTOENDID);
+*/
 
-// // BASS_ChannelIsActive, BASS_ChannelGetPosition, BASS_ChannelBytes2Seconds
-// // BASS_ChannelGetLength, BASS_ChannelSeconds2Bytes
-// // getPosition, getDuration
-// function pollPosition() {
-//   if (
-//     basslib.BASS_ChannelIsActive(chan) ===
-//     basslib.BASS_ChannelIsActiveAttribs.BASS_ACTIVE_PLAYING
-//   ) {
-//     var positionInBytes = basslib.BASS_ChannelGetPosition(
-//       chan,
-//       basslib.BASS_POSITIONflags.BASS_POS_BYTE
-//     );
-//     var positionInSeconds = basslib.BASS_ChannelBytes2Seconds(
-//       chan,
-//       positionInBytes
-//     );
-//     // console.log(basslib.BASS_ChannelSeconds2Bytes(chan, positionInSeconds) === positionInBytes);
+// BASS_ChannelIsActive, BASS_ChannelGetPosition, BASS_ChannelBytes2Seconds
+// BASS_ChannelGetLength, BASS_ChannelSeconds2Bytes
+// getPosition, getDuration
+function pollPosition() {
+  if (
+    basslib.BASS_ChannelIsActive(chan) ===
+    basslib.BASS_ChannelIsActiveAttribs.BASS_ACTIVE_PLAYING
+  ) {
+    var positionInBytes = basslib.BASS_ChannelGetPosition(
+      chan,
+      basslib.BASS_POSITIONflags.BASS_POS_BYTE
+    );
+    var positionInSeconds = basslib.BASS_ChannelBytes2Seconds(
+      chan,
+      positionInBytes
+    );
+    // console.log(basslib.BASS_ChannelSeconds2Bytes(chan, positionInSeconds) === positionInBytes);
 
-//     var durationInBytes = basslib.BASS_ChannelGetLength(
-//       chan,
-//       basslib.BASS_POSITIONflags.BASS_POS_BYTE
-//     );
-//     var durationInSeconds = basslib.BASS_ChannelBytes2Seconds(
-//       chan,
-//       durationInBytes
-//     );
-//     // console.log(basslib.BASS_ChannelSeconds2Bytes(chan, durationInSeconds) === durationInBytes);
+    var durationInBytes = basslib.BASS_ChannelGetLength(
+      chan,
+      basslib.BASS_POSITIONflags.BASS_POS_BYTE
+    );
+    var durationInSeconds = basslib.BASS_ChannelBytes2Seconds(
+      chan,
+      durationInBytes
+    );
+    // console.log(basslib.BASS_ChannelSeconds2Bytes(chan, durationInSeconds) === durationInBytes);
 
-//     console.log(
-//       `${chalk.bgBlue.white.bold(
-//         "position :"
-//       )} ${positionInSeconds} / ${durationInSeconds}`
-//     );
-//     // console.log(positionInSeconds + " / " + durationInSeconds);
-//     // console.log(basslib.getPosition(chan) + " / " + basslib.getDuration(chan));
-//   } else {
-//     clearInterval(pollID);
-//     clearInterval(vumeterID);
-//     clearInterval(statusID);
-//   }
-// }
+    console.log(
+      `${chalk.bgBlue.white.bold(
+        "position :"
+      )} ${positionInSeconds} / ${durationInSeconds}`
+    );
+    // console.log(positionInSeconds + " / " + durationInSeconds);
+    // console.log(basslib.getPosition(chan) + " / " + basslib.getDuration(chan));
+  } else {
+    clearInterval(pollID);
+    clearInterval(vumeterID);
+    clearInterval(statusID);
+  }
+}
 
-// // BASS_ChannelGetLevel, toFloat64
-// function vumeter() {
-//   var levels = basslib.BASS_ChannelGetLevel(chan);
-//   var rightlevel = basslib.toFloat64(levels)[0];
-//   var leftlevel = basslib.toFloat64(levels)[1];
-//   console.log(
-//     `${chalk.bgBlue.white.bold(
-//       "vumeter :"
-//     )} left: ${leftlevel} / right: ${rightlevel}`
-//   );
-// }
+// BASS_ChannelGetLevel, toFloat64
+function vumeter() {
+  var levels = basslib.BASS_ChannelGetLevel(chan);
+  var rightlevel = basslib.toFloat64(levels)[0];
+  var leftlevel = basslib.toFloat64(levels)[1];
+  console.log(
+    `${chalk.bgBlue.white.bold(
+      "vumeter :"
+    )} left: ${leftlevel} / right: ${rightlevel}`
+  );
+}
 
-// // BASS_GetCPU, BASS_GetDevice
-// function pollStatus() {
-//   console.log("*******************");
-//   console.log("CPU usage: ", basslib.BASS_GetCPU());
-//   console.log("Soundcard: ", basslib.BASS_GetDevice());
-//   console.log("*******************");
-// }
+// BASS_GetCPU, BASS_GetDevice
+function pollStatus() {
+  console.log("*******************");
+  console.log("CPU usage: ", basslib.BASS_GetCPU());
+  console.log("Soundcard: ", basslib.BASS_GetDevice());
+  console.log("*******************");
+}
 
-// var statusID = setInterval(pollStatus, 3000);
-// var pollID = setInterval(pollPosition, 1000);
-// var vumeterID = setInterval(vumeter, 500);
+var statusID = setInterval(pollStatus, 3000);
+var pollID = setInterval(pollPosition, 1000);
+var vumeterID = setInterval(vumeter, 500);
 
-// // BASS_ChannelSetPosition, getVolume, setVolume
-// console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
-// setTimeout(() => {
-//   basslib.setVolume(chan, 20);
-//   console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
+// BASS_ChannelSetPosition, getVolume, setVolume
+console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
+setTimeout(() => {
+  basslib.setVolume(chan, 20);
+  console.log(chalk.bgGreen.white.bold("volume: "), basslib.getVolume(chan));
 
-//   var myPosition = basslib.BASS_ChannelSeconds2Bytes(chan, 8);
-//   basslib.BASS_ChannelSetPosition(
-//     chan,
-//     myPosition,
-//     basslib.BASS_POSITIONflags.BASS_POS_BYTE
-//   );
-// }, 2000);
-
-setInterval(() => console.log("alive"), 500);
+  var myPosition = basslib.BASS_ChannelSeconds2Bytes(chan, 8);
+  basslib.BASS_ChannelSetPosition(
+    chan,
+    myPosition,
+    basslib.BASS_POSITIONflags.BASS_POS_BYTE
+  );
+}, 2000);

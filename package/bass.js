@@ -34,8 +34,9 @@ const ffi = require("ffi-napi");
 const os = require("os");
 
 const setStructs = require("./setStructs");
-const libFile = require("./libFile");
+const setCallbacks = require("./setCallbacks");
 const setFlags = require("./flags");
+const libFile = require("./libFile");
 
 const wrapper_errors = {
   libNotEnabled: (lib) => `You must enable ${lib} before using this function`,
@@ -108,6 +109,7 @@ function Bass() {
   }
 
   setStructs(this);
+  setCallbacks(this);
 
   var Bass = ref.types.void;
   var dword = ref.refType(Bass);
@@ -154,11 +156,16 @@ function Bass() {
   const ffiFunDeclaration = {
     BASS_Init: ["bool", ["int", "int", "int", "int", "int"]],
     BASS_GetVersion: ["int", []],
-    BASS_StreamCreate: ["int", ["int", "int", "int", "pointer", "int64"]],
+    BASS_StreamCreate: [
+      "int",
+      ["int", "int", "int", "pointer", "int64"],
+      ["int", "int", "int", this.StreamProc.id, "int64"],
+    ],
     BASS_StreamCreateFile: ["int", ["bool", "string", "int64", "int64", "int"]],
     BASS_StreamCreateURL: [
       "int",
       ["string", "int", "int", "pointer", ref.types.void],
+      ["string", "int", "int", this.DownloadProc.id, ref.types.void],
     ],
     BASS_ChannelPlay: ["bool", ["int", "bool"]],
     BASS_ChannelStop: ["bool", ["int"]],
@@ -177,6 +184,7 @@ function Bass() {
     BASS_ChannelSetSync: [
       "int",
       ["int", "int", "int64", "pointer", ref.types.void],
+      ["int", "int", "int64", this.SyncProc.id, ref.types.void],
     ],
 
     BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
@@ -229,6 +237,7 @@ function Bass() {
     BASS_RecordStart: [
       "int",
       ["int", "int", "long", "pointer", ref.types.void],
+      ["int", "int", "long", this.RecordProc.id, ref.types.void],
     ],
   };
 
@@ -241,15 +250,6 @@ function Bass() {
     ffiFunDeclaration,
     this
   );
-  // this.libFiles["bass"].enable(
-  //   ffi.Library(
-  //     new ffi.DynamicLibrary(
-  //       this.libFiles["bass"].path,
-  //       ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
-  //     ),
-  //     ffiFunDeclaration
-  //   )
-  // );
 
   this.libFiles["bass"].setDebugData({
     ffiFunDeclaration: ffiFunDeclaration,
@@ -259,7 +259,7 @@ function Bass() {
 ////////////WRAPPER ADD ON////////////
 
 Bass.prototype.getDeviceCount = function () {
-  var info = this.BASS_DEVICEINFO.generateNewRefObject();
+  var info = this.BASS_DEVICEINFO.generateNewObject();
 
   var i = 0;
   while (this.BASS_GetDeviceInfo(i, info.ref())) {
@@ -270,7 +270,7 @@ Bass.prototype.getDeviceCount = function () {
 
 Bass.prototype.getDevices = function () {
   var arr = [];
-  var info = this.BASS_DEVICEINFO.generateNewRefObject();
+  var info = this.BASS_DEVICEINFO.generateNewObject();
 
   var i = 0;
   while (this.BASS_GetDeviceInfo(i, info.ref())) {
@@ -339,7 +339,7 @@ Bass.prototype.getDevice = function (device) {
       }
     }
   }
-  var info = this.BASS_DEVICEINFO.generateNewRefObject();
+  var info = this.BASS_DEVICEINFO.generateNewObject();
 
   this.BASS_GetDeviceInfo(device, info.ref());
   var o = new Object();
@@ -397,7 +397,7 @@ Bass.prototype.getDevice = function (device) {
 };
 
 Bass.prototype.WRAP_ChannelGetInfo = function (handle) {
-  var info = this.BASS_CHANNELINFO.generateNewRefObject();
+  var info = this.BASS_CHANNELINFO.generateNewObject();
   this.BASS_ChannelGetInfo(handle, info.ref());
 
   return info;
@@ -590,7 +590,7 @@ Bass.prototype.getRecordInfo = function () {
 
 Bass.prototype.getRecordDevices = function () {
   var arr = [];
-  var info = this.BASS_DEVICEINFO.generateNewRefObject();
+  var info = this.BASS_DEVICEINFO.generateNewObject();
   // var micdev = -1;
 
   var i = 0;
@@ -671,7 +671,7 @@ Bass.prototype.getRecordDevice = function (device) {
       }
     }
   }
-  var info = this.BASS_DEVICEINFO.generateNewRefObject();
+  var info = this.BASS_DEVICEINFO.generateNewObject();
 
   this.BASS_RecordGetDeviceInfo(device, info.ref());
   var o = new Object();
@@ -748,13 +748,22 @@ Bass.prototype.EnableMixer = function (value) {
       BASS_Mixer_ChannelSetSync: [
         "int",
         ["int", "int", "int64", "pointer", ref.types.void],
+        ["int", "int", "int64", this.SyncProc.id, ref.types.void],
       ],
-      BASS_Split_StreamCreate: ["int", ["int", "int", "pointer"]],
+      BASS_Split_StreamCreate: [
+        "int",
+        ["int", "int", "pointer"],
+        ["int", "int", "int*"],
+      ],
       BASS_Split_StreamGetAvailable: ["int", ["int"]],
       BASS_Split_StreamGetSource: ["int", ["int"]],
       BASS_Split_StreamReset: ["bool", ["int"]],
       BASS_Split_StreamResetEx: ["bool", ["int", "int"]],
-      BASS_Split_StreamGetSplits: ["int", ["int", "pointer", "int"]],
+      BASS_Split_StreamGetSplits: [
+        "int",
+        ["int", "pointer", "int"],
+        ["int", "HSTREAM *", "int"],
+      ],
     };
 
     enableLib(
@@ -763,13 +772,6 @@ Bass.prototype.EnableMixer = function (value) {
       ffiFunDeclaration,
       this
     );
-    // this.libFiles["mix"].enable(
-    //   ffi.Library(this.libFiles["mix"].path, ffiFunDeclaration)
-    // );
-
-    // this.libFiles["mix"].setDebugData({
-    //   ffiFunDeclaration: ffiFunDeclaration,
-    // });
   } else {
     this.libFiles["mix"].disable();
   }
@@ -788,9 +790,14 @@ Bass.prototype.EnableEncoder = function (value) {
       BASS_Encode_Start: [
         "int",
         ["int", "string", "int", "pointer", ref.types.void],
+        ["int", "string", "int", this.EncodeProc.id, ref.types.void],
       ],
       BASS_Encode_IsActive: ["int", ["int"]],
-      BASS_Encode_SetNotify: ["bool", ["int", "pointer", ref.types.void]],
+      BASS_Encode_SetNotify: [
+        "bool",
+        ["int", "pointer", ref.types.void],
+        ["int", this.EncodeNotifyProc.id, ref.types.void],
+      ],
       BASS_Encode_SetPaused: ["bool", ["int", "bool"]],
       BASS_Encode_Stop: ["bool", ["int"]],
       BASS_Encode_CastInit: [
@@ -819,13 +826,6 @@ Bass.prototype.EnableEncoder = function (value) {
       ffiFunDeclaration,
       this
     );
-    // this.libFiles["enc"].enable(
-    //   ffi.Library(this.libFiles["enc"].path, ffiFunDeclaration)
-    // );
-
-    // this.libFiles["enc"].setDebugData({
-    //   ffiFunDeclaration: ffiFunDeclaration,
-    // });
   } else {
     this.libFiles["enc"].disable();
   }
@@ -852,17 +852,6 @@ Bass.prototype.EnableTags = function (value) {
       ffiFunDeclaration,
       this
     );
-    // this.libFiles["tags"].enable(
-    //   ffi.Library(this.libFiles["tags"].path, ffiFunDeclaration)
-    // );
-
-    // for (let fun in ffiFunDeclaration) {
-    //   Bass.prototype[fun] = (...args) =>
-    //     this.libFiles["tags"].tryFunc(fun, ...args);
-    // }
-    // this.libFiles["tags"].setDebugData({
-    //   ffiFunDeclaration: ffiFunDeclaration,
-    // });
   } else {
     this.libFiles["tags"].disable();
   }

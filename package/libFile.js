@@ -6,6 +6,7 @@ const path = require("path");
 
 const ref = require("ref-napi");
 const setStructs = require("./setStructs");
+const setCallbacks = require("./setCallbacks");
 const argTypeValuesDefault = {
   int: ref.alloc("int", 0).ref(),
   int64: "0",
@@ -17,7 +18,13 @@ const argTypeValuesDefault = {
 var structs = {};
 setStructs(structs);
 for (let prop in structs) {
-  argTypeValuesDefault[prop] = structs[prop].generateNewRefObject().ref();
+  argTypeValuesDefault[prop] = structs[prop].generateNewObject().ref();
+}
+const argCallbackBuilders = {};
+var callbacks = {};
+setCallbacks(callbacks);
+for (let prop in callbacks) {
+  argCallbackBuilders[prop] = callbacks[prop];
 }
 
 class libFile {
@@ -46,8 +53,15 @@ class libFile {
       throw new Error(wrapper_errors.libNotEnabled(this.id));
     var finalArgs = [];
     for (let i in this.ffiFunDeclaration[fun][1]) {
-      if (args[i] !== undefined) finalArgs.push(args[i]);
-      else finalArgs.push(this.basicGeneratedInputs[fun][1][i]);
+      if (this.basicGeneratedInputs[fun][1][i] === "callback") {
+        let builder = argCallbackBuilders[this.ffiFunDeclaration[fun][2][i]];
+        if (args[i] !== undefined)
+          finalArgs.push(builder.generateNewObject(args[i]));
+        else finalArgs.push(builder.generateNewObject(null));
+      } else {
+        if (args[i] !== undefined) finalArgs.push(args[i]);
+        else finalArgs.push(this.basicGeneratedInputs[fun][1][i]);
+      }
     }
     return this.dl[fun](...finalArgs);
   }
@@ -75,6 +89,8 @@ function generateTestInput(ffiFunDeclaration) {
     for (let i in argTypes) {
       if (argTypeValuesDefault[argTypes[i]] !== undefined)
         generatedArgValues.push(argTypeValuesDefault[argTypes[i]]);
+      else if (argCallbackBuilders[argTypes[i]] !== undefined)
+        generatedArgValues.push("callback");
       else generatedArgValues.push(null);
     }
     basicGeneratedInputs[fun] = [returnType, generatedArgValues];

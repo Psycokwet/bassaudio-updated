@@ -20,7 +20,7 @@ class refBuilder {
   getRefType() {
     return this.refType;
   }
-  generateNewRefObject(args) {
+  generateNewObject(args) {
     return new this.struct(args);
   }
 }
