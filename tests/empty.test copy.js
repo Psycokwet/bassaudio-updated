@@ -3,61 +3,15 @@ var basslib = new Bass();
 
 /////////////////////////PRETEST//////////////////////////////////
 
-const setStructs = require("../package/setStructs");
-const argTypeValuesDefault = {
-  int: 0,
-  int64: "0",
-  string: "0",
-  pointer: null,
-  bool: false,
-};
-
-var structs = {};
-setStructs(structs);
-for (let prop in structs) {
-  argTypeValuesDefault[prop] = structs[prop].generateNewRefObject().ref();
-}
-
-const generateTestInputFor = (libname) => {
-  var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libname);
-
-  var testGeneratedInputs = {};
-  for (let fun in ffiFunDeclaration) {
-    let values = ffiFunDeclaration[fun];
-    let returnType = values[0];
-    let argTypes = values[1];
-    if (values[2]) argTypes = values[2];
-
-    let generatedArgValues = [];
-    for (let i in argTypes) {
-      if (argTypeValuesDefault[argTypes[i]] !== undefined)
-        generatedArgValues.push(argTypeValuesDefault[argTypes[i]]);
-      else generatedArgValues.push(null);
-    }
-    testGeneratedInputs[fun] = [returnType, generatedArgValues];
-  }
-  return testGeneratedInputs;
-};
-
-///////////////////UTIL//////////////////////
-
 basslib.EnableTags(true);
 basslib.EnableEncoder(true);
 basslib.EnableMixer(true);
 
 var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
 for (let i in libNames) {
-  var testGeneratedInputs = generateTestInputFor(libNames[i]);
-
-  for (let generatedTestValues in testGeneratedInputs) {
-    console.log(
-      generatedTestValues +
-        " return " +
-        basslib
-          [generatedTestValues]
-          // ...testGeneratedInputs[generatedTestValues][1],
-          ()
-    );
+  var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
+  for (let fun in ffiFunDeclaration) {
+    console.log(fun + " return " + basslib[fun]());
   }
 }
 
