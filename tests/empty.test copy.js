@@ -3,22 +3,6 @@ var basslib = new Bass();
 
 /////////////////////////PRETEST//////////////////////////////////
 
-// const path = require("path");
-
-// basslib.EnableTags(true);
-// basslib.EnableEncoder(true);
-// basslib.EnableMixer(true);
-
-// var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
-// for (let i in libNames) {
-//   var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
-//   for (let fun in ffiFunDeclaration) {
-//     console.log(fun + " return " + basslib[fun]());
-//   }
-// }
-
-////////////////////////////////////////////////////////////////////
-
 const chalk = require("chalk");
 // getDevices
 var cards = basslib.getDevices();
