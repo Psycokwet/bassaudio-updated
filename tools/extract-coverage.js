@@ -6,8 +6,11 @@ const callback = (error, data) => {
     console.log("could not get coverage, error reading file");
     process.exit(1);
   }
-  const line = data.match(/All files \|(.*)\|/g);
-  const percentages = line[0].match(/\d+\.\d+|\d+\b|\d+(?=\w)/g);
-  console.log(percentages[0]);
+  console.log(
+    data
+      .match(/All files(.*)/g)[0]
+      .match(/\|(.*)\|/g)[0]
+      .match(/\d+\.\d+|\d+\b|\d+(?=\w)/g)[0]
+  );
 };
 fs.readFile("report.txt", encoding, callback);

@@ -94,9 +94,10 @@ function getPlatformDependencies() {
   return null;
 }
 
-function Bass({ silent }) {
+function Bass(options) {
+  if (!options) options = {};
   try {
-    applyShim(silent);
+    applyShim(options.silent);
   } catch (err) {
     console.error(chalk.bgRed.white.bold(err));
   }
