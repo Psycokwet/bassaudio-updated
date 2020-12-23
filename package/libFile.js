@@ -50,7 +50,6 @@ class libFile {
     this.dl = null;
   }
   tryFunc(fun, ...args) {
-    console.log(fun)
     if (!this.isEnabled())
       throw new Error(wrapper_errors.libNotEnabled(this.id));
     var finalArgs = [];
