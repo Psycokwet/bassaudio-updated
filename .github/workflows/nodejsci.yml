@@ -25,18 +25,15 @@ jobs:
       - run: npm test
       - name: Get the coverage
         run: |
-          set -x
+          #!/bin/bash
           VALUE=$(cat coverage.txt)
           echo "TEST=$TEST"
-          if (( $(echo "$VALUE <= 50" | bc -l) )) {
+          if (( $(echo "$VALUE <= 50" | bc -l) )); then
             COLOR=red
-            }
-          elif (( $(echo "$VALUE > 80" | bc -l) )) {
+          elif (( $(echo "$VALUE > 80" | bc -l) )); then
             COLOR=green
-            }
-          else {
+          else
             COLOR=orange
-            }
           fi
           echo "COLOR=$COLOR" >> $GITHUB_ENV
           echo "VALUE=$VALUE%" >> $GITHUB_ENV
