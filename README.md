@@ -60,7 +60,7 @@ If you want a lighter version without superfluous binaries library included, ple
 this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi), [ref-napi](https://www.npmjs.com/package/ref-napi), [ref-struct-di](https://www.npmjs.com/package/ref-struct-di), [ref-array-di](https://www.npmjs.com/package/ref-array-di).
 It uses [os](https://www.npmjs.com/package/os) to determines which dynamic library are needed.
 
-ffi-napi enables to call c library methods, properties , callbacks etc.
+ffi-napi enables to call c library methods, properties, callbacks etc.
 
 **Compatible with?**
 
@@ -158,7 +158,7 @@ var basslib = new bass();
 var cards = basslib.getDevices();
 console.log("total found sound cards:" + cards.length);
 //lets print first sound card's info, find out more inside source code..
-//first item in array '[0]' is "no sound" , then use the item [1]
+//first item in array '[0]' is "no sound", then use the item [1]
 //you will see that card isInitialized will be false, because we did not init it yet..
 var card = cards[1];
 console.log(
@@ -173,7 +173,7 @@ console.log(
     card.typeSpeakers
 );
 
-// [device],[freq],[flags] , -1 is default sound card
+// [device],[freq],[flags], -1 is default sound card
 var result = basslib.BASS_Init(
   -1,
   44100,
@@ -192,7 +192,7 @@ if (basslib.BASS_ErrorGetCode() != basslib.BASS_ErrorCode.BASS_OK) {
 }
 
 //lets play
-//channel,restart   , returns  (also there are stop , pause commands)
+//channel, restart, returns  (also there are stop, pause commands)
 var success = basslib.BASS_ChannelPlay(chan, -1);
 if (!success) {
   console.log("error playing file:" + basslib.BASS_ErrorGetCode());
@@ -604,7 +604,7 @@ var chan1 = basslib.BASS_StreamCreateFile(
   basslib.BASSFlags.BASS_STREAM_DECODE
 );
 
-//if your file is stereo , you have to downmix to mono, else you cannot get it mono output to only 1 speaker.
+//if your file is stereo, you have to downmix to mono, else you cannot get it mono output to only 1 speaker.
 var ok1 = basslib.BASS_Mixer_StreamAddChannel(
   mixer,
   chan1,
