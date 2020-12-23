@@ -14,7 +14,7 @@ Tested on
 [![windows-latest](https://img.shields.io/static/v1?label=windows&message=latest&color=blue)]("windows-latest")
 [![ubuntu-latest](https://img.shields.io/static/v1?label=ubuntu&message=latest&color=blueviolet)]("ubuntu-latest")
 
-with
+With
 
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
@@ -27,8 +27,8 @@ Tests results :
 
 Documentation :
 
-[![Examples](https://img.shields.io/static/v1?label=info&message=examples&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
-[![features](https://img.shields.io/static/v1?label=info&message=features-wrapped&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
+[![Examples](https://img.shields.io/static/v1?label=%20&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
+[![features](https://img.shields.io/static/v1?label=%20&message=features-wrapped&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
 Others :
