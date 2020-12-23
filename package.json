@@ -7,6 +7,7 @@
   "main": "./package/bass",
   "scripts": {
     "gitacp": "node tools/g.js",
+    "extract-covered-fun": "node tools/extract-covered-fun.js > documentation/covered-fun.md",
     "localTest": "jest",
     "test": "jest --coverage > report.txt && node tools/extract-coverage.js > coverage.txt"
   },
