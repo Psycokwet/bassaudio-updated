@@ -28,7 +28,7 @@ Tests results :
 Documentation :
 
 [![Examples](https://img.shields.io/static/v1?label=wrapper&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
-[![features](https://img.shields.io/static/v1?label=wrapper&message=features-wrapped&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
+[![features](https://img.shields.io/static/v1?label=wrapper&message=features&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
 Others :
@@ -647,7 +647,7 @@ i only added methods, properties what i needed.. add yours to the code or send m
 
 - 2.0.0
 
-  Complete rebuilding of the wrapper to be easier to test, to evolve, and to suit the needs of everyones.
+  Complete rebuilding of the wrapper to be easier to test, to evolve, and to suit the needs of everyone.
 
   - Adding examples
   - Adding tests
