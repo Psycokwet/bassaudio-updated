@@ -6,6 +6,7 @@
 <hr />
 
 **[Single_track](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/single_track.js)**
+
 Play a single track of musig, show the relevant vu metter
 
 Usages :
@@ -21,7 +22,8 @@ node .\single_track.js '..\..\..\..\..\Music\The legend of zelda 25th Anniversar
 ```
 
 **[microphone](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/microphone.js)**
-Play a single track of musig, show the relevant vu metter
+
+Capture the default microphone input and play it directly on the default speaker
 
 Usages :
 
