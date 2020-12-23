@@ -9,7 +9,7 @@ const setStructs = require("./setStructs");
 const setCallbacks = require("./setCallbacks");
 const argTypeValuesDefault = {
   int: 0,
-  int64: "0",
+  int64: 0,
   string: "0",
   float: 0.0,
   bool: false,
