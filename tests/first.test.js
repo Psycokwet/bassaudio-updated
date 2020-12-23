@@ -1,5 +1,5 @@
 var bass = require("../");
-var basslib = new bass();
+var basslib = new bass({ silent: true });
 
 /////////////////////////PRETEST//////////////////////////////////
 
