@@ -57,7 +57,7 @@ If you want a lighter version without superfluous binaries library included, ple
 **Un4Seen Bass Audio Library Wrapper**
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
-this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi) , [ref-napi](https://www.npmjs.com/package/ref-napi) , [ref-struct-napi](https://www.npmjs.com/package/ref-struct-napi) .
+this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi), [ref-napi](https://www.npmjs.com/package/ref-napi), [ref-struct-di](https://www.npmjs.com/package/ref-struct-di), [ref-array-di](https://www.npmjs.com/package/ref-array-di).
 It uses [os](https://www.npmjs.com/package/os) to determines which dynamic library are needed.
 
 ffi-napi enables to call c library methods, properties , callbacks etc.
