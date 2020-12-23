@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Bassaudio-updated</h1>
-  A all in one bass library wrapper, maintained and tested.
+  A all in one bass library wrapper, maintained and mostly tested.
   This package come with its bass libraries files dependencies, and use the right one if your are on linux 32/64 or Windows 32/64 or macOS. However, you must check the licensing on <a title="un4seen" href="http://www.un4seen.com">un4seen</a>.
   For a lighter version of this package, without the bass files, checkout 
   <a title="bassaudio-updated-light" href="https://www.npmjs.com/package/bassaudio-updated-light">bassaudio-updated-light</a>
@@ -28,7 +28,7 @@ Tests results :
 Documentation :
 
 [![Examples](https://img.shields.io/static/v1?label=info&message=examples&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
-[![features](https://img.shields.io/static/v1?label=info&message=features&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
+[![features](https://img.shields.io/static/v1?label=info&message=features-wrapped&color=yellow)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
 Others :

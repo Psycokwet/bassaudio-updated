@@ -5,7 +5,7 @@
 
 <hr />
 
-**Single_track**
+**[Single_track](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/single_track.js)**
 Play a single track of musig, show the relevant vu metter
 
 Usages :
@@ -18,4 +18,13 @@ Example :
 
 ```
 node .\single_track.js '..\..\..\..\..\Music\The legend of zelda 25th Anniversary special orchestra CD (FLAC)\Taylor Davis - Gerudo Valley.mp3'
+```
+
+**[microphone](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/microphone.js)**
+Play a single track of musig, show the relevant vu metter
+
+Usages :
+
+```
+node .\microphone.js
 ```
