@@ -16,11 +16,6 @@
 
 const chalk = require("chalk");
 const applyShim = require("../shim.js");
-try {
-  applyShim();
-} catch (err) {
-  console.error(chalk.bgRed.white.bold(err));
-}
 
 const EventEmitter = require("events").EventEmitter;
 
@@ -99,7 +94,13 @@ function getPlatformDependencies() {
   return null;
 }
 
-function Bass() {
+function Bass({ silent }) {
+  try {
+    applyShim(silent);
+  } catch (err) {
+    console.error(chalk.bgRed.white.bold(err));
+  }
+
   const platformDependencies = getPlatformDependencies();
   this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);

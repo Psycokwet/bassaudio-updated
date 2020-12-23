@@ -1,5 +1,3 @@
-APPLYING SHIM
-Modified: C:\Users\Socar\Documents\projects\npm-depot\bassaudio-updated\node_modules\ffi-napi\lib\callback.js
 
 From bass :
 - BASS_Init

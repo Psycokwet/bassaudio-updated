@@ -13,14 +13,16 @@ var options = [
   },
 ];
 
-module.exports = () => {
+module.exports = (silent) => {
   options.forEach((o) => {
     try {
       var changedFiles = replace.sync(o);
 
       if (changedFiles[0]) {
-        console.log(chalk.red.bold("APPLYING SHIM"));
-        console.log(chalk.blue.bold.underline(`Modified: ${o.files}`));
+        if (!silent) {
+          console.log(chalk.red.bold("APPLYING SHIM"));
+          console.log(chalk.blue.bold.underline(`Modified: ${o.files}`));
+        }
       }
     } catch (err) {
       throw new Error(`Error during shim | ${err}`);
