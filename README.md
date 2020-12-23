@@ -654,6 +654,7 @@ i only added methods, properties what i needed.. add yours to the code or send m
   - Adding coverage
   - Adding documentation
   - Leaving out the features lists of Readme to allow to automatise it's content
+  - Changing dependencies to [ref-struct-di](https://www.npmjs.com/package/ref-struct-di), [ref-array-di](https://www.npmjs.com/package/ref-array-di) because ref-napi version that can differe in ref-array-napi and ref-struct-napi from ffi-napi.
 
 **--------------1.X.X------------------**
 
