@@ -205,8 +205,8 @@ function Bass() {
     BASS_RecordSetInput: ["bool", ["int", "int", "float"]],
     BASS_RecordStart: [
       "int",
-      ["int", "int", "long", "pointer", ref.types.void],
-      ["int", "int", "long", this.RecordProc.id, ref.types.void],
+      ["int", "int", "long", "pointer", "int64"],
+      ["int", "int", "long", this.RecordProc.id, "int64"],
     ],
   };
 
