@@ -16,6 +16,7 @@ npm-debug.log
 # add ignored files below
 .gitignore
 coverage
+documentation
 tests
 tools
 .github
