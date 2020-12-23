@@ -23,7 +23,7 @@ With
 Tests results :
 
 [![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
-![Coverage Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)
+[![Coverage Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)](https://github.com/Psycokwet/bassaudio-updated/tree/master/coverage)
 
 Documentation :
 
