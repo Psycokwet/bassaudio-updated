@@ -1,6 +1,6 @@
 {
   "name": "bassaudio-updated",
-  "version": "1.0.8-1.3.5",
+  "version": "2.0.0",
   "license": "MIT",
   "author": "Sophie Carboni <socarboni@gmail.com>",
   "description": "un4seen Bass Audio Library based on ffi bindings",
