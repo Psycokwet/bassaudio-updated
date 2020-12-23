@@ -24,6 +24,7 @@ test("TAGS_GetVersion", () => {
 });
 
 test("TAGS_SetUTF8_1", () => {
+  basslib.TAGS_SetUTF8(false);
   expect(basslib.TAGS_SetUTF8(true)).toBe(false);
 });
 test("TAGS_SetUTF8_2", () => {
