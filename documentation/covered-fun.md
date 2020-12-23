@@ -1,5 +1,6 @@
 APPLYING SHIM
 Modified: C:\Users\Socar\Documents\projects\npm-depot\bassaudio-updated\node_modules\ffi-napi\lib\callback.js
+
 From bass :
 - BASS_Init
 
@@ -103,6 +104,7 @@ From bass :
 
 - BASS_RecordStart
 
+
 From mix :
 - BASS_Mixer_StreamCreate
 
@@ -134,6 +136,7 @@ From mix :
 
 - BASS_Split_StreamGetSplits
 
+
 From enc :
 - BASS_Encode_Start
 
@@ -150,6 +153,7 @@ From enc :
 - BASS_Encode_CastGetStats
 
 - BASS_Encode_CastSetTitle
+
 
 From tags :
 - TAGS_GetVersion
