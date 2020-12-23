@@ -641,47 +641,21 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 **INFO**
 i only added methods, properties what i needed.. add yours to the code or send me mail..
 
-**IMPORTANT**
-
-\***\*Below modifications are now handled internally. You shouldn't need to do these manually. However, if you do, you know where to find them.\*\***
-
-2017-02-10
-
-please modify node_modules/ffi/lib/callback.js if you are using callbacks.
-ffi garbage collector removes callbacks after 10 seconds. with this modification, callbacks stays on memory
-
-at line 81 , before return, add;
-
-```javascript
-Object.defineProperty(func, "_func", { value: callback });
-```
-
-**--------------------------------**
-
-2017-01-31
-
-please modify node_modules/ffi/lib/library.js if you are using linux os and if you are using addons.
-ffi loads bass into instance, not as global instance.. so the addons could not find main bass on memory.
-this fixes that issue.. (on windows and macos, it works without this modification)
-
-find
-
-```javascript
-var dl = new DynamicLibrary(libfile || null, RTLD_NOW);
-```
-
-change it to
-
-```javascript
-var dl = new DynamicLibrary(
-  libfile || null,
-  RTLD_NOW | DynamicLibrary.FLAGS.RTLD_GLOBAL
-);
-```
-
 **UPDATE LOG**
 
-**--------------------------------**
+**--------------2.X.X------------------**
+
+- 2.0.0
+
+  Complete rebuilding of the wrapper to be easier to test, to evolve, and to suit the needs of everyones.
+
+  - Adding examples
+  - Adding tests
+  - Adding coverage
+  - Adding documentation
+  - Leaving out the features lists of Readme to allow to automatise it's content
+
+**--------------1.X.X------------------**
 
 - 1.0.8-1.3.5
 
@@ -754,9 +728,7 @@ var dl = new DynamicLibrary(
     RiccardoBiemmi repo :
     https://github.com/RiccardoBiemmi/bassaudiolibrary
 
-**BEFORE FORK-UPDATE LOG**
-
-**--------------------------------**
+**-----BEFORE FORK-UPDATE LOG-----**
 
 - 1.0.8
 
