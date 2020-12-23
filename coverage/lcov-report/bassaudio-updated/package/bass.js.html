@@ -956,6 +956,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -964,28 +986,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1797,15 +1797,15 @@ function getPlatformDependencies() {
   let arch = os.arch();
 &nbsp;
   switch (platform) {
-    case "win32":
-      const winLibFiles = {
+<span class="branch-0 cbranch-no" title="branch not covered" >    case "win32":</span>
+      const winLibFiles = <span class="cstat-no" title="statement not covered" >{</span>
         bass: new libFile("bass", "bass.dll"),
         mix: new libFile("mix", "bassmix.dll"),
         enc: new libFile("enc", "bassenc.dll"),
         tags: new libFile("tags", "tags.dll"),
       };
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (arch == "x64") {
-        return { path: "win64", libFiles: winLibFiles };
+<span class="cstat-no" title="statement not covered" >      if (arch == "x64") {</span>
+<span class="cstat-no" title="statement not covered" >        return { path: "win64", libFiles: winLibFiles };</span>
       } else <span class="cstat-no" title="statement not covered" >if (arch == "x86") {</span>
 <span class="cstat-no" title="statement not covered" >        return { path: "win32", libFiles: winLibFiles };</span>
       } else {
@@ -1819,15 +1819,15 @@ function getPlatformDependencies() {
         tags: new libFile("tags", "libtags.dylib"),
       };
 <span class="cstat-no" title="statement not covered" >      return { path: "macOs", libFiles: macosLibFiles };</span>
-<span class="branch-2 cbranch-no" title="branch not covered" >    case "linux":</span>
-      const linuxLibFiles = <span class="cstat-no" title="statement not covered" >{</span>
+    case "linux":
+      const linuxLibFiles = {
         bass: new libFile("bass", "libbass.so"),
         mix: new libFile("mix", "libbassmix.so"),
         enc: new libFile("enc", "libbassenc.so"),
         tags: new libFile("tags", "libtags.so"),
       };
-<span class="cstat-no" title="statement not covered" >      if (arch == "x64") {</span>
-<span class="cstat-no" title="statement not covered" >        return { path: "linux64", libFiles: linuxLibFiles };</span>
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (arch == "x64") {
+        return { path: "linux64", libFiles: linuxLibFiles };
       } else <span class="cstat-no" title="statement not covered" >if (arch == "x86") {</span>
 <span class="cstat-no" title="statement not covered" >        return { path: "linux32", libFiles: linuxLibFiles };</span>
       } else {
@@ -1878,8 +1878,8 @@ function Bass(options) {
     BASS_StreamCreateFile: ["int", ["bool", "string", "int64", "int64", "int"]],
     BASS_StreamCreateURL: [
       "int",
-      ["string", "int", "int", "pointer", ref.types.void],
-      ["string", "int", "int", this.DownloadProc.id, ref.types.void],
+      ["string", "int", "int", "pointer", "int64"],
+      ["string", "int", "int", this.DownloadProc.id, "int64"],
     ],
     BASS_ChannelPlay: ["bool", ["int", "bool"]],
     BASS_ChannelStop: ["bool", ["int"]],
@@ -1897,8 +1897,8 @@ function Bass(options) {
     BASS_ChannelGetAttribute: ["bool", ["int", "int", "pointer"]],
     BASS_ChannelSetSync: [
       "int",
-      ["int", "int", "int64", "pointer", ref.types.void],
-      ["int", "int", "int64", this.SyncProc.id, ref.types.void],
+      ["int", "int", "int64", "pointer", "int64"],
+      ["int", "int", "int64", this.SyncProc.id, "int64"],
     ],
 &nbsp;
     BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
@@ -2461,8 +2461,8 @@ Bass.prototype.EnableMixer = function (value) {
       BASS_Mixer_ChannelSetPosition: ["bool", ["int", "int64", "int"]],
       BASS_Mixer_ChannelSetSync: [
         "int",
-        ["int", "int", "int64", "pointer", ref.types.void],
-        ["int", "int", "int64", this.SyncProc.id, ref.types.void],
+        ["int", "int", "int64", "pointer", "int64"],
+        ["int", "int", "int64", this.SyncProc.id, "int64"],
       ],
       BASS_Split_StreamCreate: [
         "int",
@@ -2503,14 +2503,14 @@ Bass.prototype.EnableEncoder = function (value) {
     const ffiFunDeclaration = {
       BASS_Encode_Start: [
         "int",
-        ["int", "string", "int", "pointer", ref.types.void],
-        ["int", "string", "int", this.EncodeProc.id, ref.types.void],
+        ["int", "string", "int", "pointer", "int64"],
+        ["int", "string", "int", this.EncodeProc.id, "int64"],
       ],
       BASS_Encode_IsActive: ["int", ["int"]],
       BASS_Encode_SetNotify: [
         "bool",
-        ["int", "pointer", ref.types.void],
-        ["int", this.EncodeNotifyProc.id, ref.types.void],
+        ["int", "pointer", "int64"],
+        ["int", this.EncodeNotifyProc.id, "int64"],
       ],
       BASS_Encode_SetPaused: ["bool", ["int", "bool"]],
       BASS_Encode_Stop: ["bool", ["int"]],
@@ -2590,7 +2590,7 @@ exports = module.exports = Bass;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 23 2020 22:05:07 GMT+0100 (Central European Standard Time)
+                at Wed Dec 23 2020 23:23:44 GMT+0100 (Central European Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

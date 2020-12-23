@@ -135,8 +135,8 @@ function Bass(options) {
     BASS_StreamCreateFile: ["int", ["bool", "string", "int64", "int64", "int"]],
     BASS_StreamCreateURL: [
       "int",
-      ["string", "int", "int", "pointer", ref.types.void],
-      ["string", "int", "int", this.DownloadProc.id, ref.types.void],
+      ["string", "int", "int", "pointer", "int64"],
+      ["string", "int", "int", this.DownloadProc.id, "int64"],
     ],
     BASS_ChannelPlay: ["bool", ["int", "bool"]],
     BASS_ChannelStop: ["bool", ["int"]],
@@ -154,8 +154,8 @@ function Bass(options) {
     BASS_ChannelGetAttribute: ["bool", ["int", "int", "pointer"]],
     BASS_ChannelSetSync: [
       "int",
-      ["int", "int", "int64", "pointer", ref.types.void],
-      ["int", "int", "int64", this.SyncProc.id, ref.types.void],
+      ["int", "int", "int64", "pointer", "int64"],
+      ["int", "int", "int64", this.SyncProc.id, "int64"],
     ],
 
     BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
@@ -718,8 +718,8 @@ Bass.prototype.EnableMixer = function (value) {
       BASS_Mixer_ChannelSetPosition: ["bool", ["int", "int64", "int"]],
       BASS_Mixer_ChannelSetSync: [
         "int",
-        ["int", "int", "int64", "pointer", ref.types.void],
-        ["int", "int", "int64", this.SyncProc.id, ref.types.void],
+        ["int", "int", "int64", "pointer", "int64"],
+        ["int", "int", "int64", this.SyncProc.id, "int64"],
       ],
       BASS_Split_StreamCreate: [
         "int",
@@ -760,14 +760,14 @@ Bass.prototype.EnableEncoder = function (value) {
     const ffiFunDeclaration = {
       BASS_Encode_Start: [
         "int",
-        ["int", "string", "int", "pointer", ref.types.void],
-        ["int", "string", "int", this.EncodeProc.id, ref.types.void],
+        ["int", "string", "int", "pointer", "int64"],
+        ["int", "string", "int", this.EncodeProc.id, "int64"],
       ],
       BASS_Encode_IsActive: ["int", ["int"]],
       BASS_Encode_SetNotify: [
         "bool",
-        ["int", "pointer", ref.types.void],
-        ["int", this.EncodeNotifyProc.id, ref.types.void],
+        ["int", "pointer", "int64"],
+        ["int", this.EncodeNotifyProc.id, "int64"],
       ],
       BASS_Encode_SetPaused: ["bool", ["int", "bool"]],
       BASS_Encode_Stop: ["bool", ["int"]],
