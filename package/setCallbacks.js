@@ -29,7 +29,7 @@ function setCallbacks(bass) {
 
   callbacks.StreamProc = [
     "void",
-    ["int", ref.types.void, "int", ref.types.void],
+    ["int", ref.types.void, "int", "pointer"],
   ];
 
   //   void CALLBACK DownloadProc(
@@ -38,7 +38,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
 
-  callbacks.DownloadProc = ["void", ["long", "long", ref.types.void]];
+  callbacks.DownloadProc = ["void", ["long", "long", "pointer"]];
 
   //   void CALLBACK SyncProc(
   //     HSYNC handle,
@@ -47,7 +47,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
 
-  callbacks.SyncProc = ["void", ["int", "int", "int", ref.types.void]];
+  callbacks.SyncProc = ["void", ["int", "int", "int", "pointer"]];
 
   //   BOOL CALLBACK RecordProc(
   //     HRECORD handle,
@@ -58,7 +58,7 @@ function setCallbacks(bass) {
 
   callbacks.RecordProc = [
     "void",
-    ["int", ref.types.void, "int", ref.types.void],
+    ["int", "pointer", "int", "pointer"],
   ];
 
   //   void CALLBACK EncodeProc(
@@ -70,7 +70,7 @@ function setCallbacks(bass) {
   // );
   callbacks.EncodeProc = [
     "void",
-    ["int", "int", ref.types.void, "int", ref.types.void],
+    ["int", "int", "pointer", "int", "pointer"],
   ];
 
   //   void CALLBACK EncodeNotifyProc(
@@ -78,7 +78,7 @@ function setCallbacks(bass) {
   //     DWORD status,
   //     void *user
   // );
-  callbacks.EncodeNotifyProc = ["void", ["int", "int", ref.types.void]];
+  callbacks.EncodeNotifyProc = ["void", ["int", "int", "pointer"]];
 
   for (let prop in callbacks) {
     bass[prop] = new callbackBuilder(prop, callbacks[prop]);

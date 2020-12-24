@@ -135,8 +135,8 @@ function Bass(options) {
     BASS_StreamCreateFile: ["int", ["bool", "string", "int64", "int64", "int"]],
     BASS_StreamCreateURL: [
       "int",
-      ["string", "int", "int", "pointer", "int64"],
-      ["string", "int", "int", this.DownloadProc.id, "int64"],
+      ["string", "int", "int", "pointer", "pointer"],
+      ["string", "int", "int", this.DownloadProc.id, "void*"],
     ],
     BASS_ChannelPlay: ["bool", ["int", "bool"]],
     BASS_ChannelStop: ["bool", ["int"]],
@@ -154,10 +154,9 @@ function Bass(options) {
     BASS_ChannelGetAttribute: ["bool", ["int", "int", "pointer"]],
     BASS_ChannelSetSync: [
       "int",
-      ["int", "int", "int64", "pointer", "int64"],
-      ["int", "int", "int64", this.SyncProc.id, "int64"],
+      ["int", "int", "int64", "pointer", "pointer"],
+      ["int", "int", "int64", this.SyncProc.id, "void*"],
     ],
-
     BASS_ChannelSlideAttribute: ["bool", ["long", "long", "float", "long"]],
     BASS_ChannelIsSliding: ["bool", ["long", "long"]],
     BASS_ChannelGetDevice: ["int", ["int"]],
@@ -412,7 +411,7 @@ Bass.prototype.WRAP_ChannelSetSync = function (handle, type, param, callback) {
     handle,
     type,
     param,
-    ffi.Callback("void", ["int", "int", "int", ref.types.void], callback),
+    ffi.Callback("void", ["int", "int", "int", "pointer"], callback),
     null
   );
 };
@@ -428,7 +427,7 @@ Bass.prototype.WRAP_Mixer_ChannelSetSync = function (
     handle,
     type,
     param,
-    ffi.Callback("void", ["int", "int", "int", ref.types.void], callback),
+    ffi.Callback("void", ["int", "int", "int", "pointer"], callback),
     null
   );
 };
@@ -718,8 +717,8 @@ Bass.prototype.EnableMixer = function (value) {
       BASS_Mixer_ChannelSetPosition: ["bool", ["int", "int64", "int"]],
       BASS_Mixer_ChannelSetSync: [
         "int",
-        ["int", "int", "int64", "pointer", "int64"],
-        ["int", "int", "int64", this.SyncProc.id, "int64"],
+        ["int", "int", "int64", "pointer", "pointer"],
+        ["int", "int", "int64", this.SyncProc.id, "void*"],
       ],
       BASS_Split_StreamCreate: [
         "int",
@@ -760,14 +759,14 @@ Bass.prototype.EnableEncoder = function (value) {
     const ffiFunDeclaration = {
       BASS_Encode_Start: [
         "int",
-        ["int", "string", "int", "pointer", "int64"],
-        ["int", "string", "int", this.EncodeProc.id, "int64"],
+        ["int", "string", "int", "pointer", "pointer"],
+        ["int", "string", "int", this.EncodeProc.id, "void*"],
       ],
       BASS_Encode_IsActive: ["int", ["int"]],
       BASS_Encode_SetNotify: [
         "bool",
-        ["int", "pointer", "int64"],
-        ["int", this.EncodeNotifyProc.id, "int64"],
+        ["int", "pointer", "pointer"],
+        ["int", this.EncodeNotifyProc.id, "pointer"],
       ],
       BASS_Encode_SetPaused: ["bool", ["int", "bool"]],
       BASS_Encode_Stop: ["bool", ["int"]],

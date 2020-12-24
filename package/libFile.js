@@ -11,7 +11,8 @@ const argTypeValuesDefault = {
   int: 0,
   int64: 0,
   long: 0,
-  string: "0",
+  string: "",
+  double: 0.0,
   float: 0.0,
   bool: false,
 };
