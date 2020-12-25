@@ -17,7 +17,7 @@ class callbackBuilder {
   }
 }
 
-function setCallbacks(bass) {
+function setCallbacks(Bass) {
   var callbacks = {};
 
   //   DWORD CALLBACK StreamProc(
@@ -72,7 +72,7 @@ function setCallbacks(bass) {
   callbacks.EncodeNotifyProc = ["void", ["int", "int", "pointer"]];
 
   for (let prop in callbacks) {
-    bass[prop] = new callbackBuilder(prop, callbacks[prop]);
+    Bass.prototype[prop] = new callbackBuilder(prop, callbacks[prop]);
   }
 }
 
