@@ -16,9 +16,9 @@ Tested on
 
 With
 
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.x&color=green)](https://www.npmjs.com/package/bassaudio-updated-light "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
 
 Tests results :
 
@@ -636,8 +636,6 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 **Do you need more features?**
 
 There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
-
-
 
 **UPDATE LOG**
 
