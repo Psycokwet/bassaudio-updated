@@ -1,7 +1,7 @@
-var Bass = require("../");
-var basslib = new Bass();
-
-/////////////////////////PRETEST//////////////////////////////////
+var getBass = require("../tools/getBass");
+var basslib = getBass({
+  silent: true,
+});
 
 const chalk = require("chalk");
 var init = basslib.BASS_Init(
