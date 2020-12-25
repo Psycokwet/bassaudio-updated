@@ -1,7 +1,7 @@
-var bass = require("../");
-var basslib = new bass({ silent: true });
-
-/////////////////////////PRETEST//////////////////////////////////
+var getBass = require("../tools/getBass");
+var basslib = getBass({
+  silent: true,
+});
 
 test("BASS_GetVersion", () => {
   expect(basslib.BASS_GetVersion()).toBe(33820416);
