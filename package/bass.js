@@ -92,8 +92,6 @@ function getPlatformDependencies() {
   return null;
 }
 
-for (let i in setters) if (setters[i]) setters[i](Bass);
-
 function Bass(options) {
   if (!options) options = {};
   try {
@@ -106,6 +104,7 @@ function Bass(options) {
     console.log(options.ffiFunDeclaration);
   }
 
+  for (let i in setters) if (setters[i]) setters[i](this);
   const platformDependencies = getPlatformDependencies();
   this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);
