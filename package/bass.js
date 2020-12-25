@@ -20,7 +20,7 @@ const applyShim = require("../shim.js");
 const EventEmitter = require("events").EventEmitter;
 
 const util = require("util");
-// util.inherits(Bass, EventEmitter);
+util.inherits(Bass, EventEmitter);
 
 const path = require("path");
 const ffi = require("ffi-napi");
@@ -28,8 +28,9 @@ const os = require("os");
 
 const fs = require("fs");
 
-// Read in the libs from this directory and add them as exports
-// This way you can just reference
+const enableLibInt = require("./enableLibInt");
+
+// Read in the libs from this directory and import them
 var setters = [];
 fs.readdirSync(path.join(".", "package", "setters")).forEach(function (file) {
   if (file.indexOf(".js") > -1)
@@ -44,7 +45,6 @@ fs.readdirSync(path.join(".", "package", "libDeclarations")).forEach(function (
     libDeclarations.push(require("./" + path.join("libDeclarations", file)));
 });
 
-const FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");
 const libFile = require("./libFile");
 
 function getPlatformDependencies() {
@@ -55,8 +55,8 @@ function getPlatformDependencies() {
     case "win32":
       const winLibFiles = {
         bass: new libFile("bass", "bass.dll"),
-        mix: new libFile("mix", "bassmix.dll"),
-        enc: new libFile("enc", "bassenc.dll"),
+        mixer: new libFile("mixer", "bassmix.dll"),
+        encoder: new libFile("encoder", "bassenc.dll"),
         tags: new libFile("tags", "tags.dll"),
       };
       if (arch == "x64") {
@@ -69,16 +69,16 @@ function getPlatformDependencies() {
     case "darwin":
       const macosLibFiles = {
         bass: new libFile("bass", "libbass.dylib"),
-        mix: new libFile("mix", "libbassmix.dylib"),
-        enc: new libFile("enc", "libbassenc.dylib"),
+        mixer: new libFile("mixer", "libbassmix.dylib"),
+        encoder: new libFile("encoder", "libbassenc.dylib"),
         tags: new libFile("tags", "libtags.dylib"),
       };
       return { path: "macOs", libFiles: macosLibFiles };
     case "linux":
       const linuxLibFiles = {
         bass: new libFile("bass", "libbass.so"),
-        mix: new libFile("mix", "libbassmix.so"),
-        enc: new libFile("enc", "libbassenc.so"),
+        mixer: new libFile("mixer", "libbassmix.so"),
+        encoder: new libFile("encoder", "libbassenc.so"),
         tags: new libFile("tags", "libtags.so"),
       };
       if (arch == "x64") {
@@ -104,10 +104,12 @@ function Bass(options) {
     console.log(options.ffiFunDeclaration);
   }
 
-  for (let i in setters) if (setters[i]) setters[i](this);
+  this.FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");
   const platformDependencies = getPlatformDependencies();
   this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);
+
+  for (let i in setters) if (setters[i]) setters[i](this);
 
   for (let prop in this.libFiles) {
     this.libFiles[prop].setPath(basePath);
@@ -115,100 +117,28 @@ function Bass(options) {
 
   for (let i in libDeclarations) {
     if (libDeclarations[i])
-      FfiFunDeclarationIndex.add(
+      this.FfiFunDeclarationIndex.add(
         libDeclarations[i].key,
         libDeclarations[i].getFfiFunDeclarations(this)
       );
   }
-  const ffiFunDeclaration = FfiFunDeclarationIndex.get("bass");
 
-  enableLib(
+  const ffiFunDeclaration = this.FfiFunDeclarationIndex.get("bass");
+
+  enableLibInt(
+    this,
     this.libFiles["bass"],
     new ffi.DynamicLibrary(
       this.libFiles["bass"].path,
       ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
     ),
-    ffiFunDeclaration,
-    this
+    ffiFunDeclaration
   );
 
   this.libFiles["bass"].setDebugData({
     ffiFunDeclaration: ffiFunDeclaration,
   });
-  // EventEmitter.call(this);
-}
-
-// /////////////////////NATIVES FUNCTIONS/////////////////////////
-
-Bass.prototype.MixerEnabled = function () {
-  return this.libFiles["mix"].isEnabled();
-};
-
-Bass.prototype.EnableMixer = function (value) {
-  if (value) {
-    const ffiFunDeclaration = FfiFunDeclarationIndex.get("mix");
-    enableLib(
-      this.libFiles["mix"],
-      this.libFiles["mix"].path,
-      ffiFunDeclaration,
-      this
-    );
-  } else {
-    this.libFiles["mix"].disable();
-  }
-};
-
-//endregion
-
-//region encoder
-Bass.prototype.EncoderEnabled = function () {
-  return this.libFiles["enc"].isEnabled();
-};
-
-Bass.prototype.EnableEncoder = function (value) {
-  if (value) {
-    const ffiFunDeclaration = FfiFunDeclarationIndex.get("enc");
-
-    enableLib(
-      this.libFiles["enc"],
-      this.libFiles["enc"].path,
-      ffiFunDeclaration,
-      this
-    );
-  } else {
-    this.libFiles["enc"].disable();
-  }
-};
-
-///////////////////////TAGS lib/////////////////////////////
-Bass.prototype.TagsEnabled = function () {
-  return this.libFiles["tags"].isEnabled();
-};
-
-Bass.prototype.EnableTags = function (value) {
-  if (value) {
-    const ffiFunDeclaration = FfiFunDeclarationIndex.get("tags");
-
-    enableLib(
-      this.libFiles["tags"],
-      this.libFiles["tags"].path,
-      ffiFunDeclaration,
-      this
-    );
-  } else {
-    this.libFiles["tags"].disable();
-  }
-};
-
-function enableLib(libFile, pathOrDl, ffiFunDeclaration, bass) {
-  libFile.enable(ffi.Library(pathOrDl, ffiFunDeclaration));
-
-  for (let fun in ffiFunDeclaration) {
-    Bass.prototype[fun] = (...args) => libFile.tryFunc(fun, ...args);
-  }
-  libFile.setDebugData({
-    ffiFunDeclaration: ffiFunDeclaration,
-  });
+  EventEmitter.call(this);
 }
 
 exports = module.exports = Bass;

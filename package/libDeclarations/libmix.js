@@ -2,7 +2,7 @@
  * Created by scarboni on 25.12.2020
  */
 
-const key = "mix";
+const key = "mixer";
 
 function getFfiFunDeclarations(bass) {
   return {

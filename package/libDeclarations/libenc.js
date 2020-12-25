@@ -2,7 +2,7 @@
  * Created by scarboni on 25.12.2020
  */
 
-const key = "enc";
+const key = "encoder";
 
 function getFfiFunDeclarations(bass) {
   return {
