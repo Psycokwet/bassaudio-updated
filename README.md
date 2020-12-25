@@ -306,7 +306,7 @@ var Last10SecondsBytePos = basslib.BASS_ChannelSeconds2Bytes(
 basslib.BASS_ChannelSetPosition(chan, Last10SecondsBytePos);
 ```
 
-**Is channel is playing?**
+**Is channel playing?**
 
 ```javascript
 var result = basslib.BASS_ChannelIsActive(chan);
@@ -633,8 +633,11 @@ var avail1 = basslib.BASS_Split_StreamGetAvailable(splitChan);
 var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 ```
 
-**INFO**
-i only added methods, properties what i needed.. add yours to the code or send me mail..
+**Do you need more features?**
+
+There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
+
+
 
 **UPDATE LOG**
 

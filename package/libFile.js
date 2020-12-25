@@ -7,6 +7,11 @@ const path = require("path");
 const ref = require("ref-napi");
 const setStructs = require("./setStructs");
 const setCallbacks = require("./setCallbacks");
+
+const wrapper_errors = {
+  libNotEnabled: (lib) => `You must enable ${lib} before using this function`,
+};
+
 const argTypeValuesDefault = {
   int: 0,
   int64: 0,
