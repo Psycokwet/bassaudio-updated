@@ -27,18 +27,19 @@ const ffi = require("ffi-napi");
 
 const fs = require("fs");
 
+const libFile = require("./libFile");
 const enableLibInt = require("./enableLibInt");
 const getPlatformDependencies = require("./getPlatformDependencies");
 
 // Read in the libs from this directory and import them
 var setters = [];
-fs.readdirSync(path.join(".", "package", "setters")).forEach(function (file) {
+fs.readdirSync(path.join("./", "package", "setters")).forEach(function (file) {
   if (file.indexOf(".js") > -1)
     setters.push(require("./" + path.join("setters", file)));
 });
 
 var libDeclarations = [];
-fs.readdirSync(path.join(".", "package", "libDeclarations")).forEach(function (
+fs.readdirSync(path.join("./", "package", "libDeclarations")).forEach(function (
   file
 ) {
   if (file.indexOf(".js") > -1)
@@ -53,20 +54,34 @@ function Bass(options) {
     console.error(chalk.bgRed.white.bold(err));
   }
 
-  if (options.ffiFunDeclaration) {
-    console.log(options.ffiFunDeclaration);
-  }
-
-  this.FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");
   const platformDependencies = getPlatformDependencies();
-  this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);
 
-  for (let i in setters) if (setters[i]) setters[i](this);
-
+  this.libFiles = platformDependencies.libFiles;
   for (let prop in this.libFiles) {
     this.libFiles[prop].setPath(basePath);
   }
+
+  this.FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");
+
+  if (options.generatedFfiFunDeclaration) {
+    for (let libname in options.generatedFfiFunDeclaration) {
+      if (!this.libFiles[libname]) {
+        this.libFiles[libname] = new libFile(
+          libname,
+          options.generatedFfiFunDeclaration[libname].path
+        );
+        this.libFiles[libname].setPath();
+      }
+
+      this.FfiFunDeclarationIndex.add(
+        libname,
+        options.generatedFfiFunDeclaration[libname].ffiFunDeclaration
+      );
+    }
+  }
+
+  for (let i in setters) if (setters[i]) setters[i](this);
 
   for (let i in libDeclarations) {
     if (libDeclarations[i])

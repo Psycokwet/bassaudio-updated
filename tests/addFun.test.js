@@ -1,29 +1,41 @@
 var getBass = require("../tools/getBass");
+
+const path = require("path");
+var getPlatformDependenciesForOneFile = require("../tools/getPlatformDependenciesForOneFile");
+
 var basslib = getBass({
   silent: true,
-  ffiFunDeclaration: { bass: {}, tags: {} },
+  generatedFfiFunDeclaration: {
+    bass: {
+      ffiFunDeclaration: {
+        BASS_IsStarted: ["bool", []],
+      },
+    },
+    webm: getPlatformDependenciesForOneFile(
+      {
+        BASS_WEBM_StreamCreateURL: [
+          "int",
+          ["string", "int", "int", "pointer", "pointer", "int"],
+        ],
+      },
+      path.join(__dirname, "basswebm24-osx", "libbasswebm.dylib"),
+      path.join(__dirname, "basswebm24", "basswebm.dll"),
+      path.join(__dirname, "basswebm24", "x64", "basswebm.dll"),
+      path.join(__dirname, "basswebm24-linux", "libbasswebm.so"),
+      path.join(__dirname, "basswebm24-linux", "x64", "libbasswebm.so")
+    ),
+  },
+});
+basslib.EnableWebm(true);
+
+test("test full new lib file linking", () => {
+  expect(basslib.BASS_WEBM_StreamCreateURL()).toBe(0);
 });
 
-basslib.EnableTags(true);
-basslib.EnableEncoder(true);
-basslib.EnableMixer(true);
+test("Is bass well loaded?", () => {
+  expect(basslib.BASS_GetVersion()).toBe(33820416);
+});
 
-test("test basic linking", () => {
-  var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
-  var linked = 0;
-  var awaited = 0;
-  for (let i in libNames) {
-    var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
-    awaited += Object.keys(ffiFunDeclaration).length;
-  }
-
-  for (let i in libNames) {
-    var { ffiFunDeclaration } = basslib.WRAP_DEBUG_getDebugData(libNames[i]);
-    for (let fun in ffiFunDeclaration) {
-      // console.log(fun + " return " + basslib[fun]());
-      basslib[fun]();
-      linked++;
-    }
-  }
-  expect(awaited).toBe(linked);
+test("test add a single fun to base lib bass", () => {
+  expect(basslib.BASS_IsStarted()).toBe(false);
 });

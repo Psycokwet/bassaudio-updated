@@ -4,7 +4,6 @@
 
 const path = require("path");
 
-const ref = require("ref-napi");
 const setStructs = require("./setters/setStructs");
 const setCallbacks = require("./setters/setCallbacks");
 
@@ -42,7 +41,11 @@ class libFile {
     return this;
   }
   setPath(basePath) {
-    this.path = path.join(basePath, this.name);
+    if (basePath) this.path = path.join(basePath, this.name);
+    else {
+      this.path = this.name;
+      this.name = path.basename(this.name);
+    }
   }
   enable(dl) {
     if (!dl) return false;

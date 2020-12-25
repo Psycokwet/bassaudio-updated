@@ -1,0 +1,112 @@
+BASSWEBM 2.4
+Copyright (c) 2018-2019 Un4seen Developments Ltd. All rights reserved.
+
+Files that you should have found in the BASSWEBM package
+========================================================
+Win32 version
+-------------
+BASSWEBM.TXT    This file
+BASSWEBM.DLL    BASSWEBM module
+BASSWEBM.CHM    BASSWEBM documentation
+X64\
+  BASSWEBM.DLL    64-bit BASSWEBM module
+C\              C/C++ API...
+  BASSWEBM.H      BASSWEBM C/C++ header file
+  BASSWEBM.LIB    BASSWEBM import library
+  X64\
+    BASSWEBM.LIB    64-bit BASSWEBM import library
+VB\             Visual Basic API...
+  BASSWEBM.BAS    BASSWEBM Visual Basic module
+DELPHI\         Delphi API...
+  BASSWEBM.PAS    BASSWEBM Delphi unit
+
+MacOSX version
+--------------
+BASSWEBM.TXT    This file
+LIBBASSWEBM.DYLIB  BASSWEBM module
+BASSWEBM.CHM    BASSWEBM documentation
+BASSWEBM.H      BASSWEBM C/C++ header file
+
+Linux version
+-------------
+BASSWEBM.TXT    This file
+LIBBASSWEBM.SO  BASSWEBM module
+BASSWEBM.CHM    BASSWEBM documentation
+BASSWEBM.H      BASSWEBM C/C++ header file
+X64\
+  LIBBASSWEBM.SO  64-bit BASSWEBM module
+
+
+What's the point?
+=================
+BASSWEBM is an extension to the BASS audio library, enabling the playing of
+WebM and Matroska files.
+
+
+Requirements
+============
+BASS 2.4 is required (2.4.13 or above is recommended). The BASSOPUS add-on is
+also required for Opus support. Other add-ons may also be required for other
+codecs that Matroska files may use (typically AAC or AC3).
+
+
+Using BASSWEBM
+=============
+The plugin system (see BASS_PluginLoad) can be used to add WebM support to
+the standard BASS stream creation functions. Dedicated WebM stream creation
+functions are also provided by BASSWEBM.
+
+The usage information in the BASS.TXT file (from the BASS package) is also
+applicable to BASSWEBM and other add-ons.
+
+TIP: The BASSWEBM.CHM file should be put in the same directory as the BASS.CHM
+     file, so that the BASSWEBM documentation can be accessed from within the
+     BASS documentation.
+
+
+Latest Version
+==============
+The latest versions of BASSWEBM & BASS can be found at the BASS website:
+
+	www.un4seen.com
+
+
+Licence
+=======
+BASSWEBM is free to use with BASS.
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, BASSWEBM IS PROVIDED
+"AS IS", WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY
+AND/OR FITNESS FOR A PARTICULAR PURPOSE. THE AUTHORS SHALL NOT BE HELD
+LIABLE FOR ANY DAMAGE THAT MAY RESULT FROM THE USE OF BASSWEBM. YOU USE
+BASSWEBM ENTIRELY AT YOUR OWN RISK.
+
+Usage of BASSWEBM indicates that you agree to the above conditions.
+
+All trademarks and other registered names contained in the BASSWEBM
+package are the property of their respective owners.
+
+
+History
+=======
+These are the major (and not so major) changes at each version stage.
+There are of course bug fixes and other little improvements made along
+the way too! To make upgrading simpler, all functions affected by a
+change to the BASSWEBM interface are listed.
+
+2.4 - 9/8/2018
+--------------
+* First release
+
+
+Credits
+=======
+nestegg WebM demuxer, Copyright (c) 2010 Mozilla Foundation
+
+
+Bug reports, Suggestions, Comments, Enquiries, etc...
+=====================================================
+If you have any of the aforementioned please visit the BASS forum at
+the website.
+
