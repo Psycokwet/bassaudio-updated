@@ -2,12 +2,8 @@
  * Created by scarboni on 21.12.2020
  */
 
-const chalk = require("chalk");
-
 const ref = require("ref-napi");
-const path = require("path");
 const Struct = require("ref-struct-di")(ref);
-const ArrayType = require("ref-array-di")(ref);
 
 class refBuilder {
   constructor(id, content) {
@@ -106,9 +102,7 @@ function setStructs(bass) {
     comment: "string",
     genre: "byte",
   });
-  for (let prop in structs) {
-    bass[prop] = new refBuilder(prop, structs[prop]);
-  }
+  for (let prop in structs) bass[prop] = new refBuilder(prop, structs[prop]);
 }
 
 exports = module.exports = setStructs;

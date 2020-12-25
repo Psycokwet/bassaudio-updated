@@ -6,8 +6,8 @@ const ref = require("ref-napi");
 const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 
-function setWrapFun(Bass) {
-  Bass.prototype.getDeviceCount = function () {
+function setWrapFun(bass) {
+  bass.getDeviceCount = function () {
     var info = this.BASS_DEVICEINFO.generateNewObject();
 
     var i = 0;
@@ -17,7 +17,7 @@ function setWrapFun(Bass) {
     return i;
   };
 
-  Bass.prototype.getDevices = function () {
+  bass.getDevices = function () {
     var arr = [];
     var info = this.BASS_DEVICEINFO.generateNewObject();
 
@@ -79,7 +79,7 @@ function setWrapFun(Bass) {
     return arr;
   };
 
-  Bass.prototype.getDevice = function (device) {
+  bass.getDevice = function (device) {
     if (device == -1) {
       var devs = this.getDevices();
       for (i = 0; i < devs.length; i++) {
@@ -145,14 +145,14 @@ function setWrapFun(Bass) {
     return o;
   };
 
-  Bass.prototype.WRAP_ChannelGetInfo = function (handle) {
+  bass.WRAP_ChannelGetInfo = function (handle) {
     var info = this.BASS_CHANNELINFO.generateNewObject();
     this.BASS_ChannelGetInfo(handle, info.ref());
 
     return info;
   };
 
-  Bass.prototype.WRAP_ChannelGetTags = function (handle, tags) {
+  bass.WRAP_ChannelGetTags = function (handle, tags) {
     var t = this.BASS_ChannelGetTags(handle, tags);
     if (
       tags == this.BASS_ChannelGetTagtypes.BASS_TAG_ID3 ||
@@ -165,7 +165,7 @@ function setWrapFun(Bass) {
     return t;
   };
 
-  Bass.prototype.WRAP_Split_StreamCreate = function (handle, flags) {
+  bass.WRAP_Split_StreamCreate = function (handle, flags) {
     var myArr = ArrayType(ref.types.int);
     var arr = new myArr(3);
     arr[0] = 1;
@@ -176,7 +176,7 @@ function setWrapFun(Bass) {
     return q;
   };
 
-  Bass.prototype.WRAP_Split_StreamGetSplits = function (handle, count) {
+  bass.WRAP_Split_StreamGetSplits = function (handle, count) {
     var myArr = ArrayType(ref.types.int);
     var buff = new Buffer(myArr);
     var q = this.BASS_Split_StreamGetSplits(handle, buff, count);
@@ -184,12 +184,7 @@ function setWrapFun(Bass) {
     return arr;
   };
 
-  Bass.prototype.WRAP_ChannelSetSync = function (
-    handle,
-    type,
-    param,
-    callback
-  ) {
+  bass.WRAP_ChannelSetSync = function (handle, type, param, callback) {
     return this.libFiles["bass"].tryFunc(
       "BASS_ChannelSetSync",
       handle,
@@ -200,12 +195,7 @@ function setWrapFun(Bass) {
     );
   };
 
-  Bass.prototype.WRAP_Mixer_ChannelSetSync = function (
-    handle,
-    type,
-    param,
-    callback
-  ) {
+  bass.WRAP_Mixer_ChannelSetSync = function (handle, type, param, callback) {
     return this.libFiles["mix"].tryFunc(
       "BASS_Mixer_ChannelSetSync",
       handle,
@@ -215,7 +205,7 @@ function setWrapFun(Bass) {
       null
     );
   };
-  Bass.prototype.WRAP_Encode_SetNotify = function (handle, callback) {
+  bass.WRAP_Encode_SetNotify = function (handle, callback) {
     return this.libFiles["enc"].tryFunc(
       "BASS_Encode_SetNotify",
       handle,
@@ -224,7 +214,7 @@ function setWrapFun(Bass) {
     );
   };
 
-  Bass.prototype.WRAP_RecordStart = function (freq, chans, flags, callback) {
+  bass.WRAP_RecordStart = function (freq, chans, flags, callback) {
     if (callback) {
       return this.libFiles["bass"].tryFunc(
         "BASS_RecordStart",
@@ -249,7 +239,7 @@ function setWrapFun(Bass) {
     );
   };
 
-  Bass.prototype.getVolume = function (channel) {
+  bass.getVolume = function (channel) {
     if (channel == 0) {
       return 0;
     }
@@ -268,7 +258,7 @@ function setWrapFun(Bass) {
     }
   };
 
-  Bass.prototype.setVolume = function (channel, newVolume) {
+  bass.setVolume = function (channel, newVolume) {
     return this.BASS_ChannelSetAttribute(
       channel,
       this.BASS_ChannelAttributes.BASS_ATTRIB_VOL,
@@ -276,21 +266,21 @@ function setWrapFun(Bass) {
     );
   };
 
-  Bass.prototype.getPosition = function (channel) {
+  bass.getPosition = function (channel) {
     return this.BASS_ChannelBytes2Seconds(
       channel,
       this.BASS_ChannelGetPosition(channel, 0)
     );
   };
 
-  Bass.prototype.getDuration = function (channel) {
+  bass.getDuration = function (channel) {
     return this.BASS_ChannelBytes2Seconds(
       channel,
       this.BASS_ChannelGetLength(channel, 0)
     );
   };
 
-  Bass.prototype.getInfo = function () {
+  bass.getInfo = function () {
     var refinfo = ref.alloc(this.BASS_INFO);
     this.BASS_GetInfo(refinfo);
     var d = ref.deref(refinfo);
@@ -314,7 +304,7 @@ function setWrapFun(Bass) {
     return o;
   };
 
-  Bass.prototype.toFloat64 = function (level) {
+  bass.toFloat64 = function (level) {
     var hiWord = 0,
       loWord = 0;
     if (level < 0) {
@@ -327,7 +317,7 @@ function setWrapFun(Bass) {
     return [hiWord, loWord];
   };
 
-  Bass.prototype.getRecordInfo = function () {
+  bass.getRecordInfo = function () {
     var refinfo = ref.alloc(this.BASS_RECORDINFO);
     this.BASS_RecordGetInfo(refinfo);
     var d = ref.deref(refinfo);
@@ -342,7 +332,7 @@ function setWrapFun(Bass) {
     return o;
   };
 
-  Bass.prototype.getRecordDevices = function () {
+  bass.getRecordDevices = function () {
     var arr = [];
     var info = this.BASS_DEVICEINFO.generateNewObject();
     // var micdev = -1;
@@ -419,7 +409,7 @@ function setWrapFun(Bass) {
     return arr;
   };
 
-  Bass.prototype.getRecordDevice = function (device) {
+  bass.getRecordDevice = function (device) {
     if (device == -1) {
       var devs = this.getRecordDevices();
       for (i = 0; i < devs.length; i++) {

@@ -20,19 +20,31 @@ const applyShim = require("../shim.js");
 const EventEmitter = require("events").EventEmitter;
 
 const util = require("util");
-util.inherits(Bass, EventEmitter);
+// util.inherits(Bass, EventEmitter);
 
-const ref = require("ref-napi");
 const path = require("path");
-const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 const os = require("os");
-const setWrapDebug = require("./setWrapDebug");
-const setWrapFun = require("./setWrapFun");
-const setStructs = require("./setStructs");
-const setCallbacks = require("./setCallbacks");
+
+const fs = require("fs");
+
+// Read in the libs from this directory and add them as exports
+// This way you can just reference
+var setters = [];
+fs.readdirSync(path.join(".", "package", "setters")).forEach(function (file) {
+  if (file.indexOf(".js") > -1)
+    setters.push(require("./" + path.join("setters", file)));
+});
+
+var libDeclarations = [];
+fs.readdirSync(path.join(".", "package", "libDeclarations")).forEach(function (
+  file
+) {
+  if (file.indexOf(".js") > -1)
+    libDeclarations.push(require("./" + path.join("libDeclarations", file)));
+});
+
 const FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");
-const setFlags = require("./flags");
 const libFile = require("./libFile");
 
 function getPlatformDependencies() {
@@ -80,17 +92,6 @@ function getPlatformDependencies() {
   return null;
 }
 
-const libbass = require("./libbass");
-const libenc = require("./libenc");
-const libtags = require("./libtags");
-const libmix = require("./libmix");
-
-var libs = [];
-libs.push(libbass);
-libs.push(libenc);
-libs.push(libtags);
-libs.push(libmix);
-
 function Bass(options) {
   if (!options) options = {};
   try {
@@ -103,6 +104,7 @@ function Bass(options) {
     console.log(options.ffiFunDeclaration);
   }
 
+  for (let i in setters) if (setters[i]) setters[i](this);
   const platformDependencies = getPlatformDependencies();
   this.libFiles = platformDependencies.libFiles;
   const basePath = path.join(__dirname, "lib", platformDependencies.path);
@@ -110,18 +112,12 @@ function Bass(options) {
   for (let prop in this.libFiles) {
     this.libFiles[prop].setPath(basePath);
   }
-  setWrapDebug(Bass);
-  setWrapFun(Bass);
-  setStructs(this);
-  setCallbacks(this);
 
-  setFlags(this);
-
-  for (i in libs) {
-    if (libs[i])
+  for (let i in libDeclarations) {
+    if (libDeclarations[i])
       FfiFunDeclarationIndex.add(
-        libs[i].key,
-        libs[i].getFfiFunDeclarations(this)
+        libDeclarations[i].key,
+        libDeclarations[i].getFfiFunDeclarations(this)
       );
   }
   const ffiFunDeclaration = FfiFunDeclarationIndex.get("bass");
@@ -139,8 +135,9 @@ function Bass(options) {
   this.libFiles["bass"].setDebugData({
     ffiFunDeclaration: ffiFunDeclaration,
   });
-  EventEmitter.call(this);
+  // EventEmitter.call(this);
 }
+
 // /////////////////////NATIVES FUNCTIONS/////////////////////////
 
 Bass.prototype.MixerEnabled = function () {

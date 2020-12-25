@@ -5,8 +5,8 @@
 const path = require("path");
 
 const ref = require("ref-napi");
-const setStructs = require("./setStructs");
-const setCallbacks = require("./setCallbacks");
+const setStructs = require("./setters/setStructs");
+const setCallbacks = require("./setters/setCallbacks");
 
 const wrapper_errors = {
   libNotEnabled: (lib) => `You must enable ${lib} before using this function`,

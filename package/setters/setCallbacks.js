@@ -27,10 +27,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
 
-  callbacks.StreamProc = [
-    "void",
-    ["int", ref.types.void, "int", "pointer"],
-  ];
+  callbacks.StreamProc = ["void", ["int", "pointer", "int", "pointer"]];
 
   //   void CALLBACK DownloadProc(
   //     const void *buffer,
@@ -38,7 +35,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
 
-  callbacks.DownloadProc = ["void", ["long", "long", "pointer"]];
+  callbacks.DownloadProc = ["void", ["pointer", "long", "pointer"]];
 
   //   void CALLBACK SyncProc(
   //     HSYNC handle,
@@ -56,10 +53,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
 
-  callbacks.RecordProc = [
-    "void",
-    ["int", "pointer", "int", "pointer"],
-  ];
+  callbacks.RecordProc = ["void", ["int", "pointer", "int", "pointer"]];
 
   //   void CALLBACK EncodeProc(
   //     HENCODE handle,
@@ -68,10 +62,7 @@ function setCallbacks(bass) {
   //     DWORD length,
   //     void *user
   // );
-  callbacks.EncodeProc = [
-    "void",
-    ["int", "int", "pointer", "int", "pointer"],
-  ];
+  callbacks.EncodeProc = ["void", ["int", "int", "pointer", "int", "pointer"]];
 
   //   void CALLBACK EncodeNotifyProc(
   //     HENCODE handle,
