@@ -7,7 +7,7 @@
 </div>
 <hr />
 
-[Go to Real Cool Heading section](#examples)
+[Shorts examples](#examples)
 
 Tested on
 
