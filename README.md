@@ -84,6 +84,35 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 
 **Examples**
 
+**Wrapper parameters**
+
+```javascript
+// There is a diversity of parameter accepted by this wrapper, here is a full list of them :
+
+var basslib = getBass({
+  silent: true, //there is a few console log that may appear to indicate that everything is going smoothly, if you don't want to see it, you can set it to silent
+  generatedFfiFunDeclaration: {
+    // Identification of the addon, bass is one of the already covered ones, so, by using this id, you will add covering for new fun, withou losing the ones already managed by the wrapper.
+    bass: {
+      ffiFunDeclaration: {
+        BASS_ORIGINAL_FUN_NAME: ["bool", []],
+      },
+    },
+    //identifiant of the addon, at your choice for new addon. bass, tags, encoder, and mixer are already covered
+    webm: {
+      ffiFunDeclaration: {
+        BASS_ORIGINAL_FUN_NAME: [
+          // Original name of the bass function
+          "int", // return type of the desired function
+          ["string", "float", "double", "long", "pointer", "bool"], // arguments types. You must choose the most relevants types for each arguments. You can see a list of correspondances [here](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/identified-types-correspondances.md).
+        ],
+      },
+      path: "path/to/lib/file.dylib/dll/so", // A path must be given to the added addon if it's not one already covered by the wrapper. If it is an addon covered, the path would be ignored
+    },
+  },
+});
+```
+
 **basic capture and play microphone**
 
 ```javascript
@@ -651,6 +680,7 @@ There is two way to use functions that I did not include in this wrapper. Either
   - Adding documentation
   - Leaving out the features lists of Readme to allow to automatise it's content
   - Changing dependencies to [ref-struct-di](https://www.npmjs.com/package/ref-struct-di), [ref-array-di](https://www.npmjs.com/package/ref-array-di) because ref-napi version that can differe in ref-array-napi and ref-struct-napi from ffi-napi.
+  - Allowing to load non covered addons by adding the proper parameter in the constructor call of the lib. See how to do so in the test [here](https://github.com/Psycokwet/bassaudio-updated/blob/master/tests/addFun.test.js). Adding fun works on any platform, but, loading new addon does not work on mac yet. Some addon may not load easily due to other issues that I did not investigate enough, but I believe there is a way to by pass thoses loading issues.
 
 **--------------1.X.X------------------**
 

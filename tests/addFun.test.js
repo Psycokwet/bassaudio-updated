@@ -26,15 +26,19 @@ var basslib = getBass({
     ),
   },
 });
-basslib.EnableWebm(true);
 
-test("test full new lib file linking", () => {
-  expect(basslib.BASS_WEBM_StreamCreateURL()).toBe(0);
-});
+const os = require("os");
+if (os.platform() !== "darwin") {
+  basslib.EnableWebm(true);
 
-test("Is bass well loaded?", () => {
-  expect(basslib.BASS_GetVersion()).toBe(33820416);
-});
+  test("test full new lib file linking", () => {
+    expect(basslib.BASS_WEBM_StreamCreateURL()).toBe(0);
+  });
+
+  test("Is bass well loaded?", () => {
+    expect(basslib.BASS_GetVersion()).toBe(33820416);
+  });
+}
 
 test("test add a single fun to base lib bass", () => {
   expect(basslib.BASS_IsStarted()).toBe(false);
