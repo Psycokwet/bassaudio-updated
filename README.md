@@ -92,19 +92,19 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 var basslib = getBass({
   silent: true, //there is a few console log that may appear to indicate that everything is going smoothly, if you don't want to see it, you can set it to silent
   generatedFfiFunDeclaration: {
-    // Identification of the addon, bass is one of the already covered ones, so, by using this id, you will add covering for new fun, withou losing the ones already managed by the wrapper.
     bass: {
+      // addon id
       ffiFunDeclaration: {
         BASS_ORIGINAL_FUN_NAME: ["bool", []],
       },
     },
-    //identifiant of the addon, at your choice for new addon. bass, tags, encoder, and mixer are already covered
     webm: {
+      // addon id
       ffiFunDeclaration: {
         BASS_ORIGINAL_FUN_NAME: [
           // Original name of the bass function
           "int", // return type of the desired function
-          ["string", "float", "double", "long", "pointer", "bool"], // arguments types. You must choose the most relevants types for each arguments. You can see a list of correspondances [here](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/identified-types-correspondances.md).
+          ["string", "float", "double", "long", "pointer", "bool"], // Arguments types
         ],
       },
       path: "path/to/lib/file.dylib/dll/so", // A path must be given to the added addon if it's not one already covered by the wrapper. If it is an addon covered, the path would be ignored
@@ -112,6 +112,17 @@ var basslib = getBass({
   },
 });
 ```
+
+_Wrapper parameters_
+
+Arguments types : You must choose the most relevants types for each arguments. You can see a list of correspondances [here](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/identified-types-correspondances.md).
+
+Addon id :
+Identification of the addon, two choices :
+
+- Either it's one of the covered ones (bass, tags, encoder, and mixer are already covered) so, by using one of those id, you will add covering for new fun, without losing the ones already managed by the wrapper.
+
+- Either it's a new addon, for which you can put the name you want. You can put as much diffents addons as you want. Some may have issues, that I did not investigates since I did not test this functionnality with every addon offered with bass, so, don't hesitate to contact me if needed. The name you choose will generate a [Name]Enable() function, as well as a Enabled[Name]() function, as for the ones already covered to activate an addon, and check if it is activated.
 
 **basic capture and play microphone**
 
