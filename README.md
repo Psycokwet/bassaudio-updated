@@ -7,8 +7,6 @@
 </div>
 <hr />
 
-[Shorts examples](#examples)
-
 Tested on
 
 [![macos-latest](https://img.shields.io/static/v1?label=macos&message=latest&color=ff69b4)]("macos-latest")
@@ -29,6 +27,7 @@ Tests results :
 Documentation :
 
 [![Examples](https://img.shields.io/static/v1?label=wrapper&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
+[![partials examples](https://img.shields.io/static/v1?label=wrapper&message=partials%20examples&color=brown)](#partials-examples)
 [![features](https://img.shields.io/static/v1?label=wrapper&message=features&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
@@ -83,7 +82,7 @@ Original library files, bass community, licensing, other apis and more is availa
 
 You can see more code examples from the wrapper original creator, [Serkanp](https://bitbucket.org/serkanp/bassaudio/src/master/), in its git repositories linked here.
 
-# Examples
+# Partials examples
 
 **Wrapper parameters**
 
