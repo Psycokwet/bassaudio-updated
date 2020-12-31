@@ -126,7 +126,7 @@ Identification of the addon, two choices :
 
 - Either it's a new addon, for which you can put the name you want. You can put as much diffents addons as you want. Some may have issues, that I did not investigates since I did not test this functionnality with every addon offered with bass, so, don't hesitate to contact me if needed. The name you choose will generate a [Name]Enable() function, as well as a Enabled[Name]\() function, as for the ones already covered to activate an addon, and check if it is activated.
 
-**basic capture and play microphone**
+### basic capture and play microphone
 
 ```javascript
 var bass = require("bassaudio-updated");
@@ -190,7 +190,7 @@ if (!success) {
 }
 ```
 
-**basic load and play file**
+### basic load and play file
 
 ```javascript
 var bass = require("bassaudio-updated");
@@ -241,7 +241,7 @@ if (!success) {
 }
 ```
 
-**Get Artist**
+### Get Artist
 
 ```javascript
 // get artist or other meta data thanks to the Tags add-on
@@ -267,7 +267,7 @@ var artist = basslib.TAGS_Read(
 );
 ```
 
-**Get Duration**
+### Get Duration
 
 ```javascript
 //get the duration, bass returns the total bytes of the channel pointer, then we must convert it to seconds :)
@@ -278,7 +278,7 @@ var durationInSeconds = basslib.BASS_ChannelBytes2Seconds(
 );
 ```
 
-**Get Duration Example2**
+### Get Duration Example2
 
 ```javascript
 //if stream is active (playing), then get position and duration..
@@ -302,7 +302,7 @@ setInterval(function () {
 }, 500);
 ```
 
-**Get Volume of channel**
+### Get Volume of channel
 
 ```javascript
 var ref = require("ref");
@@ -318,7 +318,7 @@ var result = basslib.BASS_ChannelGetAttribute(
 console.log(ref.deref(volume));
 ```
 
-**Set Volume**
+### Set Volume
 
 ```javascript
 //lets set to 0.3
@@ -329,7 +329,7 @@ basslib.BASS_ChannelSetAttribute(
 );
 ```
 
-**Get current Position of playback**
+### Get current Position of playback
 
 ```javascript
 var positionInBytes = basslib.BASS_ChannelGetPosition(chan, 0);
@@ -337,7 +337,7 @@ var positionInBytes = basslib.BASS_ChannelGetPosition(chan, 0);
 var position = basslib.BASS_ChannelBytes2Seconds(chan, positionInBytes);
 ```
 
-**Set Position**
+### Set Position
 
 ```javascript
 //first get the byte position of desired seconds (ex:to last 10 seconds
@@ -348,7 +348,7 @@ var Last10SecondsBytePos = basslib.BASS_ChannelSeconds2Bytes(
 basslib.BASS_ChannelSetPosition(chan, Last10SecondsBytePos);
 ```
 
-**Is channel playing?**
+### Is channel playing?
 
 ```javascript
 var result = basslib.BASS_ChannelIsActive(chan);
@@ -357,7 +357,7 @@ if (result == basslib.BASS_ChannelIsActiveAttribs.BASS_ACTIVE_PLAYING) {
 }
 ```
 
-**sliding**
+### sliding
 
 ```javascript
 //Lets slide volume to 0 in 3 seconds (3000 milliseconds)
@@ -369,7 +369,7 @@ basslib.BASS_ChannelSlideAttribute(
 );
 ```
 
-**callback**
+### callback
 
 ```javascript
 //lets make a callback when position reaches to 20. seconds.
@@ -398,7 +398,7 @@ var procTOENDID = basslib.BASS_ChannelSetSync(
 );
 ```
 
-**vumeter**
+### Vumeter
 
 ```javascript
 //lets get vumeter :)
@@ -408,7 +408,7 @@ var rightlevel = basslib.toFloat64(levels)[0];
 var leftlevel = basslib.toFloat64(levels)[1];
 ```
 
-**close the file**
+### close the file
 
 ```javascript
 if (
@@ -425,7 +425,7 @@ if (!result) {
 }
 ```
 
-**change sound card**
+### change sound card
 
 ```javascript
 //first check if this sound card is initialized
@@ -450,7 +450,7 @@ if (!success) {
 }
 ```
 
-**Info of a channel**
+### Info of a channel
 
 ```javascript
 var info = basslib.BASS_ChannelGetInfo(chan);
@@ -462,7 +462,7 @@ console.log(
 //other infos are: freq,chans,flags,ctype,origres,plugin,sample,filename
 ```
 
-**Info of a device**
+### Info of a device
 
 ```javascript
 var info = basslib.getInfo();
@@ -471,29 +471,29 @@ console.log("minimum buffer:" + info.minbuf);
 console.log("latency:" + info.latency);
 ```
 
-**Free the memory from bass**
+### Free the memory from bass
 
 ```javascript
 basslib.BASS_Free();
 ```
 
-**MIXER FEATURES**
+## MIXER FEATURES
 
-**Enable Mixer**
+### Enable Mixer
 
 ```javascript
 //before using mixer, first enable it. and put the required component to root folder.
 basslib.EnableMixer(true);
 ```
 
-**Mixer is Enabled?**
+### Mixer is Enabled?
 
 ```javascript
 //before using mixer, first enable it. and put the required component to root folder.
 console.log(basslib.MixerEnabled());
 ```
 
-**Create mixer stream**
+### Create mixer stream
 
 ```javascript
 basslib.EnableMixer(true);
@@ -529,7 +529,7 @@ var ok2 = basslib.BASS_Mixer_StreamAddChannel(
 basslib.BASS_ChannelPlay(mixer, 0);
 ```
 
-**Get current Position of mixer playback**
+### Get current Position of mixer playback
 
 ```javascript
 var positionInBytes = basslib.BASS_Mixer_ChannelGetPosition(chan, 0);
@@ -537,7 +537,7 @@ var positionInBytes = basslib.BASS_Mixer_ChannelGetPosition(chan, 0);
 var position = basslib.BASS_ChannelBytes2Seconds(chan, positionInBytes);
 ```
 
-**ENCODER FEATURES**
+## ENCODER FEATURES
 
 you can directly encode and send output to [shoutcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
 
@@ -545,7 +545,7 @@ use mixer as a trick, because if the channel freed or added new channel, the enc
 
 add channels to mixer every time, and add mixer channel to encoder. so the encoder never stops..
 
-**Init encoder**
+### Init encoder
 
 ```javascript
 basslib.EnableMixer(true);
@@ -592,7 +592,7 @@ var result = basslib.BASS_Encode_CastInit(
 basslib.BASS_ChannelPlay(mixer, 0);
 ```
 
-**get notification from encoder server**
+### get notification from encoder server
 
 ```javascript
 var result=basslib.BASS_Encode_SetNotify(enc_chan,function(handle,status,user){
@@ -601,7 +601,7 @@ var result=basslib.BASS_Encode_SetNotify(enc_chan,function(handle,status,user){
 });
 ```
 
-**mono speaker output**
+### mono speaker output
 
 ```javascript
 //lets say if you have 5.1 speaker and want to use each output stereo or mono
@@ -660,7 +660,7 @@ console.log("ok1:", ok1, " error code:", basslib.BASS_ErrorGetCode());
 setInterval(() => {}, 1000);
 ```
 
-**splitting channels**
+### splitting channels
 
 ```javascript
 //if you want to add a mixer to another mixer, it is not possible/supported
