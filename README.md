@@ -38,13 +38,13 @@ Others :
 [![npm downloads](https://img.shields.io/npm/dt/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated "All time downloads")
 [![MIT License](https://img.shields.io/static/v1?label=licence&message=MIT&color=green)](https://github.com//Psycokwet/bassaudio-updated/tree/master/LICENSE "Licence")
 
-**Disclaimer**
+# Disclaimer
 
 This package has not been fully tested. Some features may not be fully functionning, if you encounter such a feature, please email me with your traces. I'm still working on it.
 
 Also, I'm not in anyway linked to the bass library. I just like their lib and want it to be accessible to the world of node.
 
-**Announcement**
+# Announcement
 
 In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
 
@@ -54,7 +54,7 @@ As the dll are already included, you need to check for the un4seen licence prior
 
 If you want a lighter version without superfluous binaries library included, please, check out [bassaudio-updated-light](https://www.npmjs.com/package/bassaudio-updated-light)
 
-**Un4Seen Bass Audio Library Wrapper**
+# Un4Seen Bass Audio Library Wrapper
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
 this wrapper wraps most of the "audio playback" features using [ffi-napi](https://www.npmjs.com/package/ffi-napi), [ref-napi](https://www.npmjs.com/package/ref-napi), [ref-struct-di](https://www.npmjs.com/package/ref-struct-di), [ref-array-di](https://www.npmjs.com/package/ref-array-di).
@@ -62,11 +62,11 @@ It uses [os](https://www.npmjs.com/package/os) to determines which dynamic libra
 
 ffi-napi enables to call c library methods, properties, callbacks etc.
 
-**Compatible with?**
+# Compatible with?
 
 Included binaries library files for Windows 64/32bits, Linux 64/32bits, and macOs. Not fully tested yet, so report any encountered issues please.
 
-**Documentation**
+# Documentation
 
 Bass documentation is available here :
 http://www.un4seen.com/doc/
@@ -677,7 +677,7 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 
 There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
 
-**UPDATE LOG**
+# UPDATE LOG
 
 **--------------2.X.X------------------**
 
