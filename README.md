@@ -113,8 +113,6 @@ var basslib = getBass({
 });
 ```
 
-_Wrapper parameters_
-
 Arguments types : You must choose the most relevants types for each arguments. You can see a list of correspondances [here](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/identified-types-correspondances.md).
 
 Addon id :
