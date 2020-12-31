@@ -56,7 +56,7 @@ If you want a lighter version without superfluous binaries library included, ple
 
 **Do you need more features?**
 
-There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
+There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as explained [here](#wrapper-parameters)
 
 # Un4Seen Bass Audio Library Wrapper
 
@@ -88,7 +88,7 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
 
 # Partials examples
 
-**Wrapper parameters**
+### Wrapper parameters
 
 ```javascript
 // There is a diversity of parameter accepted by this wrapper, here is a full list of them :
