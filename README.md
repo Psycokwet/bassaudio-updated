@@ -5,8 +5,9 @@
   For a lighter version of this package, without the bass files, checkout 
   <a title="bassaudio-updated-light" href="https://www.npmjs.com/package/bassaudio-updated-light">bassaudio-updated-light</a>
 </div>
-[Go to Real Cool Heading section](#vumeter)
 <hr />
+
+[Go to Real Cool Heading section](#vumeter)
 
 Tested on
 
