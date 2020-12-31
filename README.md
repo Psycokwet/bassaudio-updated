@@ -54,6 +54,10 @@ As the dll are already included, you need to check for the un4seen licence prior
 
 If you want a lighter version without superfluous binaries library included, please, check out [bassaudio-updated-light](https://www.npmjs.com/package/bassaudio-updated-light)
 
+**Do you need more features?**
+
+There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
+
 # Un4Seen Bass Audio Library Wrapper
 
 [Bass Audio library](http://www.un4seen.com) is the best audio library to play, edit, convert, stream etc.
@@ -670,10 +674,6 @@ var splitsource = basslib.BASS_Split_StreamGetSource(splitChan);
 var avail1 = basslib.BASS_Split_StreamGetAvailable(splitChan);
 var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 ```
-
-**Do you need more features?**
-
-There is two way to use functions that I did not include in this wrapper. Either you send me a mail asking me to officially add it, which I will, either you "patch it" while you use the wrapper as following :
 
 # UPDATE LOG
 
