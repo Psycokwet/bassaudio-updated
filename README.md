@@ -122,7 +122,7 @@ Identification of the addon, two choices :
 
 - Either it's one of the covered ones (bass, tags, encoder, and mixer are already covered) so, by using one of those id, you will add covering for new fun, without losing the ones already managed by the wrapper.
 
-- Either it's a new addon, for which you can put the name you want. You can put as much diffents addons as you want. Some may have issues, that I did not investigates since I did not test this functionnality with every addon offered with bass, so, don't hesitate to contact me if needed. The name you choose will generate a [Name]Enable() function, as well as a Enabled[Name]() function, as for the ones already covered to activate an addon, and check if it is activated.
+- Either it's a new addon, for which you can put the name you want. You can put as much diffents addons as you want. Some may have issues, that I did not investigates since I did not test this functionnality with every addon offered with bass, so, don't hesitate to contact me if needed. The name you choose will generate a [Name]Enable() function, as well as a Enabled[Name]\() function, as for the ones already covered to activate an addon, and check if it is activated.
 
 **basic capture and play microphone**
 
