@@ -83,7 +83,7 @@ Original library files, bass community, licensing, other apis and more is availa
 
 You can see more code examples from the wrapper original creator, [Serkanp](https://bitbucket.org/serkanp/bassaudio/src/master/), in its git repositories linked here.
 
-**Examples**
+#Examples
 
 **Wrapper parameters**
 
