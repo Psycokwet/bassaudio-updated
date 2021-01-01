@@ -2,7 +2,6 @@
  * Created by scarboni on 21.12.2020
  */
 
-const ref = require("ref-napi");
 const ffi = require("ffi-napi");
 
 class callbackBuilder {
