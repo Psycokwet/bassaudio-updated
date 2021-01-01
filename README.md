@@ -29,6 +29,8 @@ Documentation :
 [![Examples](https://img.shields.io/static/v1?label=wrapper&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
 [![partials examples](https://img.shields.io/static/v1?label=wrapper&message=partials%20examples&color=brown)](#partials-examples)
 [![features](https://img.shields.io/static/v1?label=wrapper&message=features&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-fun.md)
+[![structs](https://img.shields.io/static/v1?label=wrapper&message=structs&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-structs.md)
+[![callbacks](https://img.shields.io/static/v1?label=wrapper&message=callbacks&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-callbacks.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
 Others :

@@ -1,5 +1,5 @@
-var bass = require("../");
-var basslib = new bass({ silent: true });
+var getBass = require("../tools/getBass");
+var basslib = getBass({ silent: true });
 
 /////////////////////////PRETEST//////////////////////////////////
 

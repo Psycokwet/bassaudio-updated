@@ -8,6 +8,8 @@
   "scripts": {
     "gitacp": "node tools/g.js",
     "ecf": "node tools/extract-covered-fun.js > documentation/covered-fun.md",
+    "ecs": "node tools/extract-covered-struct.js > documentation/covered-structs.md",
+    "ecc": "node tools/extract-covered-callback.js > documentation/covered-callbacks.md",
     "localTest": "jest",
     "test": "jest --coverage > report.txt && node tools/extract-coverage.js > coverage.txt"
   },

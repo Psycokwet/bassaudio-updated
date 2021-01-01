@@ -15,3 +15,5 @@ Un4Seen type : ffi types
 - float : float
 
 - void : void
+
+- char\* : string

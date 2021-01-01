@@ -6,8 +6,9 @@ const ref = require("ref-napi");
 const Struct = require("ref-struct-di")(ref);
 
 class refBuilder {
-  constructor(id, content) {
+  constructor(id, content, libid) {
     this.id = id;
+    this.libid = libid;
     this.content = content;
     this.struct = content;
     this.refType = ref.refType(content);
@@ -33,6 +34,7 @@ function setStructs(bass) {
     driver: "string",
     flags: "int",
   });
+  structs.BASS_DEVICEINFO.libid = "bass";
 
   // Originals types
   //     DWORD flags;
@@ -66,6 +68,7 @@ function setStructs(bass) {
     speakers: "int",
     freq: "int",
   });
+  structs.BASS_INFO.libid = "bass";
 
   // Originals types
   //   DWORD flags;
@@ -81,6 +84,7 @@ function setStructs(bass) {
     singlein: "bool",
     freq: "int",
   });
+  structs.BASS_RECORDINFO.libid = "bass";
 
   structs.BASS_CHANNELINFO = Struct({
     freq: "int",
@@ -92,8 +96,17 @@ function setStructs(bass) {
     sample: "int",
     filename: "string",
   });
+  structs.BASS_CHANNELINFO.libid = "bass";
 
-  structs.ID3V1Tag = Struct({
+  // Originals types
+  //     char id[3];
+  //     char title[30];
+  //     char artist[30];
+  //     char album[30];
+  //     char year[4];
+  //     char comment[30];
+  //     BYTE genre;
+  structs.TAG_ID3 = Struct({
     id: "string",
     title: "string",
     artist: "string",
@@ -102,7 +115,10 @@ function setStructs(bass) {
     comment: "string",
     genre: "byte",
   });
-  for (let prop in structs) bass[prop] = new refBuilder(prop, structs[prop]);
+  structs.TAG_ID3.libid = "bass";
+
+  for (let prop in structs)
+    bass[prop] = new refBuilder(prop, structs[prop], structs[prop].libid);
 }
 
 exports = module.exports = setStructs;

@@ -6,9 +6,10 @@ const ref = require("ref-napi");
 const ffi = require("ffi-napi");
 
 class callbackBuilder {
-  constructor(id, ffiFunDeclaration) {
+  constructor(id, ffiFunDeclaration, libid) {
     this.id = id;
     this.ffiFunDeclaration = ffiFunDeclaration;
+    this.libid = libid;
     return this;
   }
   generateNewObject(callback) {
@@ -28,6 +29,7 @@ function setCallbacks(bass) {
   // );
 
   callbacks.StreamProc = ["void", ["int", "pointer", "int", "pointer"]];
+  callbacks.StreamProc.libid = "bass";
 
   //   void CALLBACK DownloadProc(
   //     const void *buffer,
@@ -36,6 +38,7 @@ function setCallbacks(bass) {
   // );
 
   callbacks.DownloadProc = ["void", ["pointer", "long", "pointer"]];
+  callbacks.DownloadProc.libid = "bass";
 
   //   void CALLBACK SyncProc(
   //     HSYNC handle,
@@ -45,6 +48,7 @@ function setCallbacks(bass) {
   // );
 
   callbacks.SyncProc = ["void", ["int", "int", "int", "pointer"]];
+  callbacks.SyncProc.libid = "bass";
 
   //   BOOL CALLBACK RecordProc(
   //     HRECORD handle,
@@ -54,6 +58,7 @@ function setCallbacks(bass) {
   // );
 
   callbacks.RecordProc = ["void", ["int", "pointer", "int", "pointer"]];
+  callbacks.RecordProc.libid = "bass";
 
   //   void CALLBACK EncodeProc(
   //     HENCODE handle,
@@ -63,6 +68,7 @@ function setCallbacks(bass) {
   //     void *user
   // );
   callbacks.EncodeProc = ["void", ["int", "int", "pointer", "int", "pointer"]];
+  callbacks.EncodeProc.libid = "bassenc";
 
   //   void CALLBACK EncodeNotifyProc(
   //     HENCODE handle,
@@ -70,9 +76,14 @@ function setCallbacks(bass) {
   //     void *user
   // );
   callbacks.EncodeNotifyProc = ["void", ["int", "int", "pointer"]];
+  callbacks.EncodeNotifyProc.libid = "bassenc";
 
   for (let prop in callbacks) {
-    bass[prop] = new callbackBuilder(prop, callbacks[prop]);
+    bass[prop] = new callbackBuilder(
+      prop,
+      callbacks[prop],
+      callbacks[prop].libid
+    );
   }
 }
 
