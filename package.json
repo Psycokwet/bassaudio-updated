@@ -6,7 +6,7 @@
   "description": "un4seen Bass Audio Library based on ffi bindings",
   "main": "./package/bass",
   "scripts": {
-    "gitacp": "node tools/g.js",
+    "gitacp": "npm run ecf && npm run ecs && npm run ecc && node tools/g.js",
     "ecf": "node tools/extract-covered-fun.js > documentation/covered-fun.md",
     "ecs": "node tools/extract-covered-struct.js > documentation/covered-structs.md",
     "ecc": "node tools/extract-covered-callback.js > documentation/covered-callbacks.md",
