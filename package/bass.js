@@ -33,13 +33,13 @@ const getPlatformDependencies = require("./getPlatformDependencies");
 
 // Read in the libs from this directory and import them
 var setters = [];
-fs.readdirSync(path.join("./", "package", "setters")).forEach(function (file) {
+fs.readdirSync(path.join(__dirname, "setters")).forEach(function (file) {
   if (file.indexOf(".js") > -1)
     setters.push(require("./" + path.join("setters", file)));
 });
 
 var libDeclarations = [];
-fs.readdirSync(path.join("./", "package", "libDeclarations")).forEach(function (
+fs.readdirSync(path.join(__dirname, "libDeclarations")).forEach(function (
   file
 ) {
   if (file.indexOf(".js") > -1)
