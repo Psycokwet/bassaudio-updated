@@ -18,7 +18,6 @@ function setEnableLibs(bass) {
   for (let libname in bass.libFiles) {
     if (libname === "bass") continue;
     const enableFunName = getFunName("enable " + libname);
-
     bass[enableFunName] = (value) => enableLib(bass, libname, value);
     const isEnabledFunName = getFunName(libname + " enabled");
     bass[isEnabledFunName] = () => bass.libFiles[libname].isEnabled();

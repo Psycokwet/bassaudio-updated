@@ -13,6 +13,7 @@ const libnameCorres = {
   bass: "bass",
   encoder: "bassenc",
   mixer: "bassmix",
+  encMP3: "bassenc_mp3",
 };
 
 for (let i in libNames) {

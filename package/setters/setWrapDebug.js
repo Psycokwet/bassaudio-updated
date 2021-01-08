@@ -9,9 +9,7 @@ function setWrapDebug(bass) {
 
   bass.WRAP_DEBUG_getAllLibNameActivated = function () {
     let libNames = [];
-    for (let prop in this.libFiles) {
-      libNames.push(prop);
-    }
+    for (let prop in this.libFiles) libNames.push(prop);
     return libNames;
   };
 }

@@ -153,6 +153,8 @@ From encoder :
 - [BASS_Encode_CastSetTitle](http://www.un4seen.com/doc/#bassenc/BASS_Encode_CastSetTitle.html)
 
 
+From encMP3 :
+
 From tags :
 - TAGS_GetVersion
 
