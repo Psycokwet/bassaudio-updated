@@ -75,6 +75,9 @@ class libFile {
     }
     return this.dl[fun](...finalArgs);
   }
+  rawFunc(fun, ...args) {
+    return this.dl[fun](...args);
+  }
   setDebugData({ ffiFunDeclaration }) {
     this.ffiFunDeclaration = ffiFunDeclaration;
     this.basicGeneratedInputs = generateTestInput(ffiFunDeclaration);

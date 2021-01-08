@@ -7,7 +7,11 @@ const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 
 function setWrapFun(bass) {
-  // moi
+  // scarboni
+  bass.getCodeMessageFrom = (code, flagType) => {
+    for (let flagMessage in flagType)
+      if (flagType[flagMessage] === code) return flagMessage;
+  };
 
   bass.EnableAllAvailable = (value) => {
     for (let i in bass.enableFuns) bass[bass.enableFuns[i]](value);
@@ -192,7 +196,7 @@ function setWrapFun(bass) {
   };
 
   bass.WRAP_ChannelSetSync = function (handle, type, param, callback) {
-    return this.libFiles["bass"].tryFunc(
+    return this.libFiles["bass"].rawFunc(
       "BASS_ChannelSetSync",
       handle,
       type,
@@ -203,7 +207,7 @@ function setWrapFun(bass) {
   };
 
   bass.WRAP_Mixer_ChannelSetSync = function (handle, type, param, callback) {
-    return this.libFiles["mix"].tryFunc(
+    return this.libFiles["mix"].rawFunc(
       "BASS_Mixer_ChannelSetSync",
       handle,
       type,
@@ -213,7 +217,7 @@ function setWrapFun(bass) {
     );
   };
   bass.WRAP_Encode_SetNotify = function (handle, callback) {
-    return this.libFiles["enc"].tryFunc(
+    return this.libFiles["enc"].rawFunc(
       "BASS_Encode_SetNotify",
       handle,
       ffi.Callback("void", ["int", "int", ref.types.void], callback),
@@ -223,7 +227,7 @@ function setWrapFun(bass) {
 
   bass.WRAP_RecordStart = function (freq, chans, flags, callback) {
     if (callback) {
-      return this.libFiles["bass"].tryFunc(
+      return this.libFiles["bass"].rawFunc(
         "BASS_RecordStart",
         freq,
         chans,
@@ -236,7 +240,7 @@ function setWrapFun(bass) {
         null
       );
     }
-    return this.libFiles["bass"].tryFunc(
+    return this.libFiles["bass"].rawFunc(
       "BASS_RecordStart",
       freq,
       chans,

@@ -714,6 +714,8 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 
 - 2.1.0
 
+  - Allowing special heritage function to be able to function as they used too from Serkan's work
+  - Adding getCodeMessageFrom to translate an error/flag code to the string, for human readability.
   - Adding "EnableAllAvailable" to activate in all call any lib that may have been set naturally, or added on the run.
   - Adding support for bass encode MP3
   - Adding what was needed to support new lib files dependant on other. If you add support for new lib files, order might be important.
