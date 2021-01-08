@@ -76,6 +76,7 @@ function Bass(options) {
 
       this.FfiFunDeclarationIndex.add(
         libname,
+        options.generatedFfiFunDeclaration[libname].dep || "bass",
         options.generatedFfiFunDeclaration[libname].ffiFunDeclaration
       );
     }
@@ -87,6 +88,7 @@ function Bass(options) {
     if (libDeclarations[i])
       this.FfiFunDeclarationIndex.add(
         libDeclarations[i].key,
+        libDeclarations[i].dep,
         libDeclarations[i].getFfiFunDeclarations(this)
       );
   }
@@ -96,10 +98,10 @@ function Bass(options) {
   enableLibInt(
     this,
     this.libFiles["bass"],
-    new ffi.DynamicLibrary(
-      this.libFiles["bass"].path,
-      ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
-    ),
+    // new ffi.DynamicLibrary(
+    this.libFiles["bass"].path,
+    //   ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
+    // ),
     ffiFunDeclaration
   );
 
