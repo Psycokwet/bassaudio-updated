@@ -1,17 +1,17 @@
 {
   "name": "bassaudio-updated",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "MIT",
   "author": "Sophie Carboni <socarboni@gmail.com>",
-  "description": "un4seen Bass Audio Library based on ffi bindings",
+  "description": "un4seen Bass Audio Library based on ffi bindings, tested and updated",
   "main": "./package/bass",
   "scripts": {
-    "gitacp": "npm run ecf && npm run ecs && npm run ecc && node tools/g.js",
-    "ecf": "node tools/extract-covered-fun.js > documentation/covered-fun.md",
-    "ecs": "node tools/extract-covered-struct.js > documentation/covered-structs.md",
-    "ecc": "node tools/extract-covered-callback.js > documentation/covered-callbacks.md",
+    "gitacp": "npm run ecf && npm run ecs && npm run ecc && node tools/repo/g.js",
+    "ecf": "node tools/repo/extract-covered-fun.js > documentation/covered-fun.md",
+    "ecs": "node tools/repo/extract-covered-struct.js > documentation/covered-structs.md",
+    "ecc": "node tools/repo/extract-covered-callback.js > documentation/covered-callbacks.md",
     "localTest": "jest",
-    "test": "jest --coverage > report.txt && node tools/extract-coverage.js > coverage.txt"
+    "test": "jest --coverage > report.txt && node tools/repo/extract-coverage.js > coverage.txt"
   },
   "repository": {
     "type": "git",
@@ -44,7 +44,6 @@
     "replace-in-file": "^6.1.0"
   },
   "devDependencies": {
-    "coveralls": "^3.1.0",
     "jest": "^26.6.3"
   }
 }

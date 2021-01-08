@@ -134,6 +134,7 @@ var basslib = getBass({
         BASS_ORIGINAL_FUN_NAME: ["bool", []],
       },
     },
+    // Order of added library might be important if a lib file is depending of another one.
     webm: {
       // addon id
       ffiFunDeclaration: {
@@ -710,6 +711,11 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 # UPDATE LOG
 
 **--------------2.X.X------------------**
+
+- 2.1.0
+
+  - Adding support for bass encode MP3
+  - Adding what was needed to support new lib files dependant on other. If you add support for new lib files, order might be important.
 
 - 2.0.0
 
