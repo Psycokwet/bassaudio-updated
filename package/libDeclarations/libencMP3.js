@@ -3,7 +3,6 @@
  */
 
 const key = "encMP3";
-const dep = "encoder";
 
 function getFfiFunDeclarations(bass) {
   return {
@@ -17,6 +16,5 @@ function getFfiFunDeclarations(bass) {
   };
 }
 
-exports.dep = dep;
 exports.key = key;
 exports.getFfiFunDeclarations = getFfiFunDeclarations;

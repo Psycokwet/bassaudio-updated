@@ -3,23 +3,12 @@
  */
 
 class FfiFunDeclarations {
-  add(lib, dep, ffiFunDeclarations) {
-    // console.log(lib + ":" + this[lib]);
-    if (this[lib])
-      this[lib] = {
-        dep: this[lib].dep,
-        ffiFunDeclarations: {
-          ...this[lib].ffiFunDeclarations,
-          ...ffiFunDeclarations,
-        },
-      };
-    else this[lib] = { dep: dep, ffiFunDeclarations: ffiFunDeclarations };
+  add(lib, ffiFunDeclarations) {
+    if (this[lib]) this[lib] = { ...this[lib], ...ffiFunDeclarations };
+    else this[lib] = ffiFunDeclarations;
   }
   get(lib) {
-    return this[lib].ffiFunDeclarations;
-  }
-  getDep(lib) {
-    return this[lib].dep;
+    return this[lib];
   }
 }
 exports = module.exports = new FfiFunDeclarations();

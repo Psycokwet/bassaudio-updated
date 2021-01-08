@@ -3,7 +3,6 @@
  */
 
 const key = "tags";
-const dep = "bass";
 
 function getFfiFunDeclarations(bass) {
   return {
@@ -14,6 +13,5 @@ function getFfiFunDeclarations(bass) {
     TAGS_GetLastErrorDesc: ["string", []],
   };
 }
-exports.dep = dep;
 exports.key = key;
 exports.getFfiFunDeclarations = getFfiFunDeclarations;

@@ -4,22 +4,21 @@
 
 const ffi = require("ffi-napi");
 
-function enableLibInt(bass, libFile, path, ffiFunDeclaration) {
-  // libFile.enable(ffi.Library(pathOrDl, ffiFunDeclaration));
-
-  libFile.enable(
+function enableLibInt(bass, libname) {
+  let ffiFunDeclaration = bass.FfiFunDeclarationIndex.get(libname);
+  bass.libFiles[libname].enable(
     ffi.Library(
       new ffi.DynamicLibrary(
-        path,
+        bass.libFiles[libname].path,
         ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
       ),
       ffiFunDeclaration
     )
   );
   for (let fun in ffiFunDeclaration) {
-    bass[fun] = (...args) => libFile.tryFunc(fun, ...args);
+    bass[fun] = (...args) => bass.libFiles[libname].tryFunc(fun, ...args);
   }
-  libFile.setDebugData({
+  bass.libFiles[libname].setDebugData({
     ffiFunDeclaration: ffiFunDeclaration,
   });
 }

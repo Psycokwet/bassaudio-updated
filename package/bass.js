@@ -76,7 +76,6 @@ function Bass(options) {
 
       this.FfiFunDeclarationIndex.add(
         libname,
-        options.generatedFfiFunDeclaration[libname].dep || "bass",
         options.generatedFfiFunDeclaration[libname].ffiFunDeclaration
       );
     }
@@ -88,26 +87,11 @@ function Bass(options) {
     if (libDeclarations[i])
       this.FfiFunDeclarationIndex.add(
         libDeclarations[i].key,
-        libDeclarations[i].dep,
         libDeclarations[i].getFfiFunDeclarations(this)
       );
   }
+  enableLibInt(this, "bass");
 
-  const ffiFunDeclaration = this.FfiFunDeclarationIndex.get("bass");
-
-  enableLibInt(
-    this,
-    this.libFiles["bass"],
-    // new ffi.DynamicLibrary(
-    this.libFiles["bass"].path,
-    //   ffi.DynamicLibrary.FLAGS.RTLD_NOW | ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
-    // ),
-    ffiFunDeclaration
-  );
-
-  this.libFiles["bass"].setDebugData({
-    ffiFunDeclaration: ffiFunDeclaration,
-  });
   EventEmitter.call(this);
 }
 

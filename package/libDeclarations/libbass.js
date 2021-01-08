@@ -3,7 +3,6 @@
  */
 
 const key = "bass";
-const dep = "bass";
 
 function getFfiFunDeclarations(bass) {
   return {
@@ -93,6 +92,5 @@ function getFfiFunDeclarations(bass) {
     ],
   };
 }
-exports.dep = dep;
 exports.key = key;
 exports.getFfiFunDeclarations = getFfiFunDeclarations;
