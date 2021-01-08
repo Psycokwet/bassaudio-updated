@@ -3,9 +3,7 @@ var basslib = getBass({ silent: true });
 
 /////////////////////////PRETEST//////////////////////////////////
 
-basslib.EnableTags(true);
-basslib.EnableEncoder(true);
-basslib.EnableMixer(true);
+basslib.EnableAllAvailable(true);
 
 var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
 

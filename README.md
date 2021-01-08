@@ -714,6 +714,7 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 
 - 2.1.0
 
+  - Adding "EnableAllAvailable" to activate in all call any lib that may have been set naturally, or added on the run.
   - Adding support for bass encode MP3
   - Adding what was needed to support new lib files dependant on other. If you add support for new lib files, order might be important.
 

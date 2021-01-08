@@ -15,10 +15,12 @@ function getFunName(baseName) {
 }
 
 function setEnableLibs(bass) {
+  bass.enableFuns = [];
   for (let libname in bass.libFiles) {
     if (libname === "bass") continue;
     const enableFunName = getFunName("enable " + libname);
     bass[enableFunName] = (value) => enableLib(bass, libname, value);
+    bass.enableFuns.push(enableFunName);
     const isEnabledFunName = getFunName(libname + " enabled");
     bass[isEnabledFunName] = () => bass.libFiles[libname].isEnabled();
   }

@@ -7,6 +7,13 @@ const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
 
 function setWrapFun(bass) {
+  // moi
+
+  bass.EnableAllAvailable = (value) => {
+    for (let i in bass.enableFuns) bass[bass.enableFuns[i]](value);
+  };
+
+  // origine
   bass.getDeviceCount = function () {
     var info = this.BASS_DEVICEINFO.generateNewObject();
 

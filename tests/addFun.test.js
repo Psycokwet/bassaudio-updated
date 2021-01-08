@@ -29,7 +29,8 @@ var basslib = getBass({
 
 const os = require("os");
 if (os.platform() !== "darwin") {
-  basslib.EnableWebm(true);
+  // basslib.EnableWebm(true);
+  basslib.EnableAllAvailable(true); // I test with it to check that it is effectively added in the auto enable list. But the up line would be as fine.
 
   test("test full new lib file linking", () => {
     expect(basslib.BASS_WEBM_StreamCreateURL()).toBe(0);

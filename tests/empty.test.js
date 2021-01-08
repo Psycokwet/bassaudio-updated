@@ -3,10 +3,7 @@ var basslib = getBass({
   silent: true,
 });
 
-basslib.EnableTags(true);
-basslib.EnableEncoder(true);
-basslib.EnableMixer(true);
-basslib.EnableEncmp3(true);
+basslib.EnableAllAvailable(true);
 
 var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
 var linked = 0;
