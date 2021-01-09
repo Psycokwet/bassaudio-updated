@@ -4,7 +4,7 @@ var basslib;
 test("Bass generation working ? ", () => {
   expect(() => {
     basslib = getBass({
-      silent: true,
+      // silent: true,
     });
   }).not.toThrowError();
 });

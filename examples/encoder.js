@@ -1,8 +1,5 @@
-var os = require("os");
 var chalk = require("chalk");
-var path = require("path");
 var getBass = require("../tools/getBass");
-var getPlatformDependenciesForOneFile = require("../tools/getPlatformDependenciesForOneFile");
 
 let args = process.argv;
 args.splice(0, 2);
@@ -11,7 +8,7 @@ if (!args[0]) {
   console.log("No path to mp3 given, quitting...");
   process.exit();
 }
-console.log("Will try to play :" + args[0]);
+console.log("Will try to play :" + args[0] + " and cast it");
 
 var basslib = getBass({
   silent: true,
@@ -19,6 +16,7 @@ var basslib = getBass({
 
 basslib.EnableMixer(true);
 basslib.EnableEncoder(true);
+basslib.EnableEncmp3(true);
 
 var encoderEnabled = basslib.EncoderEnabled();
 if (encoderEnabled) {
@@ -33,6 +31,14 @@ if (mixerEnabled) {
   console.log(chalk.bgGreen.white.bold("Mixer enabled"));
 } else {
   console.log(chalk.bgRed.white.bold("Mixer disabled"));
+  process.exit();
+}
+
+var encmp3Enabled = basslib.Encmp3Enabled();
+if (encmp3Enabled) {
+  console.log(chalk.bgGreen.white.bold("Encoder MP3 enabled"));
+} else {
+  console.log(chalk.bgRed.white.bold("Encoder MP3 disabled"));
   process.exit();
 }
 
@@ -105,25 +111,7 @@ var MODE = LameModes.Stereo;
 var SAMPLE_RATE = SampleRates.Hz_22050;
 var BIT_RATE = BitRates.kbps_56;
 
-var lamepath = path.join(
-  getPlatformDependenciesForOneFile(
-    null,
-    path.join(
-      path.resolve(__dirname, ".."),
-      "tests",
-      "lame",
-      "macOs",
-      "3.100",
-      "bin"
-    ),
-    path.join(path.resolve(__dirname, ".."), "tests", "lame", "win32"),
-    path.join(path.resolve(__dirname, ".."), "tests", "lame", "win64"),
-    path.join(path.resolve(__dirname, ".."), "tests", "lame", "linux32"),
-    path.join(path.resolve(__dirname, ".."), "tests", "lame", "linux64")
-  ).path,
-  "lame"
-);
-var lamestr = `${lamepath} -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`;
+var lamestr = ` -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`;
 
 // BASS_Init
 var init = basslib.BASS_Init(
@@ -211,7 +199,7 @@ if (!success) {
 }
 
 // BASS_Encode_Start
-var _encoder = basslib.BASS_Encode_Start(
+var _encoder = basslib.BASS_Encode_MP3_Start(
   mixer,
   lamestr,
   basslib.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD

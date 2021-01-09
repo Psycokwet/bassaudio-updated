@@ -17,6 +17,13 @@ function setWrapFun(bass) {
     for (let i in bass.enableFuns) bass[bass.enableFuns[i]](value);
   };
 
+  bass.AreAllAvailableEnabled = (value) => {
+    const notEnabled = [];
+    for (let libname in bass.libFiles)
+      if (!bass.libFiles[libname].isEnabled()) notEnabled.push(libname);
+    return notEnabled.length === 0 ? true : notEnabled;
+  };
+
   // origine
   bass.getDeviceCount = function () {
     var info = this.BASS_DEVICEINFO.generateNewObject();
