@@ -16,4 +16,6 @@ Un4Seen type : ffi types
 
 - void : void
 
+- void\* : pointer or string, depending on context
+
 - char\* : string
