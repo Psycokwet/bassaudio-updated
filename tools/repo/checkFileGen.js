@@ -9,8 +9,6 @@ var cmd_line = "node " + script + " > " + file;
 if (process.argv[4] === "false") {
   cmd_line = "node " + script;
 }
-
-console.log("alive" + script + ":" + file);
 exec(cmd_line, () => {
   require("fs")
     .createReadStream(file)
