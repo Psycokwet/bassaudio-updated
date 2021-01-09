@@ -27,4 +27,4 @@ jobs:
       - run: npm run build --if-present
       - name: Stress test
         run: |
-          for i in {1..100}; do npm run test --silent || (echo 'Failed after $i attempts' && break); done
+          for i in {1..100}; do ( echo 'Attempt n. $i' && npm run test --silent ) || (echo 'Failed after $i attempts' && break); done
