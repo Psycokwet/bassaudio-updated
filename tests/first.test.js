@@ -1,6 +1,12 @@
 var getBass = require("../tools/getBass");
-var basslib = getBass({
-  silent: true,
+
+var basslib;
+test("Bass generation working ? ", () => {
+  expect(() => {
+    basslib = getBass({
+      silent: true,
+    });
+  }).not.toThrowError();
 });
 
 test("BASS_GetVersion", () => {
