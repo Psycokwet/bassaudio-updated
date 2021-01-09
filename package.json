@@ -7,10 +7,10 @@
   "main": "./package/bass",
   "scripts": {
     "gitacp": "npm run ecf && npm run ecs && npm run ecc && npm run edft && node tools/repo/g.js",
-    "ecf": "node tools/repo/extract-covered-fun.js > documentation/covered-fun.md",
-    "ecs": "node tools/repo/extract-covered-struct.js > documentation/covered-structs.md",
-    "ecc": "node tools/repo/extract-covered-callback.js > documentation/covered-callbacks.md",
-    "edft": "node tools/repo/extract-data-for-tests.js",
+    "ecf": "node ./tools/repo/checkFileGen.js ./tools/repo/extract-covered-fun.js ./documentation/covered-fun.md",
+    "ecs": "node ./tools/repo/checkFileGen.js ./tools/repo/extract-covered-struct.js ./documentation/covered-structs.md",
+    "ecc": "node ./tools/repo/checkFileGen.js ./tools/repo/extract-covered-callback.js ./documentation/covered-callbacks.md",
+    "edft": "node ./tools/repo/checkFileGen.js ./tools/repo/extract-data-for-tests.js ./tools/repo/test-data.js false",
     "localTest": "jest",
     "test": "jest --coverage > report.txt && node tools/repo/extract-coverage.js > coverage.txt"
   },
