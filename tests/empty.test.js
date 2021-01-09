@@ -4,7 +4,7 @@ var basslib;
 test("Init basslib", () => {
   expect(() => {
     basslib = getBass({
-      // silent: true,
+      silent: true,
     });
 
     basslib.EnableAllAvailable(true);
