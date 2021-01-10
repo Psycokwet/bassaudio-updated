@@ -7,25 +7,25 @@
 </div>
 <hr />
 
-Tested on
+#### Tested on
 
 [![macos-latest](https://img.shields.io/static/v1?label=macos&message=latest&color=ff69b4)]("macos-latest")
 [![windows-latest](https://img.shields.io/static/v1?label=windows&message=latest&color=blue)]("windows-latest")
 [![ubuntu-latest](https://img.shields.io/static/v1?label=ubuntu&message=latest&color=blueviolet)]("ubuntu-latest")
 
-With
+#### With
 
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=brightgreen)](#note-on-node-14 "Supported version 10.x")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=brightgreen)](#note-on-node-14 "Supported version 12.x")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.8-&color=brightgreen)](#note-on-node-14 "Supported version 14.8-")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.9%2B&color=red)](#note-on-node-14 "Version non supported 14.9+")
 
-Tests results :
+#### Tests results :
 
 [![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 [![Coverage Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)](https://github.com/Psycokwet/bassaudio-updated/tree/master/coverage)
 
-Documentation :
+#### Documentation :
 
 [![Examples](https://img.shields.io/static/v1?label=wrapper&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
 [![partials examples](https://img.shields.io/static/v1?label=wrapper&message=partials%20examples&color=brown)](#partials-examples)
@@ -34,7 +34,7 @@ Documentation :
 [![callbacks](https://img.shields.io/static/v1?label=wrapper&message=callbacks&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-callbacks.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
-Others :
+#### Others :
 
 [![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated)
 [![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated "Monthly downloads")
@@ -76,12 +76,14 @@ Included binaries library files for Windows 64/32bits, Linux 64/32bits, and macO
 There is ongoing issues with node 14.9.0 and later that may cause segfault when loading a library file, that are outside my skills. I strongly discourage you from using node 14.9.0 and later until this problem is stabilized.
 If you want to find more info about this issue, here is a first lead : https://github.com/node-ffi-napi/node-ffi-napi/issues/99
 
-# Documentation
+# Note on documentation
 
 Bass documentation is available here :
 http://www.un4seen.com/doc/
 You can also see this version :
 http://bass.radio42.com/help/
+
+You can find direct link from wrapped content, to un4seen documentation [here](#documentation)
 
 There is also some documentation directly in the README files accompanying the library files on the un4seen website.
 
