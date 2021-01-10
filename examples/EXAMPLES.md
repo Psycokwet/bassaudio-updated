@@ -31,7 +31,7 @@ Usages :
 node .\microphone.js
 ```
 
-**[microphone](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/encoder.js)**
+**[Encoder](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/encoder.js)**
 
 Play a single track of music, encode it and stream it to icecast/shoutcast/shoutcast2 server of you choice
 
