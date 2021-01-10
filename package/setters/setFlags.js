@@ -300,7 +300,11 @@ function setFlags(bass) {
     BASS_ERROR_INIT: 8, // BASS_Init has not been successfully called
     BASS_ERROR_START: 9, // BASS_Start has not been successfully called
     BASS_ERROR_SSL: 10, // SSL/HTTPS support isn't available
+    BASS_ERROR_NOCD: 12, // No CD in drive
+    BASS_ERROR_CDTRACK: 13, // Invalid track number
     BASS_ERROR_ALREADY: 14, // already initialized/paused/whatever
+    BASS_ERROR_NOPAUSE: 16, // Not paused
+    BASS_ERROR_NOTAUDIO: 17, // Not an audio track
     BASS_ERROR_NOCHAN: 18, // can't get a free channel
     BASS_ERROR_ILLTYPE: 19, // an illegal type was specified
     BASS_ERROR_ILLPARAM: 20, // an illegal parameter was specified
@@ -315,6 +319,7 @@ function setFlags(bass) {
     BASS_ERROR_NONET: 32, // no internet connection could be opened
     BASS_ERROR_CREATE: 33, // couldn't create the file
     BASS_ERROR_NOFX: 34, // effects are not available
+    BASS_ERROR_PLAYING: 35, // The channel is playing
     BASS_ERROR_NOTAVAIL: 37, // requested data is not available
     BASS_ERROR_DECODE: 38, // the channel is/isn't a "decoding channel"
     BASS_ERROR_DX: 39, // a sufficient DirectX version is not installed
@@ -326,6 +331,18 @@ function setFlags(bass) {
     BASS_ERROR_ENDED: 45, // the channel/file has ended
     BASS_ERROR_BUSY: 46, // the device is busy
     BASS_ERROR_UNKNOWN: -1, // some other mystery problem
+    BASS_ERROR_WMA_LICENSE: 1000, // some other mystery problem
+    BASS_ERROR_WMA_WM9: 1001, // BassWma: WM9 is required
+    BASS_ERROR_WMA_DENIED: 1002, // BassWma: access denied (user/pass is invalid)
+    BASS_ERROR_WMA_CODEC: 1003, // BassWma: no appropriate codec is installed
+    BASS_ERROR_WMA_INDIVIDUAL: 1004, // BassWma: individualization is needed
+    BASS_ERROR_ACM_CANCEL: 2000, // BassEnc: ACM codec selection cancelled
+    BASS_ERROR_CAST_DENIED: 2100, // BassEnc: Access denied (invalid password)
+    BASS_VST_ERROR_NOINPUTS: 3000, // BassVst: the given effect has no inputs and is probably a VST instrument and no effect
+    BASS_VST_ERROR_NOOUTPUTS: 3001, // BassVst: the given effect has no outputs
+    BASS_VST_ERROR_NOREALTIME: 3002, // BassVst: the given effect does not support realtime processing
+    BASS_ERROR_WASAPI: 5000, // BASSWASAPI: no WASAPI available
+    BASS_ERROR_MP4_NOSTREAM: 6000, // BASS_AAC: non-streamable due to MP4 atom order ('mdat' before 'moov')
   };
 
   bass.EncoderNotifyStatus = {
