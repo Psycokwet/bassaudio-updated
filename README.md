@@ -92,7 +92,7 @@ Let me now if there is other useful documentation that I can share here. :)
 Original library files, bass community, licensing, other apis and more is available here :
 [http://www.un4seen.com](http://www.un4seen.com).
 
-You can see more code examples from the wrapper original creator, [Serkanp](https://bitbucket.org/serkanp/bassaudio/src/master/), in its git repositories linked here.
+You can see more code examples from the wrapper original creator, [Serkanp](https://bitbucket.org/serkanp/bassaudio/src/master/), in its git repositories linked here. The example I have build [here](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md) are fully adapted with my version of the wrapper.
 
 # Partials examples
 

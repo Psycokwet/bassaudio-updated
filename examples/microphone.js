@@ -37,7 +37,7 @@ if (!init) {
   console.log("error at BASS_RecordInit: " + basslib.BASS_ErrorGetCode());
   process.exit();
 }
-var micChan = basslib.BASS_RecordStart(44100, 2, 0); // create a recording channel with 10ms period
+var micChan = basslib.BASS_RecordStart(44100, 0, 0); // create a recording channel with 10ms period
 if (!micChan) {
   console.log("error at BASS_RecordStart: " + basslib.BASS_ErrorGetCode());
   process.exit();
