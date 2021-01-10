@@ -17,7 +17,8 @@ With
 
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.8-&color=yellow)](#note-on-node-14 "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.9+&color=yellow)](#note-on-node-14 "Last npm version checked")
 
 Tests results :
 
@@ -71,6 +72,11 @@ ffi-napi enables to call c library methods, properties, callbacks etc.
 # Compatible with?
 
 Included binaries library files for Windows 64/32bits, Linux 64/32bits, and macOs. Not fully tested yet, so report any encountered issues please.
+
+# Note on node 14
+
+There is ongoing issues with node 14.9.0 and later that may cause segfault when loading a library file, that are outside my skills. I strongly discourage you from using node 14.9.0 and later until this problem is stabilized.
+If you want to find more info about this issue, here is a first lead : https://github.com/node-ffi-napi/node-ffi-napi/issues/99
 
 # Documentation
 
