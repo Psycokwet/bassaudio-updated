@@ -15,9 +15,9 @@ Tested on
 
 With
 
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.8-&color=yellow)](#note-on-node-14 "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=brightgreen)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=brightgreen)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.8-&color=brightgreen)](#note-on-node-14 "Last npm version checked")
 [![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.9%2B&color=red)](#note-on-node-14 "Last npm version checked")
 
 Tests results :
