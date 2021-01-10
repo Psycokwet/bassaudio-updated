@@ -3,17 +3,6 @@
  * Updated by scarboni since 20.10.2020
  */
 
-/**
- *  hsync : int
- *  dword : int
- *  HWND : int used 0 ?
- *  GUID : int used Null?
- *  int : int
- *  bool : bool
- *  float : float
- *  void : void
- */
-
 const chalk = require("chalk");
 const applyShim = require("../shim.js");
 
@@ -47,7 +36,7 @@ fs.readdirSync(path.join(__dirname, "libDeclarations")).forEach(function (
 });
 
 function Bass(options) {
-  if (!options) options = {};
+  options = options || {};
   try {
     applyShim(options.silent);
   } catch (err) {
