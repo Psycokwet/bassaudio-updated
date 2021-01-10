@@ -1,4 +1,4 @@
-const setCallbacks = require("../package/setters/setCallbacks");
+const setCallbacks = require("../../package/setters/setCallbacks");
 
 var callbacks = {};
 setCallbacks(callbacks);

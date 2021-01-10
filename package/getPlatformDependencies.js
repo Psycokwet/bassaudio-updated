@@ -15,6 +15,7 @@ function getPlatformDependencies() {
         bass: new libFile("bass", "bass.dll"),
         mixer: new libFile("mixer", "bassmix.dll"),
         encoder: new libFile("encoder", "bassenc.dll"),
+        encMP3: new libFile("encMP3", "bassenc_mp3.dll"),
         tags: new libFile("tags", "tags.dll"),
       };
       if (arch == "x64") {
@@ -29,6 +30,7 @@ function getPlatformDependencies() {
         bass: new libFile("bass", "libbass.dylib"),
         mixer: new libFile("mixer", "libbassmix.dylib"),
         encoder: new libFile("encoder", "libbassenc.dylib"),
+        encMP3: new libFile("encMP3", "libbassenc_mp3.dylib"),
         tags: new libFile("tags", "libtags.dylib"),
       };
       return { path: "macOs", libFiles: macosLibFiles };
@@ -37,6 +39,7 @@ function getPlatformDependencies() {
         bass: new libFile("bass", "libbass.so"),
         mixer: new libFile("mixer", "libbassmix.so"),
         encoder: new libFile("encoder", "libbassenc.so"),
+        encMP3: new libFile("encMP3", "libbassenc_mp3.so"),
         tags: new libFile("tags", "libtags.so"),
       };
       if (arch == "x64") {

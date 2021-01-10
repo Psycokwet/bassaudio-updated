@@ -15,11 +15,12 @@ function getFunName(baseName) {
 }
 
 function setEnableLibs(bass) {
+  bass.enableFuns = [];
   for (let libname in bass.libFiles) {
     if (libname === "bass") continue;
     const enableFunName = getFunName("enable " + libname);
-
     bass[enableFunName] = (value) => enableLib(bass, libname, value);
+    bass.enableFuns.push(enableFunName);
     const isEnabledFunName = getFunName(libname + " enabled");
     bass[isEnabledFunName] = () => bass.libFiles[libname].isEnabled();
   }
@@ -27,14 +28,9 @@ function setEnableLibs(bass) {
 
 function enableLib(bass, libname, value) {
   if (value) {
-    const ffiFunDeclaration = bass.FfiFunDeclarationIndex.get(libname);
+    // const ffiFunDeclaration = bass.FfiFunDeclarationIndex.get(libname);
 
-    enableLibInt(
-      bass,
-      bass.libFiles[libname],
-      bass.libFiles[libname].path,
-      ffiFunDeclaration
-    );
+    enableLibInt(bass, libname);
   } else {
     bass.libFiles[libname].disable();
   }

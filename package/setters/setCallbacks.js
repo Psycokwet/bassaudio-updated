@@ -69,6 +69,20 @@ function setCallbacks(bass) {
   callbacks.EncodeProc = ["void", ["int", "int", "pointer", "int", "pointer"]];
   callbacks.EncodeProc.libid = "bassenc";
 
+  //   void CALLBACK EncodeProcEx(
+  //     HENCODE handle,
+  //     DWORD channel,
+  //     const void *buffer,
+  //     DWORD length,
+  //     QWORD offset,
+  //     void *user
+  // );
+  callbacks.EncodeProcEx = [
+    "void",
+    ["int", "int", "pointer", "int", "int", "pointer"],
+  ];
+  callbacks.EncodeProcEx.libid = "bassenc";
+
   //   void CALLBACK EncodeNotifyProc(
   //     HENCODE handle,
   //     DWORD status,

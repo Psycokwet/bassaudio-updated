@@ -18,7 +18,7 @@ node .\single_track.js path/to/music.mp3
 Example :
 
 ```
-node .\single_track.js '..\..\..\..\..\Music\The legend of zelda 25th Anniversary special orchestra CD (FLAC)\Taylor Davis - Gerudo Valley.mp3'
+node .\single_track.js 'Gerudo Valley.mp3'
 ```
 
 **[microphone](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/microphone.js)**
@@ -29,4 +29,32 @@ Usages :
 
 ```
 node .\microphone.js
+```
+
+**[Encoder](https://github.com/Psycokwet/bassaudio-updated/blob/master/examples/encoder.js)**
+
+Play a single track of music, encode it and stream it to icecast/shoutcast/shoutcast2 server of your choice
+
+Usages :
+
+```
+node .\encoder.js path/to/music.mp3 address:port/PUB username:password
+```
+
+Example Icecast :
+
+```
+node .\encoder.js 'Gerudo Valley.mp3' sv6.myserver.com:8000/mountPoint MySuperPassword
+```
+
+Example ShoutCast :
+
+```
+node .\encoder.js 'Gerudo Valley.mp3' sv6.myserver.com:8000 MySuperPassword
+```
+
+Example ShoutCast2 :
+
+```
+node .\encoder.js 'Gerudo Valley.mp3' sv6.myserver.com:8000,1 MyUserName:MySuperPassword
 ```

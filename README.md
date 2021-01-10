@@ -7,24 +7,25 @@
 </div>
 <hr />
 
-Tested on
+#### Tested on
 
 [![macos-latest](https://img.shields.io/static/v1?label=macos&message=latest&color=ff69b4)]("macos-latest")
 [![windows-latest](https://img.shields.io/static/v1?label=windows&message=latest&color=blue)]("windows-latest")
 [![ubuntu-latest](https://img.shields.io/static/v1?label=ubuntu&message=latest&color=blueviolet)]("ubuntu-latest")
 
-With
+#### With
 
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
-[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.x&color=green)](https://www.npmjs.com/package/bassaudio-updated "Last npm version checked")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=10.x&color=brightgreen)](#note-on-node-14 "Supported version 10.x")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=12.x&color=brightgreen)](#note-on-node-14 "Supported version 12.x")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.8-&color=brightgreen)](#note-on-node-14 "Supported version 14.8-")
+[![npm version](https://img.shields.io/static/v1?label=Node.js&message=14.9%2B&color=red)](#note-on-node-14 "Version non supported 14.9+")
 
-Tests results :
+#### Tests results :
 
 [![github build status](https://github.com/Psycokwet/bassaudio-updated/workflows/build/badge.svg)](https://github.com/Psycokwet/bassaudio-updated "Build status")
 [![Coverage Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Psycokwet/277c7acb9222d5762a31958b394afb2f/raw/bassaudio-updated-coverage.json)](https://github.com/Psycokwet/bassaudio-updated/tree/master/coverage)
 
-Documentation :
+#### Documentation :
 
 [![Examples](https://img.shields.io/static/v1?label=wrapper&message=examples&color=brown)](https://github.com/Psycokwet/bassaudio-updated/tree/master/examples/EXAMPLES.md)
 [![partials examples](https://img.shields.io/static/v1?label=wrapper&message=partials%20examples&color=brown)](#partials-examples)
@@ -33,7 +34,7 @@ Documentation :
 [![callbacks](https://img.shields.io/static/v1?label=wrapper&message=callbacks&color=brown)](https://github.com/Psycokwet/bassaudio-updated/blob/master/documentation/covered-callbacks.md)
 [![Official documentation](https://img.shields.io/static/v1?label=official&message=un4seen&color=blue)](https://www.un4seen.com/)
 
-Others :
+#### Others :
 
 [![install size](https://badgen.net/bundlephobia/min/bassaudio-updated)](https://bundlephobia.com/result?p=bassaudio-updated)
 [![npm downloads](https://img.shields.io/npm/dm/bassaudio-updated)](https://www.npmjs.com/package/bassaudio-updated "Monthly downloads")
@@ -47,8 +48,6 @@ This package has not been fully tested. Some features may not be fully functionn
 Also, I'm not in anyway linked to the bass library. I just like their lib and want it to be accessible to the world of node.
 
 # Announcement
-
-In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
 
 The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32/64bits, and linux 32/64 bits. If you encounter any issues while using it, please let me know.
 
@@ -72,12 +71,19 @@ ffi-napi enables to call c library methods, properties, callbacks etc.
 
 Included binaries library files for Windows 64/32bits, Linux 64/32bits, and macOs. Not fully tested yet, so report any encountered issues please.
 
-# Documentation
+# Note on node 14
+
+There is ongoing issues with node 14.9.0 and later that may cause segfault when loading a library file, that are outside my skills. I strongly discourage you from using node 14.9.0 and later until this problem is stabilized.
+If you want to find more info about this issue, here is a first lead : https://github.com/node-ffi-napi/node-ffi-napi/issues/99
+
+# Note on documentation
 
 Bass documentation is available here :
 http://www.un4seen.com/doc/
 You can also see this version :
 http://bass.radio42.com/help/
+
+You can find direct link from wrapped content, to un4seen documentation [here](#documentation-)
 
 There is also some documentation directly in the README files accompanying the library files on the un4seen website.
 
@@ -94,28 +100,28 @@ You can see more code examples from the wrapper original creator, [Serkanp](http
   - [Wrapper parameters](#wrapper-parameters)
   - [basic capture and play microphone](#basic-capture-and-play-microphone)
   - [basic load and play file](#basic-load-and-play-file)
-  - [Get Artist](#get-Artist)
-  - [Get Duration](#get-Durations)
+  - [Get Artist](#get-artist)
+  - [Get Duration](#get-durations)
   - [Get Duration Example2](#get-duration-example2)
   - [Get Volume of channel](#get-volume-of-channel)
-  - [Set Volume](#Set-Volume)
-  - [Get current Position of playback](#Get-current-Position-of-playback)
-  - [Set Position](#Set-Position)
-  - [Is channel playing?](#Is-channel-playing?)
+  - [Set Volume](#set-volume)
+  - [Get current Position of playback](#get-current-position-of-playback)
+  - [Set Position](#set-position)
+  - [Is channel playing?](#is-channel-playing?)
   - [sliding](#sliding)
   - [callback](#callback)
-  - [Vumeter](#Vumeter)
+  - [Vumeter](#vumeter)
   - [close the file](#close-the-file)
   - [change sound card](#change-sound-card)
-  - [Info of a channel](#Info-of-a-channel)
-  - [Info of a device](#Info-of-a-device)
-  - [Free the memory from bass](#Free-the-memory-from-bass)
-- [MIXER FEATURES](#MIXER-FEATURES)
-  - [Enable Mixer](#Enable-Mixer)
-  - [Mixer is Enabled?](#Mixer-is-Enabled?)
-  - [Get current Position of mixer playback](#Get-current-Position-of-mixer-playback)
-- [ENCODER FEATURES](#ENCODER-FEATURES)
-  - [Init encoder](#Init-encoder)
+  - [Info of a channel](#info-of-a-channel)
+  - [Info of a device](#info-of-a-device)
+  - [Free the memory from bass](#free-the-memory-from-bass)
+- [MIXER FEATURES](#mixer-features)
+  - [Enable Mixer](#enable-mixer)
+  - [Mixer is Enabled?](#mixer-is-enabled?)
+  - [Get current Position of mixer playback](#get-current-position-of-mixer-playback)
+- [ENCODER FEATURES](#encoder-features)
+  - [Init encoder](#init-encoder)
   - [get notification from encoder server](#get-notification-from-encoder-server)
   - [mono speaker output](#mono-speaker-output)
   - [splitting channels](#splitting-channels)
@@ -134,6 +140,7 @@ var basslib = getBass({
         BASS_ORIGINAL_FUN_NAME: ["bool", []],
       },
     },
+    // Order of added library might be important if a lib file is depending of another one.
     webm: {
       // addon id
       ffiFunDeclaration: {
@@ -571,11 +578,34 @@ var position = basslib.BASS_ChannelBytes2Seconds(chan, positionInBytes);
 
 ## ENCODER FEATURES
 
+In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server. Alternatively, bass encode mp3 addon does work the same, and is now availaible with this wrapper. I recommend using it directly.
+Instead of :
+
+```javascript
+var _encoder = basslib.BASS_Encode_Start(
+  mixer,
+  `${LAME_PATH}lame -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`,
+  basslib.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD
+);
+```
+
+You can now use
+
+```javascript
+var _encoder = basslib.BASS_Encode_MP3_Start(
+  mixer,
+  ` -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`,
+  basslib.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD
+);
+```
+
+Without having to find lame executables by yourself. If you still do prefer to use lame directly, you may find what you want [here](https://www.rarewares.org/mp3-lame-bundle.php)
+
 you can directly encode and send output to [shoutcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
 
 use mixer as a trick, because if the channel freed or added new channel, the encoder stops itself.
 
-add channels to mixer every time, and add mixer channel to encoder. so the encoder never stops..
+add channels to mixer every time, and add mixer channel to encoder, so the encoder never stops.
 
 ### Init encoder
 
@@ -710,6 +740,15 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 # UPDATE LOG
 
 **--------------2.X.X------------------**
+
+- 2.1.0
+
+  - Allowing special heritage function to be able to function as they used too from Serkan's work
+  - Adding getCodeMessageFrom to translate an error/flag code to the string, for human readability.
+  - Adding "EnableAllAvailable" to activate in all call any lib that may have been set naturally, or added on the run.
+  - Adding "AreAllAvailableEnabled" to check if all lib available have been set, and send back the one that are not activated
+  - Adding support for bass encode MP3
+  - Adding what was needed to support new lib files dependant on other. If you add support for new lib files, order might be important.
 
 - 2.0.0
 

@@ -1,11 +1,9 @@
-var getBass = require("../tools/getBass");
+var getBass = require("../getBass");
 var basslib = getBass({ silent: true });
 
 /////////////////////////PRETEST//////////////////////////////////
 
-basslib.EnableTags(true);
-basslib.EnableEncoder(true);
-basslib.EnableMixer(true);
+basslib.EnableAllAvailable(true);
 
 var libNames = basslib.WRAP_DEBUG_getAllLibNameActivated();
 
@@ -13,6 +11,7 @@ const libnameCorres = {
   bass: "bass",
   encoder: "bassenc",
   mixer: "bassmix",
+  encMP3: "bassenc_mp3",
 };
 
 for (let i in libNames) {

@@ -1,4 +1,4 @@
-const setStructs = require("../package/setters/setStructs");
+const setStructs = require("../../package/setters/setStructs");
 
 var structs = {};
 setStructs(structs);
