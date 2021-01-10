@@ -83,7 +83,7 @@ http://www.un4seen.com/doc/
 You can also see this version :
 http://bass.radio42.com/help/
 
-You can find direct link from wrapped content, to un4seen documentation [here](#documentation)
+You can find direct link from wrapped content, to un4seen documentation [here](#documentation-)
 
 There is also some documentation directly in the README files accompanying the library files on the un4seen website.
 
