@@ -207,7 +207,7 @@ var _encoder = basslib.BASS_Encode_MP3_Start(
 if (_encoder === 0) {
   console.log(
     `${chalk.bgRed.white.bold(
-      "error at BASS_Encode_Start: "
+      "error at BASS_Encode_MP3_Start: "
     )} ${basslib.BASS_ErrorGetCode()}`
   );
   process.exit();
