@@ -49,8 +49,6 @@ Also, I'm not in anyway linked to the bass library. I just like their lib and wa
 
 # Announcement
 
-In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server.
-
 The necessaries dll a part from the eventuals encoder ones are included in this library. For MacOs, Windows 32/64bits, and linux 32/64 bits. If you encounter any issues while using it, please let me know.
 
 As the dll are already included, you need to check for the un4seen licence prior to using this package. You may have a free licence depending on the usage you are making, and as mentionned down there, its a very great library, so check it out ! There is also some documentation, that I did not include here, that you can get directly with the original dynamic library files
@@ -578,11 +576,34 @@ var position = basslib.BASS_ChannelBytes2Seconds(chan, positionInBytes);
 
 ## ENCODER FEATURES
 
+In order to be used to its full potential, you need to use an encoder like lame to stream audio to a distant server. Alternatively, bass encode mp3 addon does work the same, and is now availaible with this wrapper. I recommend using it directly.
+Instead of :
+
+```javascript
+var _encoder = basslib.BASS_Encode_Start(
+  mixer,
+  `${LAME_PATH}lame -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`,
+  basslib.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD
+);
+```
+
+You can now use
+
+```javascript
+var _encoder = basslib.BASS_Encode_MP3_Start(
+  mixer,
+  ` -r -m s -s ${SAMPLE_RATE} -b ${BIT_RATE} -`,
+  basslib.BASS_Encode_Startflags.BASS_ENCODE_NOHEAD
+);
+```
+
+Without having to find lame executables by yourself. If you still do prefer to use lame directly, you may find what you want [here](https://www.rarewares.org/mp3-lame-bundle.php)
+
 you can directly encode and send output to [shoutcast](http://www.shoutcast.com) and [icecast](http://www.icecast.org) servers
 
 use mixer as a trick, because if the channel freed or added new channel, the encoder stops itself.
 
-add channels to mixer every time, and add mixer channel to encoder. so the encoder never stops..
+add channels to mixer every time, and add mixer channel to encoder, so the encoder never stops.
 
 ### Init encoder
 
