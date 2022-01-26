@@ -18,10 +18,22 @@ function getPlatformDependencies() {
         encMP3: new libFile("encMP3", "bassenc_mp3.dll"),
         tags: new libFile("tags", "tags.dll"),
       };
+      const winAddonsEncodings = [
+		"bassflac.dll",
+		"bassalac.dll",
+		"basscd.dll",
+		"bassdsd.dll",
+		"basshls.dll",
+		"bassmidi.dll",
+		"bassopus.dll",
+		"basswebm.dll",
+		"basswma.dll",
+		"basswv.dll",
+	  ];
       if (arch == "x64") {
-        return { path: "win64", libFiles: winLibFiles };
+        return { path: "win64", libFiles: winLibFiles, addonsEncodings: winAddonsEncodings};
       } else if (arch == "x86") {
-        return { path: "win32", libFiles: winLibFiles };
+        return { path: "win32", libFiles: winLibFiles, addonsEncodings: winAddonsEncodings};
       } else {
         return null;
       }
@@ -33,7 +45,16 @@ function getPlatformDependencies() {
         encMP3: new libFile("encMP3", "libbassenc_mp3.dylib"),
         tags: new libFile("tags", "libtags.dylib"),
       };
-      return { path: "macOs", libFiles: macosLibFiles };
+      const macosAddonsEncodings = [
+		"libbassflac.dylib",
+		"libbassdsd.dylib",
+		"libbasshls.dylib",
+		"libbassmidi.dylib",
+		"libbassopus.dylib",
+		"libbasswebm.dylib",
+		"libbasswv.dylib",
+	  ];
+      return { path: "macOs", libFiles: macosLibFiles, addonsEncodings: macosAddonsEncodings};
     case "linux":
       const linuxLibFiles = {
         bass: new libFile("bass", "libbass.so"),
@@ -42,10 +63,20 @@ function getPlatformDependencies() {
         encMP3: new libFile("encMP3", "libbassenc_mp3.so"),
         tags: new libFile("tags", "libtags.so"),
       };
+      const linuxAddonsEncodings = [
+		"libbassalac.so",
+		"libbasscd.so",
+		"libbassdsd.so",
+		"libbassflac.so",
+		"libbasshls.so",
+		"libbassmidi.so",
+		"libbasswebm.so",
+		"libbasswv.so",
+	  ];
       if (arch == "x64") {
-        return { path: "linux64", libFiles: linuxLibFiles };
+        return { path: "linux64", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
       } else if (arch == "x86") {
-        return { path: "linux32", libFiles: linuxLibFiles };
+        return { path: "linux32", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
       } else {
         return null;
       }

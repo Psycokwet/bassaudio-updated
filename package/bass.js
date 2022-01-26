@@ -44,11 +44,12 @@ function Bass(options) {
   }
 
   const platformDependencies = getPlatformDependencies();
-  const basePath = path.join(__dirname, "lib", platformDependencies.path);
+  this.basePath = path.join(__dirname, "lib", platformDependencies.path);
 
+  this.addonsEncodings = platformDependencies.addonsEncodings;
   this.libFiles = platformDependencies.libFiles;
   for (let prop in this.libFiles) {
-    this.libFiles[prop].setPath(basePath);
+    this.libFiles[prop].setPath(this.basePath);
   }
 
   this.FfiFunDeclarationIndex = require("./FfiFunDeclarationIndex");

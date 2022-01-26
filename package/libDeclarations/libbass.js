@@ -25,7 +25,8 @@ function getFfiFunDeclarations(bass) {
     BASS_ChannelGetPosition: ["int64", ["int", "int"]],
     BASS_ChannelSetPosition: ["bool", ["int", "int64", "int"]],
     BASS_ChannelGetLength: ["int64", ["int", "int"]],
-
+	BASS_PluginLoad: ["int", ["string", "int"]],
+	BASS_StreamPutData: ["int", ["int", "pointer", "int64"]],
     BASS_ChannelBytes2Seconds: ["double", ["int", "int64"]],
     BASS_ChannelSeconds2Bytes: ["int64", ["int", "double"]],
     BASS_ChannelGetLevel: ["int", ["int"]],

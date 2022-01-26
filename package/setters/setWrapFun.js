@@ -5,6 +5,7 @@
 const ref = require("ref-napi");
 const ArrayType = require("ref-array-di")(ref);
 const ffi = require("ffi-napi");
+const path = require("path");
 
 function setWrapFun(bass) {
   // scarboni
@@ -12,6 +13,17 @@ function setWrapFun(bass) {
     for (let flagMessage in flagType)
       if (flagType[flagMessage] === code) return flagMessage;
   };
+
+
+  bass.LoadAllPlugins = () => {
+	  let result = [];
+	for (let i in bass.addonsEncodings) {
+		result.push(bass.BASS_PluginLoad(
+			path.join(bass.basePath, bass.addonsEncodings[i])
+		), bass.addonsEncodings[i]);
+	}
+	return result;
+};
 
   bass.EnableAllAvailable = (value) => {
     for (let i in bass.enableFuns) bass[bass.enableFuns[i]](value);
