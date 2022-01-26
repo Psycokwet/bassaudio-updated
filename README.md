@@ -837,6 +837,18 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 
 **-----BEFORE FORK-UPDATE LOG-----**
 
+- 1.0.9
+
+  new features added:
+  - BASS_PluginLoad
+
+  - BASS_StreamPutData
+
+  adding wrapper function :
+  LoadAllPlugins();
+  As well as the related plugins files.
+  And an example to show usage.
+
 - 1.0.8
 
   new features added:
