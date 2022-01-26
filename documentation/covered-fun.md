@@ -22,6 +22,10 @@ From bass :
 
 - [BASS_ChannelGetLength](http://www.un4seen.com/doc/#bass/BASS_ChannelGetLength.html)
 
+- [BASS_PluginLoad](http://www.un4seen.com/doc/#bass/BASS_PluginLoad.html)
+
+- [BASS_StreamPutData](http://www.un4seen.com/doc/#bass/BASS_StreamPutData.html)
+
 - [BASS_ChannelBytes2Seconds](http://www.un4seen.com/doc/#bass/BASS_ChannelBytes2Seconds.html)
 
 - [BASS_ChannelSeconds2Bytes](http://www.un4seen.com/doc/#bass/BASS_ChannelSeconds2Bytes.html)
