@@ -741,6 +741,18 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
 
 **--------------2.X.X------------------**
 
+- 2.1.1
+
+  new features added:
+  - BASS_PluginLoad
+
+  - BASS_StreamPutData
+
+  adding wrapper function :
+  LoadAllPlugins();
+  As well as the related plugins files.
+  And an example to show usage.
+
 - 2.1.0
 
   - Allowing special heritage function to be able to function as they used too from Serkan's work
@@ -836,18 +848,6 @@ var avail2 = basslib.BASS_Split_StreamGetAvailable(mixer);
     https://github.com/RiccardoBiemmi/bassaudiolibrary
 
 **-----BEFORE FORK-UPDATE LOG-----**
-
-- 1.0.9
-
-  new features added:
-  - BASS_PluginLoad
-
-  - BASS_StreamPutData
-
-  adding wrapper function :
-  LoadAllPlugins();
-  As well as the related plugins files.
-  And an example to show usage.
 
 - 1.0.8
 
