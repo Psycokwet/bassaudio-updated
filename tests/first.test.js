@@ -10,7 +10,7 @@ test("Bass generation working ? ", () => {
 });
 
 test("BASS_GetVersion", () => {
-  expect(basslib.BASS_GetVersion()).toBe(33820416);
+  expect(basslib.BASS_GetVersion()).toBe(33820470);
 });
 
 /////////////////////////TAGS//////////////////////////////////
