@@ -64,6 +64,7 @@ function getPlatformDependencies() {
         tags: new libFile("tags", "libtags.so"),
       };
       const linuxAddonsEncodings = [
+    "libbass_aac.so",
 		"libbassalac.so",
 		"libbasscd.so",
 		"libbassdsd.so",
