@@ -78,6 +78,10 @@ function getPlatformDependencies() {
         return { path: "linux64", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
       } else if (arch == "x86") {
         return { path: "linux32", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
+      } else if (arch == "arm") {
+        return { path: "arm32", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
+      } else if (arch == "arm64") {
+        return { path: "arm64", libFiles: linuxLibFiles, addonsEncodings: linuxAddonsEncodings};
       } else {
         return null;
       }
